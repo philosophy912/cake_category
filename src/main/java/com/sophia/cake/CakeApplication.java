@@ -1,0 +1,16 @@
+package com.sophia.cake;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * @author lizhe
+ */
+@SpringBootApplication
+public class CakeApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(CakeApplication.class, args);
+    }
+
+}
