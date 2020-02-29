@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-container>
+            <el-header>
+                <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+                    background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+                    <el-menu-item index="1">原材料</el-menu-item>
+                    <el-menu-item index="2">初级产品</el-menu-item>
+                    <el-menu-item index="3">中级产品</el-menu-item>
+                </el-menu>
+            </el-header>
+            <el-main>
+                <el-table v-show="pageShow===1" :data="tableData" border style="width: 100%">
+                    <el-table-column fixed prop="name" label="材料名称" width="150">
+                    </el-table-column>
+                    <el-table-column prop="capacity" label="容量" width="120">
+                    </el-table-column>
+                    <el-table-column prop="capacityType" label="容量单位" width="120">
+                    </el-table-column>
+                    <el-table-column prop="price" label="单价" width="120">
+                    </el-table-column>
+                    <el-table-column prop="pricePerCapacity" label="每单位价格" width="300">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作">
+                        <template slot-scope="scope">
+                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                            <el-button type="text" size="small">修改</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-table v-show="pageShow===2">
+                    <el-table-column fixed prop="date" label="日期" width="150">
+                    </el-table-column>
+                    <el-table-column prop="name" label="姓名" width="120">
+                    </el-table-column>
+                    <el-table-column prop="province" label="省份" width="120">
+                    </el-table-column>
+                    <el-table-column prop="city" label="市区" width="120">
+                    </el-table-column>
+                    <el-table-column prop="address" label="地址" width="300">
+                    </el-table-column>
+                    <el-table-column prop="zip" label="邮编" width="120">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                            <el-button type="text" size="small">编辑</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-table v-show="pageShow===3">
+                    <el-table-column fixed prop="date" label="日期" width="150">
+                    </el-table-column>
+                    <el-table-column prop="name" label="姓名" width="120">
+                    </el-table-column>
+                    <el-table-column prop="province" label="省份" width="120">
+                    </el-table-column>
+                    <el-table-column prop="city" label="市区" width="120">
+                    </el-table-column>
+                    <el-table-column prop="address" label="地址" width="300">
+                    </el-table-column>
+                    <el-table-column prop="zip" label="邮编" width="120">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+                            <el-button type="text" size="small">编辑</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-main>
+        </el-container>
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeIndex: '1',
+                //页面显示控制
+                pageShow: 1,
+                visible: false,
+                tableData: [{
+                    name: '总统黄油卷',
+                    capacity: 250,
+                    capacityType: '克',
+                    price: 34.6,
+                    pricePerCapacity: 0.138
+                }, {
+                    name: '安佳大黄油',
+                    capacity: 5000,
+                    capacityType: '克',
+                    price: 34.6,
+                    pricePerCapacity: 0.068
+                }]
+            }
+        },
+        methods: {
+            // 导航栏的选择
+            handleSelect(key, keyPath) {
+                console.log(key);
+                this.pageShow = key;
+                console.log(key, keyPath);
+            },
+            // 操作每一行
+            handleClick(row) {
+                console.log(row);
+            }
+        }
+    })
+</script>
+
+</html>
