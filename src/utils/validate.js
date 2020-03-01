@@ -3,6 +3,7 @@ const log = new Logger('utils/validate');
 const regexMatch = (str, regex) => new RegExp(regex).test(str);
 // 账号校验，不能有特殊字符
 export const isNameValid = (rule, value, callback) => {
+  log.debug('value content is ' + value.content);
   if (value.content === '') {
     value.must ? callback(new Error('请输入' + value.label)) : callback();
   } else if (!regexMatch(value.content, '^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$')) {

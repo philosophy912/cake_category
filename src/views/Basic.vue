@@ -37,14 +37,7 @@ export default {
         left: '取消',
         right: ''
       },
-      row: {
-        name: '',
-        count: 0,
-        price: 0,
-        unit: '个',
-        totalPrice: 0,
-        materials: [this.$tools.createMaterial()]
-      }
+      row: this.$tools.createMaterialRow(false)
     };
   },
   computed: {
@@ -55,14 +48,7 @@ export default {
   methods: {
     add() {
       log.debug('add');
-      const row = {
-        name: '',
-        count: 0,
-        price: 0,
-        totalPrice: 0,
-        materials: []
-      };
-      this.basic.push(row);
+      this.basic.push(this.$tools.createMaterialRow(true));
     },
     del(index) {
       log.debug('delete index[' + index + ']');

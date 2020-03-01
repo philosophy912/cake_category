@@ -13,9 +13,9 @@
       <el-form-item label="单价" label-width="100px" required>
         <el-input v-model="row.price" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="每单位价格" label-width="100px" >
+      <!-- <el-form-item label="每单位价格" label-width="100px" >
         <el-input :value="pricePerCapacity(row.price, row.capacity)" autocomplete="off" :disabled="true"></el-input>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
   </div>
 </template>
@@ -32,7 +32,7 @@ export default {
       rules: {
         name: [
           { required: true, message: '请输入活动名称', trigger: 'blur' },
-          { validator: isNameValid, trigger: 'blur' }
+          // { validator: isNameValid, trigger: 'blur' }
         ],
         capacity: [{ validator: isIntegerValid, message: '请输入名称', trigger: 'blur' }],
         capacityType: [{ validator: isCapacityTypeValid, trigger: 'blur' }],

@@ -10,8 +10,8 @@
   </div>
 </template>
 <script>
-import Logger from 'chivy';
 import Form from '@/components/material/form';
+import Logger from 'chivy';
 
 const log = new Logger('components/material/dialog');
 export default {

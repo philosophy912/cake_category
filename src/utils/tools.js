@@ -36,4 +36,37 @@ export default class Tools {
     };
     return product;
   };
+
+  static createRow(flag) {
+    const row = {
+      name: '',
+      count: 0,
+      price: 0,
+      unit: '个',
+      totalPrice: 0,
+      materials: []
+    };
+    if (flag) {
+      row.products = []
+    }
+    return row;
+  }
+
+  static createMaterialRow(flag) {
+    const row = Tools.createRow(false);
+    if(!flag){
+      row.materials.push(Tools.createMaterial());
+    }
+    // 为真返回无数据的row，
+    return row;
+  }
+
+  static createProductRow(flag) {
+    const row = Tools.createRow(true);
+    if (!flag) {
+      row.materials.push(Tools.createMaterial());
+      row.products.push(Tools.createProduct());
+    }
+    return row;
+  }
 };

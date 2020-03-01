@@ -1,8 +1,7 @@
 <template>
   <div class="basic">
     <ProductTable :data="middle" @del="del" @add="addNewBasic" @modify="modify" @search="search"></ProductTable>
-    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options"
-      @add="addNewRow">
+    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow">
     </ProductDialog>
     <div v-if="show">
       <ProductForm :row="row" :leave="true" :materialOptions="options" :productOptions="options"></ProductForm>
@@ -40,33 +39,18 @@ export default {
         left: '取消',
         right: ''
       },
-      row: {
-        name: '',
-        count: 0,
-        price: 0,
-        totalPrice: 0,
-        materials: [this.$tools.createMaterial()],
-        products: [this.$tools.createProduct()]
-      }
+      row: this.$tools.createProductRow(false)
     };
   },
   computed: {
     show() {
       return this.middle.length == 0;
-    },
+    }
   },
   methods: {
     add() {
       log.debug('add');
-      const row = {
-        name: '',
-        count: 0,
-        price: 0,
-        totalPrice: 0,
-        materials: [],
-        products: []
-      };
-      this.middle.push(row);
+      this.middle.push(this.$tools.createProductRow(true));
     },
     del(index) {
       log.debug('delete index[' + index + ']');
@@ -101,7 +85,7 @@ export default {
       this.dialog.row = row;
     },
     addOne() {
-        log.debug('execute add one methods');
+      log.debug('execute add one methods');
     },
     search(content) {
       log.debug('execute method search');
@@ -110,9 +94,7 @@ export default {
       // 做filter之前必须恢复所有数据
       this.middle = middleProduct;
       if (!this.$tools.isEmpty(content)) {
-        const filterData = this.middle.filter(
-          product => product.name.indexOf(content) != -1
-        );
+        const filterData = this.middle.filter(product => product.name.indexOf(content) != -1);
         if (filterData.length != 0) {
           this.middle = filterData;
         } else {
