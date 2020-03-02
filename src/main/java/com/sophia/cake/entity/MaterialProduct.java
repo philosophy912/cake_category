@@ -22,6 +22,13 @@ public class MaterialProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /**
+     * 原材料名字
+     */
+    @Column(name = "NAME")
+    private String name;
+
     /**
      * 容量
      */
@@ -43,4 +50,15 @@ public class MaterialProduct {
     @Column(name = "PRICE_PER_CAPACITY")
     private Float pricePerCapacity;
 
+
+    @Override
+    public String toString() {
+        return "MaterialProduct{" +
+                "id=" + id +
+                ", capacity=" + capacity +
+                ", capacityType='" + capacityType + '\'' +
+                ", price=" + price +
+                ", pricePerCapacity=" + pricePerCapacity +
+                '}';
+    }
 }

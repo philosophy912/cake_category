@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * @date 2020-02-25 11:32
  */
 @Service
-public class MiddleProductService {
+public class MiddleProductService extends BaseService {
     private MiddleProductDao middleProductDao;
 
     @Autowired
