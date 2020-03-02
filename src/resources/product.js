@@ -4,14 +4,14 @@ export const material = [
         capacity: 250,
         capacityType: '克',
         price: 34.6,
-        pricePerCapacity: 0.138
+		pricePerCapacity: 3.15
     },
     {
         name: '安佳大黄油',
         capacity: 5000,
         capacityType: '克',
         price: 34.0,
-        pricePerCapacity: 0.068
+		pricePerCapacity: 5.15
     }
 ];
 
@@ -20,12 +20,10 @@ export const basicProduct = [
         name: '曲奇',
         unit: '个',
         count: 15,
-        totalPrice: 34.6,
         materials: [
             {
                 name: '安佳大黄油',
                 count: 45,
-                totalPrice: 3.06,
                 type: '原材料',
                 value: 2,
                 price: 15,
@@ -34,7 +32,6 @@ export const basicProduct = [
             {
                 name: '安佳大黄油',
                 count: 45,
-                totalPrice: 3.06,
                 type: '原材料',
                 value: 2,
                 price: 1.5,

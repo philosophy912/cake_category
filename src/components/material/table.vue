@@ -5,7 +5,7 @@
       <el-table-column prop="capacity" label="容量"></el-table-column>
       <el-table-column prop="capacityType" label="容量单位"></el-table-column>
       <el-table-column prop="price" label="单价"></el-table-column>
-      <el-table-column prop="pricePerCapacity" label="每单位价格"></el-table-column>
+      <el-table-column prop="pricePerCapacity" label="每单位价格(元)"></el-table-column>
       <el-table-column fixed="right" label="操作" width="300">
         <template slot="header">
           <el-input v-model="content" size="mini" placeholder="输入关键字搜索" @change="search()">

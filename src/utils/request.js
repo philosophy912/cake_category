@@ -7,21 +7,14 @@ const service = axios.create({
     baseURL: '/',
     timeout: 5000
 });
+// 请求拦截器
 service.interceptors.request.use(config => {
-    /* config => {
-      if (config.method === 'post') {
-        config.data = qs.stringify(config.data);
-      }
-      config.headers = {
-        'Content-Type': 'application/x-www.form-urlencoded'
-      };
-      return config;
-    }; */
     log.debug('url is ' + JSON.stringify(config.url));
     log.debug('data is ' + JSON.stringify(config.data));
     loading();
     return config;
 });
+// 响应拦截器
 service.interceptors.response.use(
     response => {
         clear();
@@ -64,5 +57,6 @@ service.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
 
 export default service;
