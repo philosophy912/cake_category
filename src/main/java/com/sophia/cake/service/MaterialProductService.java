@@ -40,10 +40,24 @@ public class MaterialProductService extends BaseService {
             updateUtil.copyNullProperties(product, materialProduct);
             log.debug("product is " + product);
             log.debug("materialProduct is " + materialProduct);
+            materialProductDao.saveAndFlush(product);
+            return true;
         }else{
             return false;
         }
-        return true;
+    }
+
+    public MaterialProduct addMaterial(MaterialProduct materialProduct){
+        return materialProductDao.saveAndFlush(materialProduct);
+    }
+
+    public Boolean deleteMaterial(MaterialProduct materialProduct){
+        try {
+            materialProductDao.delete(materialProduct);
+            return true;
+        }catch (IllegalArgumentException e){
+            return false;
+        }
     }
 
 }

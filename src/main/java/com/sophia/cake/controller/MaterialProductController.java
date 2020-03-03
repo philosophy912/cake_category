@@ -25,17 +25,30 @@ public class MaterialProductController {
     }
 
     @RequestMapping("/query")
-    public ResultResponse<MaterialProduct> queryBasic() {
+    public ResultResponse<MaterialProduct> queryMaterial() {
         ResultResponse<MaterialProduct> response = new ResultResponse<>();
         response.setData(service.queryMaterials());
         return response;
     }
 
     @RequestMapping("/update")
-    public ResultResponse<MaterialProduct> updateBasic(@RequestBody MaterialProduct materialProduct) {
+    public ResultResponse<MaterialProduct> updateMaterial(@RequestBody MaterialProduct materialProduct) {
         ResultResponse<MaterialProduct> response = new ResultResponse<>();
-        Boolean updateResult = service.updateMaterial(materialProduct);
-        response.setSuccess(updateResult);
+        response.setSuccess(service.updateMaterial(materialProduct));
+        return response;
+    }
+
+    @RequestMapping("/add")
+    public ResultResponse<MaterialProduct> addMaterial(@RequestBody MaterialProduct materialProduct) {
+        ResultResponse<MaterialProduct> response = new ResultResponse<>();
+        response.setSuccess(service.addMaterial(materialProduct) != null);
+        return response;
+    }
+
+    @RequestMapping("/delete")
+    public ResultResponse<MaterialProduct> deleteMaterial(@RequestBody MaterialProduct materialProduct){
+        ResultResponse<MaterialProduct> response = new ResultResponse<>();
+        response.setSuccess(service.deleteMaterial(materialProduct));
         return response;
     }
 
