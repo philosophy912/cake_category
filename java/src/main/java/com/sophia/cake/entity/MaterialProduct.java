@@ -26,35 +26,35 @@ public class MaterialProduct {
     /**
      * 原材料名字
      */
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     /**
      * 容量
      */
-    @Column(name = "CAPACITY")
+    @Column(name = "CAPACITY", nullable = false)
     private Integer capacity;
     /**
      * 容量单位
      */
-    @Column(name = "CAPACITY_TYPE")
+    @Column(name = "CAPACITY_TYPE", nullable = false)
     private String capacityType;
     /**
      * 单价
      */
-    @Column(name = "PRICE")
+    @Column(name = "PRICE", nullable = false)
     private Float price;
     /**
      * 每单位价格
      */
-    @Column(name = "PRICE_PER_CAPACITY")
+    @Column(name = "PRICE_PER_CAPACITY", nullable = false)
     private Float pricePerCapacity;
-
 
     @Override
     public String toString() {
         return "MaterialProduct{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", capacity=" + capacity +
                 ", capacityType='" + capacityType + '\'' +
                 ", price=" + price +

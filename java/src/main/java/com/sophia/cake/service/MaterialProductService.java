@@ -37,6 +37,7 @@ public class MaterialProductService extends BaseService {
         // 能够在数据库中查找到数据
         if(materialProductOptional.isPresent()){
             MaterialProduct product = materialProductOptional.get();
+            // 重新赋值，涉及到计算的地方重新计算
             updateUtil.copyNullProperties(product, materialProduct);
             log.debug("product is " + product);
             log.debug("materialProduct is " + materialProduct);
@@ -48,7 +49,15 @@ public class MaterialProductService extends BaseService {
     }
 
     public MaterialProduct addMaterial(MaterialProduct materialProduct){
-        return materialProductDao.saveAndFlush(materialProduct);
+        MaterialProduct product = null;
+        log.info("material = {}",materialProduct);
+        if(null!=materialProduct.getPrice() && null!=materialProduct.getCapacity()){
+            // 先计算出来每单位容量的价格然后再添加到数据库中
+            materialProduct.setPricePerCapacity(materialProduct.getPrice()/materialProduct.getCapacity());
+            product =  materialProductDao.saveAndFlush(materialProduct);
+        }
+        log.info("product = {}", product);
+        return product;
     }
 
     public Boolean deleteMaterial(MaterialProduct materialProduct){
