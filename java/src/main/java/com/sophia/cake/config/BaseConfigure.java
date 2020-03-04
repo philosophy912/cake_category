@@ -1,5 +1,6 @@
 package com.sophia.cake.config;
 
+import com.philosophy.excel.common.ExcelBase;
 import com.sophia.cake.utils.UpdateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
