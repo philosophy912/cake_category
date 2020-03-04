@@ -5,19 +5,16 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author lizhe
- * @date 2020-02-25 9:40
+ * @date 2020-03-04 22:18
  */
 @Setter
 @Getter
@@ -28,15 +25,27 @@ public class BasicProduct {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     /**
+     * 基础产品数量
+     */
+    @Column(name = "count", nullable = true)
+    private Integer count;
+    /**
      * 总价
      */
-    @Column(name = "TOTAL_PRICE")
+    @Column(name = "total_price", nullable = true)
     private Float totalPrice;
-    /**
-     * 包含的材料
-     */
-    @JoinColumn(name = "MATERIALS")
-    @OneToMany(fetch = FetchType.LAZY)
-    private Set<MaterialProduct> materials = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "basic")
+    private Basic basic;
+
+    @Override
+    public String toString() {
+        return "BasicProduct{" +
+                "id=" + id +
+                ", count=" + count +
+                ", totalPrice=" + totalPrice +
+                ", basic=" + basic +
+                '}';
+    }
 }

@@ -22,12 +22,17 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_MIDDLE_PRODUCT")
-public class MiddleProduct {
+@Table(name = "T_MIDDLE")
+public class Middle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    /**
+     * 中级产品名称
+     */
+    @Column(name = "NAME", nullable = true)
+    private String name;
     /**
      * 总价
      */
@@ -47,5 +52,14 @@ public class MiddleProduct {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<BasicProduct> basicProducts = new HashSet<>();
 
-
+    @Override
+    public String toString() {
+        return "Middle{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", totalPrice=" + totalPrice +
+                ", materials=" + materials +
+                ", basicProducts=" + basicProducts +
+                '}';
+    }
 }

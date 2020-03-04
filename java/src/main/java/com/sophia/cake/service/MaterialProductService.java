@@ -1,7 +1,7 @@
 package com.sophia.cake.service;
 
 import com.sophia.cake.dao.MaterialProductDao;
-import com.sophia.cake.entity.MaterialProduct;
+import com.sophia.cake.entity.Material;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -25,22 +25,19 @@ public class MaterialProductService extends BaseService {
     }
 
 
-    public List<MaterialProduct> queryMaterials(){
+    public List<Material> queryMaterials(){
         return materialProductDao.findAll();
     }
 
-    public Boolean updateMaterial(MaterialProduct materialProduct){
-        MaterialProduct searchMaterial = new MaterialProduct();
+    public Boolean updateMaterial(Material materialProduct) {
+        Material searchMaterial = new Material();
         searchMaterial.setId(materialProduct.getId());
-        Example<MaterialProduct> example = Example.of(searchMaterial);
-        Optional<MaterialProduct> materialProductOptional = materialProductDao.findOne(example);
+        Example<Material> example = Example.of(searchMaterial);
+        Optional<Material> materialProductOptional = materialProductDao.findOne(example);
         // 能够在数据库中查找到数据
         if(materialProductOptional.isPresent()){
-            MaterialProduct product = materialProductOptional.get();
-            // 重新赋值，涉及到计算的地方重新计算
-            updateUtil.copyNullProperties(product, materialProduct);
-            log.debug("product is " + product);
-            log.debug("materialProduct is " + materialProduct);
+            Material product = materialProductOptional.get();
+            updateUtil.copy(materialProduct, product);
             materialProductDao.saveAndFlush(product);
             return true;
         }else{
@@ -48,8 +45,8 @@ public class MaterialProductService extends BaseService {
         }
     }
 
-    public MaterialProduct addMaterial(MaterialProduct materialProduct){
-        MaterialProduct product = null;
+    public Material addMaterial(Material materialProduct){
+        Material product = null;
         log.info("material = {}",materialProduct);
         if(null!=materialProduct.getPrice() && null!=materialProduct.getCapacity()){
             // 先计算出来每单位容量的价格然后再添加到数据库中
@@ -60,7 +57,7 @@ public class MaterialProductService extends BaseService {
         return product;
     }
 
-    public Boolean deleteMaterial(MaterialProduct materialProduct){
+    public Boolean deleteMaterial(Material materialProduct){
         try {
             materialProductDao.delete(materialProduct);
             return true;
