@@ -3,6 +3,7 @@ package com.sophia.cake.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,7 +52,7 @@ public class Material {
     @Column(name = "PRICE_PER_CAPACITY", nullable = false)
     private Float pricePerCapacity;
 
-    @OneToOne(mappedBy = "material")
+    @OneToOne(mappedBy = "material", cascade = {CascadeType.ALL})
     private MaterialProduct materialProduct;
 
 
@@ -64,7 +65,7 @@ public class Material {
 
     @Override
     public String toString() {
-        return "MaterialProduct{" +
+        return "Material{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", capacity=" + capacity +

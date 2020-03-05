@@ -3,6 +3,7 @@ package com.sophia.cake.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,20 +37,20 @@ public class Middle {
     /**
      * 总价
      */
-    @Column(name = "TOTAL_PRICE")
+    @Column(name = "TOTAL_PRICE", nullable = true)
     private Float totalPrice;
     /**
      * 包含的材料
      */
     @JoinColumn(name = "MATERIAL_PRODUCT")
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Set<MaterialProduct> materials = new HashSet<>();
 
     /**
      * 包含的材料
      */
     @JoinColumn(name = "BASIC_PRODUCT")
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Set<BasicProduct> basicProducts = new HashSet<>();
 
 

@@ -116,6 +116,7 @@ public class ExcelService extends BaseService {
                     materialProduct.setCount(Float.parseFloat(count));
                     Material material = materials.get(materialName);
                     materialProduct.setTotalPrice(Float.parseFloat(count) * material.getPricePerCapacity());
+                    materialProduct.setMaterial(material);
                     materialProducts.add(materialProduct);
                 }
             }
@@ -159,10 +160,12 @@ public class ExcelService extends BaseService {
                     Basic basic = basics.get(materialName);
                     if (null != material) {
                         materialProduct.setTotalPrice(Float.parseFloat(count) * material.getPricePerCapacity());
+                        materialProduct.setMaterial(material);
                         materialProducts.add(materialProduct);
                     }
                     if (null != basic) {
                         basicProduct.setTotalPrice(Float.parseFloat(count) * basic.getTotalPrice());
+                        basicProduct.setBasic(basic);
                         basicProducts.add(basicProduct);
                     }
                 }
