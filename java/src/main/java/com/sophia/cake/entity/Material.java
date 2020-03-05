@@ -54,6 +54,14 @@ public class Material {
     @OneToOne(mappedBy = "material")
     private MaterialProduct materialProduct;
 
+
+    public void update() {
+        if (null != price && null != capacity) {
+            pricePerCapacity = price / capacity;
+        }
+    }
+
+
     @Override
     public String toString() {
         return "MaterialProduct{" +

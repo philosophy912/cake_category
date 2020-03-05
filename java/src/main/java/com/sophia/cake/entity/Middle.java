@@ -52,6 +52,19 @@ public class Middle {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<BasicProduct> basicProducts = new HashSet<>();
 
+
+    public void update() {
+        for (MaterialProduct product : materials) {
+            product.update();
+            totalPrice += product.getTotalPrice();
+        }
+        for (BasicProduct product : basicProducts) {
+            product.update();
+            totalPrice += product.getTotalPrice();
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Middle{" +

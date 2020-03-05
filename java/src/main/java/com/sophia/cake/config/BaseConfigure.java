@@ -1,21 +1,19 @@
 package com.sophia.cake.config;
 
-import com.philosophy.excel.common.ExcelBase;
-import com.sophia.cake.utils.UpdateUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
 /**
  * @author lizhe
- * @date 2020-03-02 22:16
+ * @date 2020-03-05 23:05
  */
-@Configuration
-@Slf4j
+@Component
+@ConfigurationProperties(prefix = "config")
+@Setter
+@Getter
 public class BaseConfigure {
 
-    @Bean
-    public UpdateUtil getUpdateUtil(){
-        return new UpdateUtil();
-    }
+    private String excel;
 }

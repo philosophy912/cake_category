@@ -32,3 +32,5 @@ spring:
 logging:
   level:
     root: info
+config:
+  excel: D:\Workspace\cake_category\java\src\main\resources\价格核算.xlsx

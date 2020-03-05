@@ -28,7 +28,7 @@ public class BasicProduct {
      * 基础产品数量
      */
     @Column(name = "count", nullable = true)
-    private Integer count;
+    private Float count;
     /**
      * 总价
      */
@@ -38,6 +38,12 @@ public class BasicProduct {
     @OneToOne
     @JoinColumn(name = "basic")
     private Basic basic;
+
+
+    public void update() {
+        basic.update();
+        totalPrice = count * basic.getTotalPrice();
+    }
 
     @Override
     public String toString() {

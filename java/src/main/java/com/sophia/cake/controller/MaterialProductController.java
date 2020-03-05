@@ -41,7 +41,7 @@ public class MaterialProductController {
     @RequestMapping("/add")
     public ResultResponse<Material> addMaterial(@RequestBody Material materialProduct) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(service.addMaterial(materialProduct) != null);
+        response.setSuccess(service.add(materialProduct) != null);
         return response;
     }
 

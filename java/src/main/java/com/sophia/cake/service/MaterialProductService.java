@@ -19,13 +19,14 @@ import java.util.Optional;
 public class MaterialProductService extends BaseService {
 
     private MaterialProductDao materialProductDao;
+
     @Autowired
     public void setMaterialProductDao(MaterialProductDao materialProductDao) {
         this.materialProductDao = materialProductDao;
     }
 
 
-    public List<Material> queryMaterials(){
+    public List<Material> queryMaterials() {
         return materialProductDao.findAll();
     }
 
@@ -35,33 +36,32 @@ public class MaterialProductService extends BaseService {
         Example<Material> example = Example.of(searchMaterial);
         Optional<Material> materialProductOptional = materialProductDao.findOne(example);
         // 能够在数据库中查找到数据
-        if(materialProductOptional.isPresent()){
+        if (materialProductOptional.isPresent()) {
             Material product = materialProductOptional.get();
             updateUtil.copy(materialProduct, product);
             materialProductDao.saveAndFlush(product);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public Material addMaterial(Material materialProduct){
+
+    public Material add(Material material) {
         Material product = null;
-        log.info("material = {}",materialProduct);
-        if(null!=materialProduct.getPrice() && null!=materialProduct.getCapacity()){
-            // 先计算出来每单位容量的价格然后再添加到数据库中
-            materialProduct.setPricePerCapacity(materialProduct.getPrice()/materialProduct.getCapacity());
-            product =  materialProductDao.saveAndFlush(materialProduct);
-        }
+        log.info("material = {}", material);
+        material.update();
+        product = materialProductDao.saveAndFlush(material);
         log.info("product = {}", product);
         return product;
     }
 
-    public Boolean deleteMaterial(Material materialProduct){
+
+    public Boolean deleteMaterial(Material materialProduct) {
         try {
             materialProductDao.delete(materialProduct);
             return true;
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return false;
         }
     }

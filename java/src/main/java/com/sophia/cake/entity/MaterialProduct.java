@@ -29,7 +29,7 @@ public class MaterialProduct {
      * 原材料数量
      */
     @Column(name = "count", nullable = true)
-    private Integer count;
+    private Float count;
     /**
      * 总价
      */
@@ -39,6 +39,12 @@ public class MaterialProduct {
     @OneToOne
     @JoinColumn(name = "material")
     private Material material;
+
+    public void update() {
+        material.update();
+        totalPrice = count * material.getPricePerCapacity();
+    }
+
 
     @Override
     public String toString() {

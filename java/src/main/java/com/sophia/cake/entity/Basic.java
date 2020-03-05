@@ -50,6 +50,15 @@ public class Basic {
     @OneToMany(fetch = FetchType.LAZY)
     private Set<MaterialProduct> materials = new HashSet<>();
 
+
+    public void update() {
+        for (MaterialProduct materialProduct : materials) {
+            materialProduct.update();
+            totalPrice += materialProduct.getTotalPrice();
+        }
+    }
+
+
     @Override
     public String toString() {
         return "Basic{" +
