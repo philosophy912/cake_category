@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,18 +18,19 @@ import java.util.Set;
 
 /**
  * @author lizhe
- * @date 2020-02-25 9:40
- */
-@Setter
-@Getter
+ * @Description description
+ * @date 2020/3/6 10:12
+ **/
 @Entity
 @Table(name = "T_BASIC")
-public class Basic {
+@Setter
+@Getter
+public class Basic extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
-     * 初级产品名称
+     * 基础产品名称
      */
     @Column(name = "NAME", nullable = true)
     private String name;
@@ -41,24 +41,32 @@ public class Basic {
     @Column(name = "TOTAL_PRICE", nullable = true)
     private Float totalPrice;
 
-    @OneToOne(mappedBy = "basic")
+    /**
+     * 一种基础材料产品只对应一种基础产品
+     * ONE2ONE
+     * 关联关系由Basic维护
+     */
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "basic_product_id")
     private BasicProduct basicProduct;
 
-    /**
-     * 包含的材料
-     */
-    @JoinColumn(name = "MATERIAL_PRODUCT", nullable = true)
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
-    private Set<MaterialProduct> materials = new HashSet<>();
 
+    /**
+     * 一种基础材料可以有多个原材料
+     * One2Many
+     * 主键由One2Many维护
+     */
+    @OneToMany(mappedBy = "basic")
+    private Set<MaterialProduct> materialProducts = new HashSet<>();
 
     public void update() {
-        for (MaterialProduct materialProduct : materials) {
-            materialProduct.update();
-            totalPrice += materialProduct.getTotalPrice();
+        for (MaterialProduct product : materialProducts) {
+            if (null != product) {
+                product.update();
+                totalPrice += product.getTotalPrice();
+            }
         }
     }
-
 
     @Override
     public String toString() {
@@ -67,7 +75,7 @@ public class Basic {
                 ", name='" + name + '\'' +
                 ", totalPrice=" + totalPrice +
                 ", basicProduct=" + basicProduct +
-                ", materials=" + materials +
+                ", materialProducts=" + materialProducts +
                 '}';
     }
 }

@@ -1,4 +1,4 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.base;
 
 import com.philosophy.base.common.Triple;
 import com.philosophy.base.util.StringsUtils;
@@ -34,7 +34,7 @@ import java.util.Set;
  */
 @Service
 @Slf4j
-public class ExcelService extends BaseService {
+public class ExcelService {
 
     private BaseConfigure baseConfigure;
 
@@ -125,7 +125,7 @@ public class ExcelService extends BaseService {
                 totalPrice += materialProduct.getTotalPrice();
             }
             basic.setTotalPrice(totalPrice);
-            basic.setMaterials(materialProducts);
+            basic.setMaterialProducts(materialProducts);
             log.info("it will put {} to basic", basic);
             basics.put(basic.getName(), basic);
         }
@@ -178,7 +178,7 @@ public class ExcelService extends BaseService {
                 totalPrice += basicProduct.getTotalPrice();
             }
             middle.setTotalPrice(totalPrice);
-            middle.setMaterials(materialProducts);
+            middle.setMaterialProducts(materialProducts);
             middle.setBasicProducts(basicProducts);
             log.info("it will put {} to middles", middle);
             middles.put(middle.getName(), middle);

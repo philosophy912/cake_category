@@ -2,7 +2,7 @@ package com.sophia.cake.controller;
 
 import com.sophia.cake.entity.Material;
 import com.sophia.cake.entity.response.ResultResponse;
-import com.sophia.cake.service.MaterialProductService;
+import com.sophia.cake.service.entity.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,40 +15,40 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/material")
-public class MaterialProductController {
+public class MaterialController {
 
-    private MaterialProductService service;
+    private MaterialService materialService;
 
     @Autowired
-    public void setService(MaterialProductService service) {
-        this.service = service;
+    public void setService(MaterialService materialService) {
+        this.materialService = materialService;
     }
 
     @RequestMapping("/query")
     public ResultResponse<Material> queryMaterial() {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setData(service.queryMaterials());
+        response.setData(materialService.query());
         return response;
     }
 
     @RequestMapping("/update")
-    public ResultResponse<Material> updateMaterial(@RequestBody Material materialProduct) {
+    public ResultResponse<Material> updateMaterial(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(service.updateMaterial(materialProduct));
+        response.setSuccess(materialService.update(material) != null);
         return response;
     }
 
     @RequestMapping("/add")
     public ResultResponse<Material> addMaterial(@RequestBody Material materialProduct) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(service.add(materialProduct) != null);
+        response.setSuccess(materialService.add(materialProduct) != null);
         return response;
     }
 
     @RequestMapping("/delete")
-    public ResultResponse<Material> deleteMaterial(@RequestBody Material materialProduct){
+    public ResultResponse<Material> deleteMaterial(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(service.deleteMaterial(materialProduct));
+        response.setSuccess(materialService.delete(material));
         return response;
     }
 

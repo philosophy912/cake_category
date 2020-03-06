@@ -1,7 +1,10 @@
 package com.sophia.cake.utils;
 
 import com.sophia.cake.entity.Basic;
+import com.sophia.cake.entity.BasicProduct;
 import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.MaterialProduct;
+import com.sophia.cake.entity.Middle;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -34,10 +37,22 @@ public class UpdateUtil {
         }
     }
 
-    public void copy(Basic source, Basic target){
+    public void copy(MaterialProduct source, MaterialProduct target) {
+
+    }
+
+    public void copy(BasicProduct source, BasicProduct target){
+
+    }
+
+    public void copy(Middle source, Middle target){
+
+    }
+
+    public void copy(Basic source, Basic target) {
         Field[] fields = source.getClass().getDeclaredFields();
-        for(Field field: fields){
-            String name =field.getName();
+        for (Field field : fields) {
+            String name = field.getName();
             field.setAccessible(true);
 
         }
