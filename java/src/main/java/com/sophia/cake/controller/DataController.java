@@ -3,12 +3,14 @@ package com.sophia.cake.controller;
 import com.philosophy.base.common.Triple;
 import com.sophia.cake.entity.Basic;
 import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.MaterialProduct;
 import com.sophia.cake.entity.Middle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lizhe
@@ -17,8 +19,7 @@ import java.util.List;
  **/
 @RestController
 @Slf4j
-public class DataController extends BaseController{
-
+public class DataController extends BaseController {
 
 
     private Triple<List<Material>, List<Basic>, List<Middle>> getEntity() {
@@ -36,6 +37,7 @@ public class DataController extends BaseController{
     @RequestMapping("/basics")
     public String updateBasics() {
         List<Basic> basics = getEntity().getSecond();
+        basics.forEach(basic -> basic.getMaterialProducts().forEach(materialProduct -> materialProductService.add(materialProduct)));
         basics.forEach(basic -> basicService.add(basic));
         return "success";
     }
@@ -43,6 +45,10 @@ public class DataController extends BaseController{
     @RequestMapping("/middles")
     public String updateMiddles() {
         List<Middle> middles = getEntity().getThird();
+        middles.forEach(middle -> {
+            middle.getMaterialProducts().forEach(materialProduct -> materialProductService.add(materialProduct));
+            middle.getBasicProducts().forEach(basicProduct -> basicProductService.add(basicProduct));
+        });
         middles.forEach(middle -> middleService.add(middle));
         return "success";
     }
@@ -55,10 +61,10 @@ public class DataController extends BaseController{
         List<Basic> basics = triple.getSecond();
         List<Middle> middles = triple.getThird();
         log.warn("materials = {}, basics = {}, middles = {}", materials.size(), basics.size(), middles.size());
-        middles.forEach(middle -> log.warn("middle = {}", middle));
-        materials.forEach(material -> materialService.add(material));
-        basics.forEach(basic -> basicService.add(basic));
-        middles.forEach(middle -> middleService.add(middle));
+//        middles.forEach(middle -> log.warn("middle = {}", middle));
+//        materials.forEach(material -> materialService.add(material));
+//        basics.forEach(basic -> basicService.add(basic));
+//        middles.forEach(middle -> middleService.add(middle));
         return "hello world";
     }
 }

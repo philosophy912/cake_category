@@ -13,14 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/basic")
-public class BasicController {
-
-
-    private BasicService basicService;
-
-    public void setService(BasicService service) {
-        this.basicService = service;
-    }
+public class BasicController extends BaseController {
 
     @RequestMapping("/add")
     public ResultResponse<Basic> addMaterial(@RequestBody Basic basic) {
