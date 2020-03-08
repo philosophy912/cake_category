@@ -155,7 +155,7 @@ public class UpdateUtil {
     }
 
 
-    public MaterialProduct getMaterialProductByID(Integer id, Set<MaterialProduct> materialProducts) {
+    public MaterialProduct getMaterialProductByID(String id, Set<MaterialProduct> materialProducts) {
         for (MaterialProduct product : materialProducts) {
             if (product.getId().equals(id)) {
                 return product;
@@ -165,7 +165,7 @@ public class UpdateUtil {
     }
 
 
-    public BasicProduct getBasicProductByID(Integer id, Set<BasicProduct> basicProducts) {
+    public BasicProduct getBasicProductByID(String id, Set<BasicProduct> basicProducts) {
         for (BasicProduct product : basicProducts) {
             if (product.getId().equals(id)) {
                 return product;

@@ -16,4 +16,7 @@ import org.springframework.stereotype.Component;
 public class BaseConfigure {
 
     private String excel;
+    private String charset;
+    private String material;
+    private String materialProduct;
 }

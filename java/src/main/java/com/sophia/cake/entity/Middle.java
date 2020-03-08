@@ -1,59 +1,41 @@
 package com.sophia.cake.entity;
 
+import com.sophia.cake.api.IEntity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author lizhe
- * @Description description
  * @date 2020/3/6 10:13
  **/
-@Entity
-@Table(name = "T_MIDDLE")
 @Setter
 @Getter
-public class Middle extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Middle implements IEntity {
+    private String id;
 
     /**
      * 中级产品名称
      */
-    @Column(name = "NAME", nullable = true)
     private String name;
     /**
      * 总价
      */
-    @Column(name = "TOTAL_PRICE", nullable = true)
     private Float totalPrice;
 
     /**
      * 一种中级材料可以有多个原材料
-     * One2Many
-     * 主键由One2Many维护
      */
-    @OneToMany(mappedBy = "middle")
     private Set<MaterialProduct> materialProducts = new HashSet<>();
 
     /**
      * 一种中级材料可以有多个基础材料
-     * One2Many
-     * 主键由One2Many维护
      */
-    @OneToMany(mappedBy = "middle")
     private Set<BasicProduct> basicProducts = new HashSet<>();
 
+    @Override
     public void update() {
         for (MaterialProduct product : materialProducts) {
             if (null != product) {
@@ -73,12 +55,11 @@ public class Middle extends BaseEntity {
 
     @Override
     public String toString() {
-        return "Middle{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", totalPrice=" + totalPrice +
-                ", materialProducts=" + materialProducts +
-                ", basicProducts=" + basicProducts +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(id).append(COMMA).append(name).append(COMMA).append(totalPrice).append(COMMA);
+        materialProducts.forEach(materialProduct -> sb.append(materialProduct.getId()).append(SEMICOLON));
+        sb.append(COMMA);
+        basicProducts.forEach(basicProduct -> sb.append(basicProduct.getId()).append(SEMICOLON));
+        return sb.toString();
     }
 }
