@@ -1,17 +1,22 @@
 package com.sophia.cake.entity;
 
 
+import com.philosophy.base.util.FilesUtils;
 import com.sophia.cake.CakeApplication;
 import com.sophia.cake.dao.MaterialDao;
-import com.sophia.cake.dao.MaterialProductDao;
-import com.sophia.cake.service.entity.MaterialProductService;
-import com.sophia.cake.service.entity.MaterialService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * @author lizhe
@@ -23,17 +28,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class MaterialProductTests {
 
     @Autowired
-    public MaterialProductService materialProductService;
-    @Autowired
-    public MaterialService materialService;
-    @Autowired
-    public MaterialProductDao materialProductDao;
-    @Autowired
     public MaterialDao materialDao;
 
 
     @Test
-    public void add() {
+    public void add() throws IOException {
         Material material = new Material();
         material.setName("美玫低筋面粉");
         material.setCapacityType("克");
@@ -45,8 +44,20 @@ public class MaterialProductTests {
         materialProduct.setTotalPrice(0.87224674f);
         materialProduct.setMaterial(material);
         log.info("materialProduct = {}", materialProduct);
-        materialDao.saveAndFlush(material);
-        materialProductDao.saveAndFlush(materialProduct);
+        for (int i = 0; i < 10; i++) {
+            materialDao.add(material);
+        }
+    }
+
+    @Test
+    public void test() throws IOException {
+        Path path = Paths.get(FilesUtils.getCurrentPath() + File.separator + "db" + File.separator + "material.db");
+        if (Files.exists(path)) {
+            System.out.println("yes");
+        } else {
+            System.out.println("no");
+        }
+
     }
 
 }

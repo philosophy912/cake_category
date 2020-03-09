@@ -16,14 +16,12 @@ import java.nio.file.Paths;
  */
 public class DbUtils {
 
+    private static final String FOLDER_NAME = "db";
+
     @SneakyThrows
-    public Path getPaths(String name){
-        ClassPathResource classPathResource = new ClassPathResource(name);
-        Path path;
-        try{
-            path = classPathResource.getFile().toPath();
-        }catch (IOException e){
-            path = Paths.get(FilesUtils.getCurrentPath() + File.separator + name);
+    public Path getPaths(String name) {
+        Path path = Paths.get(FilesUtils.getCurrentPath() + File.separator + FOLDER_NAME + File.separator + name);
+        if(!Files.exists(path)){
             Files.createFile(path);
         }
         return path;

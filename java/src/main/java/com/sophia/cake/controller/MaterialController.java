@@ -1,8 +1,8 @@
 package com.sophia.cake.controller;
 
+import com.philosophy.base.entity.ResultResponse;
 import com.sophia.cake.entity.Material;
-import com.sophia.cake.entity.response.ResultResponse;
-import com.sophia.cake.service.entity.MaterialService;
+import com.sophia.cake.service.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +34,14 @@ public class MaterialController {
     @RequestMapping("/update")
     public ResultResponse<Material> updateMaterial(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(materialService.update(material) != null);
+        response.setSuccess(materialService.update(material));
         return response;
     }
 
     @RequestMapping("/add")
     public ResultResponse<Material> addMaterial(@RequestBody Material materialProduct) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(materialService.add(materialProduct) != null);
+        response.setSuccess(materialService.add(materialProduct));
         return response;
     }
 

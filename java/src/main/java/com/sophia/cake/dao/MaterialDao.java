@@ -3,6 +3,7 @@ package com.sophia.cake.dao;
 import com.philosophy.base.util.ParseUtils;
 import com.sophia.cake.entity.Material;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,10 +18,22 @@ import static com.sophia.cake.api.IEntity.COMMA;
  * @date 2020-03-08 22:13
  */
 @Component
+@Slf4j
 public class MaterialDao extends BaseDao {
 
-    private Path path = dbUtils.getPaths(baseConfigure.getMaterial());
-    private String charset = baseConfigure.getCharset();
+    private Path path;
+    private String charset;
+
+
+    private void setParam() {
+        if (null == path) {
+            path = dbUtils.getPaths(baseConfigure.getMaterial());
+        }
+        if (null == charset) {
+            charset = baseConfigure.getCharset();
+        }
+    }
+
 
     @SneakyThrows
     private List<String> readFromFile() {
@@ -42,10 +55,10 @@ public class MaterialDao extends BaseDao {
     }
 
     /**
-     * ¶ÔÏóÖ±½Ó×ª»»³ÉÎÄ¼ş
+     * å¯¹è±¡ç›´æ¥è½¬æ¢æˆæ–‡ä»¶
      *
-     * @param materials ¶ÔÏó
-     * @return ÎÄ±¾
+     * @param materials å¯¹è±¡
+     * @return æ–‡æœ¬
      */
     private String[] to(List<Material> materials) {
         List<String> contents = new LinkedList<>();
@@ -54,10 +67,10 @@ public class MaterialDao extends BaseDao {
     }
 
     /**
-     * ´ÓÎÄ¼ş¶ÁÈ¡µÄÄÚÈİ×ª»»³É¶ÔÏó
+     * ä»æ–‡ä»¶è¯»å–çš„å†…å®¹è½¬æ¢æˆå¯¹è±¡
      *
-     * @param contents ÎÄ¼şÄÚÈİ
-     * @return ¶ÔÏóÁĞ±í
+     * @param contents æ–‡ä»¶å†…å®¹
+     * @return å¯¹è±¡åˆ—è¡¨
      */
     private List<Material> from(List<String> contents) {
         List<Material> materials = new LinkedList<>();
@@ -69,45 +82,52 @@ public class MaterialDao extends BaseDao {
         return from(readFromFile());
     }
 
-    // ²éÑ¯
+    // æŸ¥è¯¢
     public List<Material> query() {
+        setParam();
         List<String> contents = readFromFile();
         List<Material> materials = new LinkedList<>();
         contents.forEach(content -> materials.add(getMaterial(content)));
         return materials;
     }
 
-    // Ôö¼Ó
+    // å¢åŠ 
     public void add(Material material) throws IOException {
+        setParam();
         List<Material> materials = from();
-        // Èç¹ûÃ»ÓĞUUID, ÔòÔö¼ÓÒ»¸öUUID
+        log.info("materials size = {}", materials.size());
+        log.info("add material {}", material);
+        // å¦‚æœæ²¡æœ‰UUID, åˆ™å¢åŠ ä¸€ä¸ªUUID
         if (null == material.getId()) {
             material.setId(getUUID());
         }
         materials.add(material);
         String[] contents = to(materials);
-        txtUtils.write(path, contents, charset, true, true);
+        log.info("contents length = {}", contents.length);
+        txtUtils.write(path, contents, charset, false, true);
     }
 
-    // É¾³ı
-    public void remote(String id) throws IOException {
+    // åˆ é™¤
+    public void remove(String id) throws IOException {
+        setParam();
         List<Material> materials = from();
         materials.removeIf(material -> material.getId().equals(id));
         String[] contents = to(materials);
-        txtUtils.write(path, contents, charset, true, true);
+        txtUtils.write(path, contents, charset, false, true);
     }
 
-    // ¸üĞÂ
+    // æ›´æ–°
     public void update(Material material) throws IOException {
+        setParam();
         List<Material> materials = from();
         for (Material m : materials) {
-            // Ö»ÄÜ¹»¸ù¾İIDÏàÍ¬À´½øĞĞ¸üĞÂ£¬±ØĞë´«ÈëIDÖµ
+            // åªèƒ½å¤Ÿæ ¹æ®IDç›¸åŒæ¥è¿›è¡Œæ›´æ–°ï¼Œå¿…é¡»ä¼ å…¥IDå€¼
             if (m.getId().equals(material.getId())) {
                 updateUtil.copy(material, m);
             }
         }
         String[] contents = to(materials);
-        txtUtils.write(path, contents, charset, true, true);
+        txtUtils.write(path, contents, charset, false, true);
     }
 
 }
