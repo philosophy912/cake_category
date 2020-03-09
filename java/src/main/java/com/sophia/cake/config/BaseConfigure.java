@@ -19,4 +19,5 @@ public class BaseConfigure {
     private String charset;
     private String material;
     private String materialProduct;
+    private String basic;
 }

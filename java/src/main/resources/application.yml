@@ -5,4 +5,7 @@ config:
   charset: UTF-8
   material: material.db
   materialProduct: material_product.db
+  basic: basic.db
+  basicProduct: basic_product.db
+  middle: middle.db
 
