@@ -8,4 +8,6 @@ config:
   basic: basic.db
   basicProduct: basic_product.db
   middle: middle.db
-
+logging:
+  level:
+    root: info

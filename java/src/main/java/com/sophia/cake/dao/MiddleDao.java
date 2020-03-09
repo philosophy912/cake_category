@@ -1,8 +1,9 @@
 package com.sophia.cake.dao;
 
 import com.philosophy.base.util.ParseUtils;
-import com.sophia.cake.entity.Basic;
+import com.sophia.cake.entity.BasicProduct;
 import com.sophia.cake.entity.MaterialProduct;
+import com.sophia.cake.entity.Middle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,20 +24,25 @@ import static com.sophia.cake.api.IEntity.SEMICOLON;
  */
 @Component
 @Slf4j
-public class BasicDao extends BaseDao {
+public class MiddleDao extends BaseDao {
 
 
     private MaterialProductDao materialProductDao;
+    private BasicProductDao basicProductDao;
 
     @Autowired
     public void setMaterialProductDao(MaterialProductDao materialProductDao) {
         this.materialProductDao = materialProductDao;
     }
 
+    @Autowired
+    public void setBasicProductDao(BasicProductDao basicProductDao) {
+        this.basicProductDao = basicProductDao;
+    }
 
     private void setParam() {
         if (null == path) {
-            path = dbUtils.getPaths(baseConfigure.getBasic());
+            path = dbUtils.getPaths(baseConfigure.getMiddle());
         }
         if (null == charset) {
             charset = baseConfigure.getCharset();
@@ -44,19 +50,24 @@ public class BasicDao extends BaseDao {
     }
 
 
-    private Basic getBasic(String content) {
+    private Middle getMiddle(String content) {
         String[] values = content.split(COMMA);
-        Basic basic = new Basic();
+        Middle middle = new Middle();
         // sb.append(id).append(COMMA).append(name).append(COMMA).append(totalPrice).append(COMMA);
         //  materialProducts.forEach(materialProduct -> sb.append(materialProduct.getId()).append(SEMICOLON));
-        basic.setId(values[0]);
-        basic.setName(values[1]);
-        basic.setTotalPrice(Float.parseFloat(values[2]));
+        middle.setId(values[0]);
+        middle.setName(values[1]);
+        middle.setTotalPrice(Float.parseFloat(values[2]));
         String materialProductsIds = values[values.length - 1];
+        String basicProductsIds = values[values.length - 2];
         String[] materialIds = materialProductsIds.split(SEMICOLON);
-        log.debug("ids = {}", Arrays.toString(materialIds));
+        log.debug("materialIds = {}", Arrays.toString(materialIds));
+        String[] basicIds = basicProductsIds.split(SEMICOLON);
+        log.debug("basicIds = {}", Arrays.toString(basicIds));
         Set<MaterialProduct> materialSet = new HashSet<>();
+        Set<BasicProduct> basicSet = new HashSet<>();
         List<MaterialProduct> materialProducts = materialProductDao.query();
+        List<BasicProduct> basicProducts = basicProductDao.query();
         materialProducts.forEach(materialProduct -> {
             log.debug("materialProduct id = {}", materialProduct.getId());
             for (String id : materialIds) {
@@ -66,22 +77,35 @@ public class BasicDao extends BaseDao {
                 }
             }
         });
+        basicProducts.forEach(basicProduct -> {
+            log.debug("basicProduct id = {}", basicProduct.getId());
+            for (String id : basicIds) {
+                log.debug("id = {}", id);
+                if (basicProduct.getId().equalsIgnoreCase(id)) {
+                    basicSet.add(basicProduct);
+                }
+            }
+        });
         if (materialSet.size() != materialIds.length) {
             throw new RuntimeException("some id not found in materials");
         }
-        basic.setMaterialProducts(materialSet);
-        return basic;
+        if (basicProducts.size() != basicIds.length) {
+            throw new RuntimeException("some id not found in basics");
+        }
+        middle.setMaterialProducts(materialSet);
+        middle.setBasicProducts(basicSet);
+        return middle;
     }
 
     /**
      * 对象直接转换成文件
      *
-     * @param basics 对象
+     * @param middles 对象
      * @return 文本
      */
-    private String[] to(List<Basic> basics) {
+    private String[] to(List<Middle> middles) {
         List<String> contents = new LinkedList<>();
-        basics.forEach(material -> contents.add(material.toString()));
+        middles.forEach(material -> contents.add(material.toString()));
         return ParseUtils.toArray(contents);
     }
 
@@ -91,58 +115,58 @@ public class BasicDao extends BaseDao {
      * @param contents 文件内容
      * @return 对象列表
      */
-    private List<Basic> from(List<String> contents) {
-        List<Basic> materials = new LinkedList<>();
-        contents.forEach(content -> materials.add(getBasic(content)));
-        return materials;
+    private List<Middle> from(List<String> contents) {
+        List<Middle> middles = new LinkedList<>();
+        contents.forEach(content -> middles.add(getMiddle(content)));
+        return middles;
     }
 
-    private List<Basic> from() {
+    private List<Middle> from() {
         return from(readFromFile());
     }
 
     // 查询
-    public List<Basic> query() {
+    public List<Middle> query() {
         setParam();
         List<String> contents = readFromFile();
-        List<Basic> basics = new LinkedList<>();
-        contents.forEach(content -> basics.add(getBasic(content)));
+        List<Middle> basics = new LinkedList<>();
+        contents.forEach(content -> basics.add(getMiddle(content)));
         return basics;
     }
 
     // 增加
-    public void add(Basic basic) throws IOException {
+    public void add(Middle middle) throws IOException {
         setParam();
-        List<Basic> basics = from();
+        List<Middle> middles = from();
         // 如果没有UUID, 则增加一个UUID
-        if (null == basic.getId()) {
-            basic.setId(getUUID());
+        if (null == middle.getId()) {
+            middle.setId(getUUID());
         }
-        basics.add(basic);
-        String[] contents = to(basics);
+        middles.add(middle);
+        String[] contents = to(middles);
         txtUtils.write(path, contents, charset, false, true);
     }
 
     // 删除
     public void remove(String id) throws IOException {
         setParam();
-        List<Basic> basics = from();
-        basics.removeIf(material -> material.getId().equals(id));
-        String[] contents = to(basics);
+        List<Middle> middles = from();
+        middles.removeIf(middle -> middle.getId().equals(id));
+        String[] contents = to(middles);
         txtUtils.write(path, contents, charset, false, true);
     }
 
     // 更新
-    public void update(Basic basic) throws IOException {
+    public void update(Middle middle) throws IOException {
         setParam();
-        List<Basic> materials = from();
-        for (Basic m : materials) {
+        List<Middle> middles = from();
+        for (Middle m : middles) {
             // 只能够根据ID相同来进行更新，必须传入ID值
-            if (m.getId().equals(basic.getId())) {
-                updateUtil.copy(basic, m);
+            if (m.getId().equals(middle.getId())) {
+                updateUtil.copy(middle, m);
             }
         }
-        String[] contents = to(materials);
+        String[] contents = to(middles);
         txtUtils.write(path, contents, charset, false, true);
     }
 

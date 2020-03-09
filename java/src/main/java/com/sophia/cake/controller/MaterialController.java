@@ -15,14 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/material")
-public class MaterialController {
-
-    private MaterialService materialService;
-
-    @Autowired
-    public void setService(MaterialService materialService) {
-        this.materialService = materialService;
-    }
+public class MaterialController extends BaseController {
 
     @RequestMapping("/query")
     public ResultResponse<Material> queryMaterial() {

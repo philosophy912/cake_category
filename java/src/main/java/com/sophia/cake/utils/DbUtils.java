@@ -20,6 +20,10 @@ public class DbUtils {
 
     @SneakyThrows
     public Path getPaths(String name) {
+        Path folder = Paths.get(FilesUtils.getCurrentPath() + File.separator + FOLDER_NAME);
+        if(!Files.exists(folder)){
+            Files.createDirectories(folder);
+        }
         Path path = Paths.get(FilesUtils.getCurrentPath() + File.separator + FOLDER_NAME + File.separator + name);
         if(!Files.exists(path)){
             Files.createFile(path);

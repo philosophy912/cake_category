@@ -2,12 +2,10 @@ package com.sophia.cake.dao;
 
 import com.philosophy.base.util.ParseUtils;
 import com.sophia.cake.entity.Material;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,9 +19,6 @@ import static com.sophia.cake.api.IEntity.COMMA;
 @Slf4j
 public class MaterialDao extends BaseDao {
 
-    private Path path;
-    private String charset;
-
 
     private void setParam() {
         if (null == path) {
@@ -32,12 +27,6 @@ public class MaterialDao extends BaseDao {
         if (null == charset) {
             charset = baseConfigure.getCharset();
         }
-    }
-
-
-    @SneakyThrows
-    private List<String> readFromFile() {
-        return txtUtils.read(path, charset, true);
     }
 
 
@@ -95,15 +84,12 @@ public class MaterialDao extends BaseDao {
     public void add(Material material) throws IOException {
         setParam();
         List<Material> materials = from();
-        log.info("materials size = {}", materials.size());
-        log.info("add material {}", material);
         // 如果没有UUID, 则增加一个UUID
         if (null == material.getId()) {
             material.setId(getUUID());
         }
         materials.add(material);
         String[] contents = to(materials);
-        log.info("contents length = {}", contents.length);
         txtUtils.write(path, contents, charset, false, true);
     }
 

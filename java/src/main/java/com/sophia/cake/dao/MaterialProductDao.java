@@ -1,15 +1,12 @@
 package com.sophia.cake.dao;
 
 import com.philosophy.base.util.ParseUtils;
-import com.sophia.cake.entity.Material;
 import com.sophia.cake.entity.MaterialProduct;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +14,6 @@ import static com.sophia.cake.api.IEntity.COMMA;
 
 /**
  * @author lizhe
- * @Description description
  * @date 2020/3/9 17:54
  **/
 @Component
@@ -31,8 +27,6 @@ public class MaterialProductDao extends BaseDao {
         this.materialDao = materialDao;
     }
 
-    private Path path;
-    private String charset;
 
     private void setParam() {
         if (null == path) {
@@ -41,11 +35,6 @@ public class MaterialProductDao extends BaseDao {
         if (null == charset) {
             charset = baseConfigure.getCharset();
         }
-    }
-
-    @SneakyThrows
-    private List<String> readFromFile() {
-        return txtUtils.read(path, charset, true);
     }
 
 
@@ -115,7 +104,6 @@ public class MaterialProductDao extends BaseDao {
         }
         materialProducts.add(materialProduct);
         String[] contents = to(materialProducts);
-        log.info("contents length = {}", contents.length);
         txtUtils.write(path, contents, charset, false, true);
     }
 

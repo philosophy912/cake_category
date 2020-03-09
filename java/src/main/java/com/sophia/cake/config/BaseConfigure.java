@@ -20,4 +20,6 @@ public class BaseConfigure {
     private String material;
     private String materialProduct;
     private String basic;
+    private String basicProduct;
+    private String middle;
 }

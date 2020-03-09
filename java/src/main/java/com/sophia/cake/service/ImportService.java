@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * @author lizhe
@@ -37,9 +38,14 @@ import java.util.Set;
 public class ImportService {
 
     private BaseConfigure baseConfigure;
+
     @Autowired
     public void setBaseConfigure(BaseConfigure baseConfigure) {
         this.baseConfigure = baseConfigure;
+    }
+
+    private String getUUID() {
+        return UUID.randomUUID().toString();
     }
 
     private Map<String, Material> materials = new HashMap<>(100);
@@ -56,22 +62,24 @@ public class ImportService {
         }
         return indexes;
     }
+
     private void getMaterials(Sheet sheet) {
         sheet.removeRow(sheet.getRow(0));
         for (Row row : sheet) {
-            log.info("index = {}", row.getRowNum());
+            log.debug("index = {}", row.getRowNum());
             Material material = new Material();
+            material.setId(getUUID());
             String name = ExcelBase.getCellValue(row.getCell(0));
-            log.info("name = {}", name);
+            log.debug("name = {}", name);
             material.setName(name);
             String capacity = ExcelBase.getCellValue(row.getCell(1));
-            log.info("capacity = {}", capacity);
+            log.debug("capacity = {}", capacity);
             if (StringsUtils.isEmpty(capacity)) {
                 continue;
             }
             material.setCapacity(Integer.parseInt(capacity));
             String price = ExcelBase.getCellValue(row.getCell(2));
-            log.info("price = {}", price);
+            log.debug("price = {}", price);
             if (StringsUtils.isEmpty(price)) {
                 continue;
             }
@@ -79,7 +87,7 @@ public class ImportService {
             Float pricePerCapacity = Float.parseFloat(price) / Integer.parseInt(capacity);
             material.setPricePerCapacity(pricePerCapacity);
             material.setCapacityType("克");
-            log.info("it will put {} to basic", material);
+            log.debug("it will put {} to basic", material);
             materials.put(material.getName(), material);
         }
     }
@@ -89,13 +97,14 @@ public class ImportService {
         List<Integer> indexes = getIndexes(sheet.getRow(0));
         int size = indexes.size();
         Integer[] arrays = indexes.toArray(new Integer[size]);
-        log.info("indexes is {}", Arrays.toString(arrays));
+        log.debug("indexes is {}", Arrays.toString(arrays));
         sheet.removeRow(sheet.getRow(0));
         for (Row row : sheet) {
-            log.info("index = {}", row.getRowNum());
+            log.debug("index = {}", row.getRowNum());
             Basic basic = new Basic();
+            basic.setId(getUUID());
             String name = ExcelBase.getCellValue(row.getCell(0));
-            log.info("name = {}", name);
+            log.debug("name = {}", name);
             if (StringsUtils.isEmpty(name)) {
                 continue;
             }
@@ -104,11 +113,12 @@ public class ImportService {
             for (int index : indexes) {
                 log.debug("index is = {}", index);
                 String materialName = ExcelBase.getCellValue(row.getCell(index));
-                log.info("materialName = {}", materialName);
+                log.debug("materialName = {}", materialName);
                 if (!StringsUtils.isEmpty(materialName)) {
                     MaterialProduct materialProduct = new MaterialProduct();
+                    materialProduct.setId(getUUID());
                     String count = ExcelBase.getCellValue(row.getCell(index + 1));
-                    log.info("count = {}", count);
+                    log.debug("count = {}", count);
                     materialProduct.setCount(Float.parseFloat(count));
                     Material material = materials.get(materialName);
                     materialProduct.setTotalPrice(Float.parseFloat(count) * material.getPricePerCapacity());
@@ -122,7 +132,7 @@ public class ImportService {
             }
             basic.setTotalPrice(totalPrice);
             basic.setMaterialProducts(materialProducts);
-            log.info("it will put {} to basic", basic);
+            log.debug("it will put {} to basic", basic);
             basics.put(basic.getName(), basic);
         }
     }
@@ -132,10 +142,11 @@ public class ImportService {
         List<Integer> indexes = getIndexes(sheet.getRow(0));
         sheet.removeRow(sheet.getRow(0));
         for (Row row : sheet) {
-            log.info("index = {}", row.getRowNum());
+            log.debug("index = {}", row.getRowNum());
             Middle middle = new Middle();
+            middle.setId(getUUID());
             String name = ExcelBase.getCellValue(row.getCell(0));
-            log.info("name = {}", name);
+            log.debug("name = {}", name);
             if (StringsUtils.isEmpty(name)) {
                 continue;
             }
@@ -144,12 +155,14 @@ public class ImportService {
             Set<BasicProduct> basicProducts = new HashSet<>();
             for (int index : indexes) {
                 String materialName = ExcelBase.getCellValue(row.getCell(index));
-                log.info("materialName = {}", materialName);
+                log.debug("materialName = {}", materialName);
                 if (!StringsUtils.isEmpty(materialName)) {
                     MaterialProduct materialProduct = new MaterialProduct();
+                    materialProduct.setId(getUUID());
                     BasicProduct basicProduct = new BasicProduct();
+                    basicProduct.setId(getUUID());
                     String count = ExcelBase.getCellValue(row.getCell(index + 1));
-                    log.info("count = {}", count);
+                    log.debug("count = {}", count);
                     materialProduct.setCount(Float.parseFloat(count));
                     // 判断是Material还是Basic
                     Material material = materials.get(materialName);
@@ -176,7 +189,7 @@ public class ImportService {
             middle.setTotalPrice(totalPrice);
             middle.setMaterialProducts(materialProducts);
             middle.setBasicProducts(basicProducts);
-            log.info("it will put {} to middles", middle);
+            log.debug("it will put {} to middles", middle);
             middles.put(middle.getName(), middle);
         }
     }
