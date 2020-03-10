@@ -27,7 +27,7 @@ import java.util.Set;
 public class Senior {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     /**
      * 基础产品名称
      */
@@ -43,6 +43,10 @@ public class Senior {
     @JoinColumn(name = "Junior_formula_id")
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private Set<JuniorFormula> juniorFormulas = new HashSet<>();
+
+    public void update() {
+        juniorFormulas.forEach(juniorFormula -> totalPrice += juniorFormula.getTotalPrice());
+    }
 
 }
 

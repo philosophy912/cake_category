@@ -27,7 +27,7 @@ import java.util.Set;
 public class Superior {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     /**
      * 中级产品名称
      */
@@ -47,4 +47,9 @@ public class Superior {
     @JoinColumn(name = "senior_formula_id")
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     private Set<SeniorFormula> seniorFormulas = new HashSet<>();
+
+    public void update() {
+        juniorFormulas.forEach(juniorFormula -> totalPrice += juniorFormula.getTotalPrice());
+        seniorFormulas.forEach(seniorFormula -> totalPrice += seniorFormula.getTotalPrice());
+    }
 }

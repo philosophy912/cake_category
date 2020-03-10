@@ -24,7 +24,7 @@ public class Junior {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
 
     /**
      * 原材料名字
@@ -52,4 +52,10 @@ public class Junior {
      */
     @Column(name = "price_per_capacity", nullable = false)
     private Float pricePerCapacity;
+
+    public void update() {
+        if (capacity != null && price != null) {
+            pricePerCapacity = price / capacity;
+        }
+    }
 }

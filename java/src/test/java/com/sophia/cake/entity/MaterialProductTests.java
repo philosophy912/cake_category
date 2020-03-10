@@ -4,12 +4,13 @@ package com.sophia.cake.entity;
 import com.philosophy.base.util.FilesUtils;
 import com.sophia.cake.CakeApplication;
 import com.sophia.cake.dao.MaterialDao;
+import com.sophia.cake.dao.db.JuniorFormulaDao;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
+
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
@@ -28,7 +29,9 @@ import java.nio.file.Paths;
 public class MaterialProductTests {
 
     @Autowired
-    public MaterialDao materialDao;
+    private MaterialDao materialDao;
+    @Autowired
+    private JuniorFormulaDao juniorFormulaDao;
 
 
     @Test
@@ -50,7 +53,7 @@ public class MaterialProductTests {
     }
 
     @Test
-    public void test() throws IOException {
+    public void test() {
         Path path = Paths.get(FilesUtils.getCurrentPath() + File.separator + "db" + File.separator + "material.db");
         if (Files.exists(path)) {
             System.out.println("yes");

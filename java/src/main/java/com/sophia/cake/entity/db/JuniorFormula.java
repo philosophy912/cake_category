@@ -26,7 +26,7 @@ import java.util.Set;
 public class JuniorFormula {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     /**
      * 原材料数量
      */
@@ -42,4 +42,7 @@ public class JuniorFormula {
     @JoinColumn(name = "junior_id", insertable = false, updatable = false)
     private Junior junior;
 
+    public void update(){
+        totalPrice = count * junior.getPricePerCapacity();
+    }
 }

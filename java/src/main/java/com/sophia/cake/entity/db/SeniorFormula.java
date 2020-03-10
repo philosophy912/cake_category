@@ -26,7 +26,7 @@ import java.util.Set;
 public class SeniorFormula {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    private Integer id;
     /**
      * 基础产品数量
      */
@@ -41,5 +41,9 @@ public class SeniorFormula {
     @OneToOne
     @JoinColumn(name = "senior_id", insertable = false, updatable = false)
     private Senior senior;
+
+    public void update(){
+        totalPrice = count * senior.getTotalPrice();
+    }
 
 }
