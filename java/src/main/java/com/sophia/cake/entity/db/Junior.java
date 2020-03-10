@@ -2,8 +2,6 @@ package com.sophia.cake.entity.db;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.GeneratorType;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +40,7 @@ public class Junior {
     /**
      * 容量单位
      */
-    @Column(name = "capacityType")
+    @Column(name = "capacity_type")
     private String capacityType;
     /**
      * 单价
@@ -52,6 +50,6 @@ public class Junior {
     /**
      * 每单位价格
      */
-    @Column(name = "pricePerCapacity", nullable = false)
+    @Column(name = "price_per_capacity", nullable = false)
     private Float pricePerCapacity;
 }
