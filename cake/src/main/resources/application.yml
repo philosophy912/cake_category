@@ -13,8 +13,12 @@ spring:
     password: root
 
 mybatis:
-  mapper-locations: classpath:mapping:/*Mapper.xml
+  # 配置mapper xml文件所在的路径
+  mapper-locations: classpath:mapper/*.xml
+  # 配置映射类所在的包名
   type-aliases-package: com.sophia.cake.entity
+  # mybatis配置文件
+  config-location: classpath:mybatis-config.xml
 
 logging:
   level:
