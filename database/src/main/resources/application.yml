@@ -1,0 +1,19 @@
+
+spring:
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+
+#  datasource:
+#    url: jdbc:mysql://10.100.193.59:3306/cake?useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  datasource:
+    url: jdbc:h2:file:./db/cake
+    driver-class-name: org.h2.Driver
+    username: root
+    password: root
