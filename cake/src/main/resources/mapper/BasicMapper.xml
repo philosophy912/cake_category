@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sophia.cake.mapper.BasicMapper">
+
+    <resultMap id="basic" type="Basic">
+        <id property="id"  column="id"></id>
+        <result property="name" column="name"></result>
+        <result property="price" column="price"></result>
+        <!--配置 Set<MaterialFormula> materialFormulaSet的映射 -->
+        <collection property="materialFormulaSet" ofType="MaterialFormula">
+            <id property="id" column="id"></id>
+            <result property="count" column="count"></result>
+            <result property="price"></result>
+            <association property="material" javaType="Material">
+                <id property="id" column="id"></id>
+                <result property="name"></result>
+                <result property="capacity"></result>
+                <result property="unit"></result>
+                <result property="price"></result>
+                <result property="pricePerUnit"></result>
+            </association>
+        </collection>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="basic">
+        select * from T_BASIC basic left outer join T_MATERIAL_FORMULA material on basic.id = material.material_formula_id
+
+    </select>
+
+<!--    <insert id="add" parameterType="Material" useGeneratedKeys="true" keyProperty="id">-->
+<!--        insert into T_MATERIAL(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT)-->
+<!--        VALUES (null, #{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})-->
+<!--    </insert>-->
+
+<!--    <update id="update" parameterType="Material">-->
+<!--        update T_MATERIAL-->
+<!--        <trim prefix="set" suffixOverrides=",">-->
+<!--            <if test="name!=null">NAME=#{name}</if>-->
+<!--            <if test="capacity!=null">CAPACITY=#{capacity}</if>-->
+<!--            <if test="unit!=null">UNIT=#{unit}</if>-->
+<!--            <if test="price!=null">PRICE=#{price}</if>-->
+<!--            <if test="pricePerUnit!=null">PRICE_PER_UNIT=#{pricePerUnit}</if>-->
+<!--        </trim>-->
+<!--        where id=#{id}-->
+<!--    </update>-->
+
+<!--    <delete id="delete">-->
+<!--        delete-->
+<!--        from T_MATERIAL-->
+<!--        where ID = #{id}-->
+<!--    </delete>-->
+
+
+</mapper>
