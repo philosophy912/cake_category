@@ -22,7 +22,7 @@ public class JuniorService extends AbstractService<Junior> {
 
     @Override
     public boolean update(Junior junior) {
-        return juniorDao.update(junior) == 1;
+        return true;
     }
 
     @Override
