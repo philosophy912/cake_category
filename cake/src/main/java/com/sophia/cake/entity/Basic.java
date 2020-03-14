@@ -3,7 +3,16 @@ package com.sophia.cake.entity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,22 +21,30 @@ import java.util.Set;
  **/
 @Setter
 @Getter
+@Entity
+@Table(name = "T_BASIC")
 public class Basic implements Serializable {
     /**
      * 编号
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
      * 名字
      */
+    @Column(name = "name", nullable = false)
     private String name;
     /**
      * 总价
      */
+    @Column(name = "price", nullable = false)
     private Float price;
     /**
      * 对应的原材料集合
      */
-    private Set<MaterialFormula> materialFormulaSet;
+    @OneToMany
+    @JoinColumn(name = "material_formula_id")
+    private Set<MaterialFormula> materialFormulaSet = new HashSet<>();
 
 }

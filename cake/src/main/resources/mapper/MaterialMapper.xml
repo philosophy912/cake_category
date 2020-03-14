@@ -8,9 +8,13 @@
         from T_MATERIAL
     </select>
 
+    <select id="findById" resultType="Material">
+        select * from T_MATERIAL where id = #{id}
+    </select>
+
     <insert id="add" parameterType="Material" useGeneratedKeys="true" keyProperty="id">
         insert into T_MATERIAL(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT)
-        VALUES (null, #{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})
+        VALUES (#{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})
     </insert>
 
     <update id="update" parameterType="Material">
