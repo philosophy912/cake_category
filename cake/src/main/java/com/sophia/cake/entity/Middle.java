@@ -2,6 +2,7 @@ package com.sophia.cake.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "T_MIDDLE")
+@ToString
 public class Middle implements Serializable {
     /**
      * 编号
@@ -44,14 +46,14 @@ public class Middle implements Serializable {
      * 对应的原材料集合
      */
     @OneToMany
-    @JoinColumn(name = "material_formula_id")
+    @JoinColumn(name = "middle_id")
     private Set<MaterialFormula> materialFormulaSet = new HashSet<>();
 
     /**
      * 对应的初级产品集合
      */
     @OneToMany
-    @JoinColumn(name = "basic_formula_id")
+    @JoinColumn(name = "middle_id")
     private Set<BasicFormula> basicFormulaSet = new HashSet<>();
 
 }

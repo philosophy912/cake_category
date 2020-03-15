@@ -2,6 +2,7 @@ package com.sophia.cake.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "T_BASIC")
+@ToString
 public class Basic implements Serializable {
     /**
      * 编号
@@ -44,7 +46,7 @@ public class Basic implements Serializable {
      * 对应的原材料集合
      */
     @OneToMany
-    @JoinColumn(name = "material_formula_id")
+    @JoinColumn(name = "basic_id")
     private Set<MaterialFormula> materialFormulaSet = new HashSet<>();
 
 }

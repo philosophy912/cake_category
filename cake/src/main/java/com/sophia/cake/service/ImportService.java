@@ -5,9 +5,9 @@ import com.philosophy.base.util.StringsUtils;
 import com.philosophy.excel.common.ExcelBase;
 import com.sophia.cake.config.BaseConfigure;
 import com.sophia.cake.entity.Basic;
-import com.sophia.cake.entity.BasicProduct;
+import com.sophia.cake.entity.BasicFormula;
 import com.sophia.cake.entity.Material;
-import com.sophia.cake.entity.MaterialProduct;
+import com.sophia.cake.entity.MaterialFormula;
 import com.sophia.cake.entity.Middle;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * @author lizhe
@@ -44,9 +43,6 @@ public class ImportService {
         this.baseConfigure = baseConfigure;
     }
 
-    private String getUUID() {
-        return UUID.randomUUID().toString();
-    }
 
     private Map<String, Material> materials = new HashMap<>(100);
     private Map<String, Basic> basics = new HashMap<>(100);
@@ -68,7 +64,6 @@ public class ImportService {
         for (Row row : sheet) {
             log.debug("index = {}", row.getRowNum());
             Material material = new Material();
-            material.setId(getUUID());
             String name = ExcelBase.getCellValue(row.getCell(0));
             log.debug("name = {}", name);
             material.setName(name);
@@ -85,8 +80,8 @@ public class ImportService {
             }
             material.setPrice(Float.parseFloat(price));
             Float pricePerCapacity = Float.parseFloat(price) / Integer.parseInt(capacity);
-            material.setPricePerCapacity(pricePerCapacity);
-            material.setCapacityType("克");
+            material.setPricePerUnit(pricePerCapacity);
+            material.setUnit("克");
             log.debug("it will put {} to basic", material);
             materials.put(material.getName(), material);
         }
@@ -102,36 +97,34 @@ public class ImportService {
         for (Row row : sheet) {
             log.debug("index = {}", row.getRowNum());
             Basic basic = new Basic();
-            basic.setId(getUUID());
             String name = ExcelBase.getCellValue(row.getCell(0));
             log.debug("name = {}", name);
             if (StringsUtils.isEmpty(name)) {
                 continue;
             }
             basic.setName(name);
-            Set<MaterialProduct> materialProducts = new HashSet<>();
+            Set<MaterialFormula> materialFormulas = new HashSet<>();
             for (int index : indexes) {
                 log.debug("index is = {}", index);
                 String materialName = ExcelBase.getCellValue(row.getCell(index));
                 log.debug("materialName = {}", materialName);
                 if (!StringsUtils.isEmpty(materialName)) {
-                    MaterialProduct materialProduct = new MaterialProduct();
-                    materialProduct.setId(getUUID());
+                    MaterialFormula materialFormula = new MaterialFormula();
                     String count = ExcelBase.getCellValue(row.getCell(index + 1));
                     log.debug("count = {}", count);
-                    materialProduct.setCount(Float.parseFloat(count));
+                    materialFormula.setCount(Float.parseFloat(count));
                     Material material = materials.get(materialName);
-                    materialProduct.setTotalPrice(Float.parseFloat(count) * material.getPricePerCapacity());
-                    materialProduct.setMaterial(material);
-                    materialProducts.add(materialProduct);
+                    materialFormula.setPrice(Float.parseFloat(count) * material.getPricePerUnit());
+                    materialFormula.setMaterial(material);
+                    materialFormulas.add(materialFormula);
                 }
             }
             Float totalPrice = 0.0f;
-            for (MaterialProduct materialProduct : materialProducts) {
-                totalPrice += materialProduct.getTotalPrice();
+            for (MaterialFormula formula : materialFormulas) {
+                totalPrice += formula.getPrice();
             }
-            basic.setTotalPrice(totalPrice);
-            basic.setMaterialProducts(materialProducts);
+            basic.setPrice(totalPrice);
+            basic.setMaterialFormulaSet(materialFormulas);
             log.debug("it will put {} to basic", basic);
             basics.put(basic.getName(), basic);
         }
@@ -144,51 +137,48 @@ public class ImportService {
         for (Row row : sheet) {
             log.debug("index = {}", row.getRowNum());
             Middle middle = new Middle();
-            middle.setId(getUUID());
             String name = ExcelBase.getCellValue(row.getCell(0));
             log.debug("name = {}", name);
             if (StringsUtils.isEmpty(name)) {
                 continue;
             }
             middle.setName(name);
-            Set<MaterialProduct> materialProducts = new HashSet<>();
-            Set<BasicProduct> basicProducts = new HashSet<>();
+            Set<MaterialFormula> materialFormulas = new HashSet<>();
+            Set<BasicFormula> basicFormulas = new HashSet<>();
             for (int index : indexes) {
                 String materialName = ExcelBase.getCellValue(row.getCell(index));
                 log.debug("materialName = {}", materialName);
                 if (!StringsUtils.isEmpty(materialName)) {
-                    MaterialProduct materialProduct = new MaterialProduct();
-                    materialProduct.setId(getUUID());
-                    BasicProduct basicProduct = new BasicProduct();
-                    basicProduct.setId(getUUID());
+                    MaterialFormula materialFormula = new MaterialFormula();
+                    BasicFormula basicFormula = new BasicFormula();
                     String count = ExcelBase.getCellValue(row.getCell(index + 1));
                     log.debug("count = {}", count);
-                    materialProduct.setCount(Float.parseFloat(count));
+                    materialFormula.setCount(Float.parseFloat(count));
                     // 判断是Material还是Basic
                     Material material = materials.get(materialName);
                     Basic basic = basics.get(materialName);
                     if (null != material) {
-                        materialProduct.setTotalPrice(Float.parseFloat(count) * material.getPricePerCapacity());
-                        materialProduct.setMaterial(material);
-                        materialProducts.add(materialProduct);
+                        materialFormula.setPrice(Float.parseFloat(count) * material.getPricePerUnit());
+                        materialFormula.setMaterial(material);
+                        materialFormulas.add(materialFormula);
                     }
                     if (null != basic) {
-                        basicProduct.setTotalPrice(Float.parseFloat(count) * basic.getTotalPrice());
-                        basicProduct.setBasic(basic);
-                        basicProducts.add(basicProduct);
+                        basicFormula.setPrice(Float.parseFloat(count) * basic.getPrice());
+                        basicFormula.setBasic(basic);
+                        basicFormulas.add(basicFormula);
                     }
                 }
             }
             Float totalPrice = 0.0f;
-            for (MaterialProduct materialProduct : materialProducts) {
-                totalPrice += materialProduct.getTotalPrice();
+            for (MaterialFormula formula : materialFormulas) {
+                totalPrice += formula.getPrice();
             }
-            for (BasicProduct basicProduct : basicProducts) {
-                totalPrice += basicProduct.getTotalPrice();
+            for (BasicFormula formula : basicFormulas) {
+                totalPrice += formula.getPrice();
             }
-            middle.setTotalPrice(totalPrice);
-            middle.setMaterialProducts(materialProducts);
-            middle.setBasicProducts(basicProducts);
+            middle.setPrice(totalPrice);
+            middle.setMaterialFormulaSet(materialFormulas);
+            middle.setBasicFormulaSet(basicFormulas);
             log.debug("it will put {} to middles", middle);
             middles.put(middle.getName(), middle);
         }

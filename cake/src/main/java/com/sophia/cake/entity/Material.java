@@ -2,6 +2,7 @@ package com.sophia.cake.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 @Getter
 @Entity
 @Table(name = "T_MATERIAL")
+@ToString
 public class Material implements Serializable {
     /**
      * 编号
@@ -49,7 +51,7 @@ public class Material implements Serializable {
     /**
      * 每单位价格
      */
-    @Column(name = "pricePerUnit", nullable = false)
+    @Column(name = "price_per_unit", nullable = false)
     private Float pricePerUnit;
 
 }

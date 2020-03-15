@@ -1,6 +1,14 @@
 package com.sophia.cake.mapper;
 
-import com.sophia.cake.entity.Material;
+
+import com.sophia.cake.entity.Middle;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Many;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
@@ -10,36 +18,29 @@ import java.util.List;
  **/
 public interface MiddleMapper {
 
-    /**
-     * 查找所有的原材料
-     *
-     * @return 结果
-     */
-    List<Material> findAll();
 
     /**
-     * 添加原材料
+     * 添加高级产品
      *
-     * @param material 原材料
+     * @param middle 高级产品
      * @return 结果
      */
-    int add(Material material);
+    @Insert("insert into T_MIDDLE(NAME, PRICE) VALUES (#{name}, #{price})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int add(Middle middle);
 
-    /**
-     * 更新内容
-     *
-     * @param material 原材料
-     * @return 结果
-     */
-    int update(Material material);
-
-    /**
-     * 删除内容
-     *
-     * @param id ID
-     * @return 结果
-     */
-    int delete(Integer id);
+    @Select("select * from T_MIDDLE")
+    @Results(id = "middle", value = {
+            @Result(property = "name", column = "name"),
+            @Result(property = "price", column = "price"),
+            @Result(property = "materialFormulaSet", column = "middle_id",
+                    many = @Many(select = "com.sophia.cake.mapper.MaterialFormulaMapper.findById",
+                            fetchType = FetchType.LAZY)),
+            @Result(property = "basicFormulaSet", column = "middle_id",
+                    many = @Many(select = "com.sophia.cake.mapper.BasicFormulaMapper.findById",
+                            fetchType = FetchType.LAZY))
+    })
+    List<Middle> findAll();
 
 
 }

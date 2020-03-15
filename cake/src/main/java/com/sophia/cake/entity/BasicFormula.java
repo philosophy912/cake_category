@@ -2,6 +2,7 @@ package com.sophia.cake.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Getter
 @Entity
 @Table(name = "T_BASIC_FORMULA")
+@ToString
 public class BasicFormula implements Serializable {
 
     /**
