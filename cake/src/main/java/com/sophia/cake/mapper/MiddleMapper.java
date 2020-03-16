@@ -12,6 +12,8 @@ import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
+import static com.sophia.cake.constant.TABLE.MIDDLE;
+
 /**
  * @author lizhe
  * @date 2020/3/11 13:09
@@ -25,11 +27,11 @@ public interface MiddleMapper {
      * @param middle 高级产品
      * @return 结果
      */
-    @Insert("insert into T_MIDDLE(NAME, PRICE) VALUES (#{name}, #{price})")
+    @Insert("insert into " + MIDDLE + "(NAME, PRICE) VALUES (#{name}, #{price})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int add(Middle middle);
 
-    @Select("select * from T_MIDDLE")
+    @Select("select * from " + MIDDLE)
     @Results(id = "middle", value = {
             @Result(property = "name", column = "name"),
             @Result(property = "price", column = "price"),

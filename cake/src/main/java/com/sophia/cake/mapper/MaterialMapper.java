@@ -4,10 +4,15 @@ import com.sophia.cake.entity.Material;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+
+import static com.sophia.cake.constant.TABLE.MATERIAL;
 
 /**
  * @author lizhe
@@ -20,7 +25,15 @@ public interface MaterialMapper {
      *
      * @return 结果
      */
-    @Select("select * from T_MATERIAL")
+    @Select("select * from " + MATERIAL)
+    @Results(id = "material", value = {
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "capacity", column = "capacity"),
+            @Result(property = "unit", column = "unit"),
+            @Result(property = "price", column = "price"),
+            @Result(property = "pricePerUnit", column = "price_per_unit")
+    })
     List<Material> findAll();
 
     /**
@@ -29,7 +42,7 @@ public interface MaterialMapper {
      * @param material 原材料
      * @return 结果
      */
-    @Insert("insert into T_MATERIAL(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT) " +
+    @Insert("insert into " + MATERIAL + "(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT) " +
             "VALUES (#{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int add(Material material);
@@ -41,7 +54,7 @@ public interface MaterialMapper {
      * @return 结果
      */
     @Update("<script>" +
-            "update T_MATERIAL" +
+            "update " + MATERIAL +
             "<trim prefix='set' suffixOverrides=','>" +
             "<if test='name!=null'>NAME=#{name}</if>" +
             "<if test='capacity!=null'>CAPACITY=#{capacity}</if>" +
@@ -59,7 +72,7 @@ public interface MaterialMapper {
      * @param id ID
      * @return 结果
      */
-    @Delete("delete from T_MATERIAL where ID = #{id}")
+    @Delete("delete from " + MATERIAL + " where ID = #{id}")
     int delete(Integer id);
 
     /**
@@ -68,7 +81,8 @@ public interface MaterialMapper {
      * @param id ID
      * @return 结果
      */
-    @Select("select * from T_MATERIAL where id = #{id}")
+    @Select("select * from " + MATERIAL + " where id = #{id}")
+    @ResultMap(value = "material")
     Material findById(Integer id);
 
     /**
@@ -77,7 +91,8 @@ public interface MaterialMapper {
      * @param name 名字
      * @return 结果
      */
-    @Select("select * from T_MATERIAL where name = #{name}")
+    @Select("select * from " + MATERIAL + " where name = #{name}")
+    @ResultMap(value = "material")
     Material findByName(String name);
 
 }

@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.mapping.FetchType;
 
+import static com.sophia.cake.constant.TABLE.BASIC;
+
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public interface BasicMapper {
      *
      * @return 结果
      */
-    @Select("select * from T_BASIC")
+    @Select("select * from " + BASIC)
     @Results(id = "basic", value = {
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "name", column = "name"),
@@ -32,13 +34,16 @@ public interface BasicMapper {
     })
     List<Basic> findAll();
 
+    @Select("select * from " + BASIC + " where NAME = #{name}")
+    Basic findByName(String name);
+
     /**
      * 添加基础产品
      *
      * @param basic 基础产品
      * @return 结果
      */
-    @Insert("insert into T_BASIC(NAME, PRICE) VALUES (#{name}, #{price})")
+    @Insert("insert into " + BASIC + "(NAME, PRICE) VALUES (#{name}, #{price})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     Integer add(Basic basic);
 }

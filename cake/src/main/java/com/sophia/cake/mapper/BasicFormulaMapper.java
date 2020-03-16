@@ -9,6 +9,8 @@ import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
+import static com.sophia.cake.constant.TABLE.BASIC_FORMULA;
+
 /**
  * @author lizhe
  * @date 2020-03-14 21:38
@@ -20,7 +22,7 @@ public interface BasicFormulaMapper {
      * @param id id
      * @return 结果
      */
-    @Select("select * from T_BASIC_FORMULA where id =#{id}")
+    @Select("select * from " + BASIC_FORMULA + " where id =#{id}")
     List<BasicFormula> findById(Integer id);
 
     /**
@@ -29,7 +31,7 @@ public interface BasicFormulaMapper {
      * @param basicFormula 初级产品
      * @return 结果
      */
-    @Insert("insert into T_BASIC_FORMULA(COUNT, PRICE) VALUES (#{count}, #{price})")
+    @Insert("insert into " + BASIC_FORMULA + "(COUNT, PRICE) VALUES (#{count}, #{price})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     int add(BasicFormula basicFormula);
 
@@ -40,7 +42,7 @@ public interface BasicFormulaMapper {
      * @param middleId middleId
      * @return 结果
      */
-    @Update("update T_MATERIAL_FORMULA set MIDDLE_id = #{middleId} where  id = #{id}")
+    @Update("update " + BASIC_FORMULA + " set MIDDLE_id = #{middleId} where  id = #{id}")
     int updateMiddle(@Param("id") Integer id, @Param("middleId") Integer middleId);
 
     /**
@@ -50,6 +52,6 @@ public interface BasicFormulaMapper {
      * @param basicId basicId
      * @return 结果
      */
-    @Update("update T_MATERIAL_FORMULA set BASIC_id = #{basicId} where  id = #{id}")
+    @Update("update " + BASIC_FORMULA + " set BASIC_id = #{basicId} where  id = #{id}")
     int updateBasic(@Param("id") Integer id, @Param("basicId") Integer basicId);
 }
