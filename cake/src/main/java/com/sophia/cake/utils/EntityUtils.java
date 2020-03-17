@@ -37,7 +37,6 @@ public class EntityUtils {
 
     private void update(BasicFormula basicFormula) {
         Float count = basicFormula.getCount();
-        Basic basic = basicFormula.getBasic();
         basicFormula.setPrice(count * basicFormula.getPrice());
     }
 
