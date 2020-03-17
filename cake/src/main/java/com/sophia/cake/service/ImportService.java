@@ -153,16 +153,17 @@ public class ImportService {
                     BasicFormula basicFormula = new BasicFormula();
                     String count = ExcelBase.getCellValue(row.getCell(index + 1));
                     log.debug("count = {}", count);
-                    materialFormula.setCount(Float.parseFloat(count));
                     // 判断是Material还是Basic
                     Material material = materials.get(materialName);
                     Basic basic = basics.get(materialName);
                     if (null != material) {
+                        materialFormula.setCount(Float.parseFloat(count));
                         materialFormula.setPrice(Float.parseFloat(count) * material.getPricePerUnit());
                         materialFormula.setMaterial(material);
                         materialFormulas.add(materialFormula);
                     }
                     if (null != basic) {
+                        basicFormula.setCount(Float.parseFloat(count));
                         basicFormula.setPrice(Float.parseFloat(count) * basic.getPrice());
                         basicFormula.setBasic(basic);
                         basicFormulas.add(basicFormula);

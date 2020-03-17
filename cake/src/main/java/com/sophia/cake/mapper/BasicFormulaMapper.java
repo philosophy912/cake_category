@@ -32,7 +32,7 @@ public interface BasicFormulaMapper {
      * @return 结果
      */
     @Insert("insert into " + BASIC_FORMULA + "(COUNT, PRICE) VALUES (#{count}, #{price})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int add(BasicFormula basicFormula);
 
     /**

@@ -69,7 +69,9 @@ class ImportServiceTest {
         log.info("size {}", materials.size());
         materials.forEach(material -> {
             entityUtils.update(material);
+            log.info("materialId = {}", material.getId());
             materialMapper.add(material);
+            log.info("materialId = {}", material.getId());
         });
 
     }
@@ -79,34 +81,15 @@ class ImportServiceTest {
         for (Basic basic : basics) {
             entityUtils.update(basic);
             // 添加到basic表并返回id
-            // int basicId = basicMapper.add(basic);
-            Basic search = basicMapper.findByName(basic.getName());
-            log.info("basic is {}", search.getId());
-            int basicId = search.getId();
+            basicMapper.add(basic);
+            int basicId = basic.getId();
             Set<MaterialFormula> materialFormulas = basic.getMaterialFormulaSet();
             for (MaterialFormula formula : materialFormulas) {
-                log.info("formula is {}", formula);
+                log.debug("formula is {}", formula);
                 // 添加了MaterialFormula并返回ID
-                int materialFormulaId = materialFormulaMapper.add(formula);
-                log.debug("materialFormulaId is {}", materialFormulaId );
-                materialFormulaMapper.updateBasic(materialFormulaId, basicId);
-                String name = formula.getMaterial().getName();
-                Material material = materialMapper.findByName(name);
-                materialFormulaMapper.updateMaterial(materialFormulaId, material.getId());
-            }
-        }
-    }
-
-    @Test
-    public void addBasicFormula() {
-        for (Basic basic : basics) {
-            entityUtils.update(basic);
-            // 添加到basic表并返回id
-            int basicId = basicMapper.add(basic);
-            Set<MaterialFormula> materialFormulas = basic.getMaterialFormulaSet();
-            for (MaterialFormula formula : materialFormulas) {
-                // 添加了MaterialFormula并返回ID
-                int materialFormulaId = materialFormulaMapper.add(formula);
+                materialFormulaMapper.add(formula);
+                int materialFormulaId = formula.getId();
+                log.debug("materialFormulaId is {}", materialFormulaId);
                 materialFormulaMapper.updateBasic(materialFormulaId, basicId);
                 String name = formula.getMaterial().getName();
                 Material material = materialMapper.findByName(name);
@@ -120,17 +103,20 @@ class ImportServiceTest {
         for (Middle middle : middles) {
             entityUtils.update(middle);
             // 添加Middle表并返回id
-            int middleId = middleMapper.add(middle);
+            middleMapper.add(middle);
+            int middleId = middle.getId();
             Set<MaterialFormula> materialFormulas = middle.getMaterialFormulaSet();
             for (MaterialFormula formula : materialFormulas) {
                 // 添加了MaterialFormula并返回ID
-                int materialFormulaId = materialFormulaMapper.add(formula);
+                materialFormulaMapper.add(formula);
+                int materialFormulaId = formula.getId();
                 materialFormulaMapper.updateMiddle(materialFormulaId, middleId);
             }
             Set<BasicFormula> basicFormulas = middle.getBasicFormulaSet();
             for (BasicFormula formula : basicFormulas) {
                 // 添加了BasicFormula并返回ID
-                int basicFormula = basicFormulaMapper.add(formula);
+                basicFormulaMapper.add(formula);
+                int basicFormula = formula.getId();
                 basicFormulaMapper.updateMiddle(basicFormula, middleId);
             }
         }

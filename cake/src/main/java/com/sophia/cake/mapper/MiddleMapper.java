@@ -28,7 +28,7 @@ public interface MiddleMapper {
      * @return 结果
      */
     @Insert("insert into " + MIDDLE + "(NAME, PRICE) VALUES (#{name}, #{price})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int add(Middle middle);
 
     @Select("select * from " + MIDDLE)

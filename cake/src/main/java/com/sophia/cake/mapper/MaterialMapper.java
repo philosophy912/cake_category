@@ -44,7 +44,7 @@ public interface MaterialMapper {
      */
     @Insert("insert into " + MATERIAL + "(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT) " +
             "VALUES (#{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int add(Material material);
 
     /**

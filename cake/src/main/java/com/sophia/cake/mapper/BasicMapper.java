@@ -44,6 +44,6 @@ public interface BasicMapper {
      * @return 结果
      */
     @Insert("insert into " + BASIC + "(NAME, PRICE) VALUES (#{name}, #{price})")
-    @Options(useGeneratedKeys = true, keyProperty = "id")
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer add(Basic basic);
 }
