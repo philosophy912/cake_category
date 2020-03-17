@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.mapping.FetchType;
@@ -35,7 +36,12 @@ public interface BasicMapper {
     List<Basic> findAll();
 
     @Select("select * from " + BASIC + " where NAME = #{name}")
+    @ResultMap(value = "basic")
     Basic findByName(String name);
+
+    @Select("select * from " + BASIC + " where id = #{id}")
+    @ResultMap(value = "basic")
+    Basic findById(Integer id);
 
     /**
      * 添加基础产品

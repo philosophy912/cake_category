@@ -1,12 +1,17 @@
 package com.sophia.cake.mapper;
 
-import com.sophia.cake.entity.BasicFormula;
 import com.sophia.cake.entity.MaterialFormula;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.mapping.FetchType;
+
 
 import java.util.List;
 
@@ -20,11 +25,20 @@ public interface MaterialFormulaMapper {
     /**
      * 根据 basicId 查询MaterialFormula
      *
-     * @param basicId 基础产品ID
+     * @param basicId 配方ID
      * @return 结果
      */
-    @Select("select * from " + MATERIAL_FORMULA + " where id =#{id}")
+    @Select("select * from " + MATERIAL_FORMULA + " where basic_id =#{basicId}")
+    @Results(id = "materialFormula", value = {
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "count", column = "name"),
+            @Result(property = "price", column = "price"),
+            @Result(property = "material", column = "basic_id",
+                    many = @Many(select = "com.sophia.cake.mapper.MaterialMapper.findById",
+                            fetchType = FetchType.LAZY))
+    })
     List<MaterialFormula> findById(Integer basicId);
+
 
     /**
      * 添加原料产品
