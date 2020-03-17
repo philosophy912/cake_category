@@ -35,10 +35,10 @@ public interface MiddleMapper {
     @Results(id = "middle", value = {
             @Result(property = "name", column = "name"),
             @Result(property = "price", column = "price"),
-            @Result(property = "materialFormulaSet", column = "middle_id",
+            @Result(property = "materialFormulaSet", column = "id",
                     many = @Many(select = "com.sophia.cake.mapper.MaterialFormulaMapper.findById",
                             fetchType = FetchType.LAZY)),
-            @Result(property = "basicFormulaSet", column = "middle_id",
+            @Result(property = "basicFormulaSet", column = "id",
                     many = @Many(select = "com.sophia.cake.mapper.BasicFormulaMapper.findById",
                             fetchType = FetchType.LAZY))
     })

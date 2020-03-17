@@ -31,7 +31,7 @@ public interface MaterialFormulaMapper {
     @Select("select * from " + MATERIAL_FORMULA + " where basic_id =#{basicId}")
     @Results(id = "materialFormula", value = {
             @Result(id = true, property = "id", column = "id"),
-            @Result(property = "count", column = "name"),
+            @Result(property = "count", column = "count"),
             @Result(property = "price", column = "price"),
             @Result(property = "material", column = "basic_id",
                     many = @Many(select = "com.sophia.cake.mapper.MaterialMapper.findById",

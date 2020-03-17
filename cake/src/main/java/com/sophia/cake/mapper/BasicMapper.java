@@ -13,6 +13,7 @@ import org.apache.ibatis.mapping.FetchType;
 import static com.sophia.cake.constant.TABLE.BASIC;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lizhe
@@ -29,7 +30,7 @@ public interface BasicMapper {
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "name", column = "name"),
             @Result(property = "price", column = "price"),
-            @Result(property = "materialFormulaSet", column = "basic_id",
+            @Result(property = "materialFormulaSet", javaType = Set.class, column = "id",
                     many = @Many(select = "com.sophia.cake.mapper.MaterialFormulaMapper.findById",
                             fetchType = FetchType.LAZY))
     })

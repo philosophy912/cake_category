@@ -2,10 +2,14 @@ package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.BasicFormula;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
@@ -22,7 +26,15 @@ public interface BasicFormulaMapper {
      * @param id id
      * @return 结果
      */
-    @Select("select * from " + BASIC_FORMULA + " where id =#{id}")
+    @Select("select * from " + BASIC_FORMULA + " where middle_id =#{id}")
+    @Results(id = "basicFormula", value = {
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "count", column = "count"),
+            @Result(property = "price", column = "price"),
+            @Result(property = "basic", column = "id",
+                    many = @Many(select = "com.sophia.cake.mapper.BasicMapper.findById",
+                            fetchType = FetchType.LAZY))
+    })
     List<BasicFormula> findById(Integer id);
 
     /**
