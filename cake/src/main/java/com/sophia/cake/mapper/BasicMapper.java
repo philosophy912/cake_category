@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.Basic;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
@@ -8,6 +9,7 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.FetchType;
 
 import static com.sophia.cake.constant.TABLE.BASIC;
@@ -53,4 +55,18 @@ public interface BasicMapper {
     @Insert("insert into " + BASIC + "(NAME, PRICE) VALUES (#{name}, #{price})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer add(Basic basic);
+
+
+    @Delete("delete from " + BASIC + "where id = #{id}")
+    int delete(Integer id);
+
+    @Update("<script>" +
+            "update " + BASIC +
+            "<trim prefix='set' suffixOverrides=','>" +
+            "<if test='name!=null'>NAME=#{name}</if>" +
+            "<if test='price!=null'>PRICE=#{price}</if>" +
+            "</trim>" +
+            "where id=#{id}" +
+            "</script>")
+    int update(Basic basic);
 }

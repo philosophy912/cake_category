@@ -1,12 +1,13 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.MaterialFormula;
+import com.sophia.cake.entity.vo.MaterialFormulaVo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -80,5 +81,24 @@ public interface MaterialFormulaMapper {
     @Update("update " + MATERIAL_FORMULA + " set BASIC_id = #{basicId} where  id = #{id}")
     int updateBasic(@Param("id") Integer id, @Param("basicId") Integer basicId);
 
+
+    @Delete("delete from " + MATERIAL_FORMULA + " where basic_id = #{id}")
+    int deleteBasic(Integer id);
+
+    @Delete("delete from " + MATERIAL_FORMULA + " where middle_id = #{id}")
+    int deleteMiddle(Integer id);
+
+    @Update("<script>" +
+            "update " + MATERIAL_FORMULA +
+            "<trim prefix='set' suffixOverrides=','>" +
+            "<if test='count!=null'>COUNT=#{count}</if>" +
+            "<if test='price!=null'>PRICE=#{price}</if>" +
+            "<if test='materialId!=null'>MATERIAL_ID=#{materialId}</if>" +
+            "<if test='middleId!=null'>MIDDLE_ID=#{middleId}</if>" +
+            "<if test='basicId!=null'>BASIC_ID=#{basicId}</if>" +
+            "</trim>" +
+            "where id=#{id}" +
+            "</script>")
+    int updateFormula(MaterialFormulaVo vo);
 
 }

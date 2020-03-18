@@ -15,7 +15,7 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/material")
-public class MaterialController extends Controller {
+public class MaterialController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/query")
