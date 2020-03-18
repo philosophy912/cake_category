@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,10 +33,8 @@ public class MaterialController extends Controller {
     @RequestMapping("/add")
     public ResultResponse<Material> add(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
+        utils.update(material);
         response.setSuccess(materialService.add(material));
-        /*List<Material> materials = new ArrayList<>();
-        materials.add(material);
-        response.setData(materials);*/
         return response;
     }
 
@@ -46,6 +43,14 @@ public class MaterialController extends Controller {
     public ResultResponse<Material> update(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
         response.setSuccess(materialService.update(material));
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping("/delete")
+    public ResultResponse<Material> delete(@RequestBody Material material){
+        ResultResponse<Material> response = new ResultResponse<>();
+        response.setSuccess(materialService.delete(material.getId()));
         return response;
     }
 

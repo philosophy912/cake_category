@@ -22,7 +22,7 @@ export const updateMaterial = param => {
     const data = {
         name: param.name,
         capacity: param.capacity,
-        capacityType: param.capacityType,
+        unit: param.unit,
         price: param.price
     };
     return service({
@@ -36,7 +36,7 @@ export const addMaterial = param => {
     const data = {
         name: param.name,
         capacity: param.capacity,
-        capacityType: param.capacityType,
+        unit: param.unit,
         price: param.price
     };
     return service({

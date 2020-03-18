@@ -1,6 +1,7 @@
 package com.sophia.cake.controller;
 
 import com.sophia.cake.service.MaterialService;
+import com.sophia.cake.utils.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  **/
 
 public abstract class Controller {
+    @Autowired
+    protected EntityUtils utils;
     @Autowired
     protected MaterialService materialService;
 }
