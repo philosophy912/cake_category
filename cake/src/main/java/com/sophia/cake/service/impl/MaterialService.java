@@ -1,7 +1,8 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.Material;
 import com.sophia.cake.mapper.MaterialMapper;
+import com.sophia.cake.service.api.IService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

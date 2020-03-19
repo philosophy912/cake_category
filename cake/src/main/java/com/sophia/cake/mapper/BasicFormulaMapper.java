@@ -1,6 +1,8 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.BasicFormula;
+import com.sophia.cake.entity.vo.BasicFormulaVo;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
@@ -66,4 +68,20 @@ public interface BasicFormulaMapper {
      */
     @Update("update " + BASIC_FORMULA + " set BASIC_id = #{basicId} where  id = #{id}")
     int updateBasic(@Param("id") Integer id, @Param("basicId") Integer basicId);
+
+
+    @Delete("delete from " + BASIC_FORMULA + " where middle_id = #{id}")
+    int deleteMiddle(Integer id);
+
+    @Update("<script>" +
+            "update " + BASIC_FORMULA +
+            "<trim prefix='set' suffixOverrides=','>" +
+            "<if test='count!=null'>COUNT=#{count}</if>" +
+            "<if test='price!=null'>PRICE=#{price}</if>" +
+            "<if test='middleId!=null'>MIDDLE_ID=#{middleId}</if>" +
+            "<if test='basicId!=null'>BASIC_ID=#{basicId}</if>" +
+            "</trim>" +
+            "where id=#{id}" +
+            "</script>")
+    int updateFormula(BasicFormulaVo convert);
 }

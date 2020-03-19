@@ -1,7 +1,8 @@
 package com.sophia.cake.controller;
 
-import com.sophia.cake.service.BasicService;
-import com.sophia.cake.service.MaterialService;
+import com.sophia.cake.service.impl.BasicService;
+import com.sophia.cake.service.impl.MaterialService;
+import com.sophia.cake.service.impl.MiddleService;
 import com.sophia.cake.utils.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,5 +19,7 @@ public abstract class BaseController {
     protected MaterialService materialService;
     @Autowired
     protected BasicService basicService;
+    @Autowired
+    protected MiddleService middleService;
 
 }

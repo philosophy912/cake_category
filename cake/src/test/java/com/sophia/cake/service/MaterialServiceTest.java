@@ -2,6 +2,7 @@ package com.sophia.cake.service;
 
 import com.sophia.cake.CakeApplication;
 import com.sophia.cake.entity.Material;
+import com.sophia.cake.service.impl.MaterialService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lizhe

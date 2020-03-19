@@ -1,10 +1,11 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.Basic;
 import com.sophia.cake.entity.MaterialFormula;
 import com.sophia.cake.entity.vo.MaterialFormulaVo;
 import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.MaterialFormulaMapper;
+import com.sophia.cake.service.api.IService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

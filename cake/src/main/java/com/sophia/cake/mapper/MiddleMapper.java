@@ -2,12 +2,14 @@ package com.sophia.cake.mapper;
 
 
 import com.sophia.cake.entity.Middle;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
@@ -44,5 +46,16 @@ public interface MiddleMapper {
     })
     List<Middle> findAll();
 
+    @Delete("delete from " + MIDDLE + " where id = #{id}")
+    int delete(Integer id);
 
+    @Update("<script>" +
+            "update " + MIDDLE +
+            "<trim prefix='set' suffixOverrides=','>" +
+            "<if test='name!=null'>NAME=#{name}</if>" +
+            "<if test='price!=null'>PRICE=#{price}</if>" +
+            "</trim>" +
+            "where id=#{id}" +
+            "</script>")
+    int update(Middle middle);
 }
