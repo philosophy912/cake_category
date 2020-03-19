@@ -1,5 +1,6 @@
 package com.sophia.cake.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,6 +22,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "T_MATERIAL")
 @ToString
+@JsonIgnoreProperties(value = {"handler"})
 public class Material implements Serializable {
     /**
      * 编号

@@ -1,5 +1,6 @@
 package com.sophia.cake.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Entity
 @Table(name = "T_MIDDLE")
 @ToString
+@JsonIgnoreProperties(value = {"handler"})
 public class Middle implements Serializable {
     /**
      * 编号

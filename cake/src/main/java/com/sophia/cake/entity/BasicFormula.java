@@ -1,5 +1,6 @@
 package com.sophia.cake.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +24,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "T_BASIC_FORMULA")
 @ToString
+@JsonIgnoreProperties(value = {"handler"})
 public class BasicFormula implements Serializable {
 
     /**
