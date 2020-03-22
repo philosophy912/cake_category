@@ -2,6 +2,7 @@ package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.bo.MaterialFormulaBo;
+import com.sophia.cake.entity.vo.MaterialFormulaVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
@@ -16,6 +17,7 @@ import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
+import static com.sophia.cake.constant.TABLE.MATERIAL;
 import static com.sophia.cake.constant.TABLE.MATERIAL_FORMULA;
 
 /**
@@ -39,6 +41,14 @@ public interface MaterialFormulaMapper {
                             fetchType = FetchType.LAZY))
     })
     List<MaterialFormula> findById(Integer basicId);
+
+
+//    @Select("select f. from " + MATERIAL_FORMULA + " as f left join " +
+//            MATERIAL + " AS m on f.material_id = m.id where basic_id =#{basicId}")
+//    @Results(id = "materialFormulaVo",value = {
+//            @Result(id = true, property = "id", column = "id")
+//    })
+//    List<MaterialFormulaVo> findVoById(Integer basicId);
 
 
     /**

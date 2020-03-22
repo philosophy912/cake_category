@@ -1,13 +1,19 @@
 package com.sophia.cake.service.vo;
 
+import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.vo.BasicVo;
+import com.sophia.cake.entity.vo.MaterialFormulaVo;
 import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.MaterialMapper;
 import com.sophia.cake.service.api.IService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lizhe

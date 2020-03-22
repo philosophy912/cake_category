@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.mapping.FetchType;
 
 import static com.sophia.cake.constant.TABLE.BASIC;
+import static com.sophia.cake.constant.TABLE.MATERIAL_FORMULA;
 
 import java.util.List;
 import java.util.Set;
@@ -39,8 +40,27 @@ public interface BasicMapper {
     })
     List<Basic> findAll();
 
+    /**
+     * todo 故意用name取代unit和count
+     *
+     * @return 集合
+     */
     @Select("select * from " + BASIC)
-    @Results(id="basicVo", value = {
+    @Results(id = "basicVo", value = {
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "unit", column = "name"),
+            @Result(property = "count", column = "name"),
+            @Result(property = "totalPrice", column = "price"),
+            @Result(property = "materials", javaType = Set.class, column = "id",
+                    many = @Many(select = "com.sophia.cake.mapper.MaterialFormulaMapper.findVoById",
+                            fetchType = FetchType.LAZY))
+    })
+    List<BasicVo> findBasicVos();
+
+
+    @Select("select * from " + BASIC)
+    @Results(id = "basicVo", value = {
             @Result(id = true, property = "id", column = "id"),
             @Result(property = "name", column = "name")
     })
