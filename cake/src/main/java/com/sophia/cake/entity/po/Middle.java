@@ -1,4 +1,4 @@
-package com.sophia.cake.entity;
+package com.sophia.cake.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -24,10 +24,10 @@ import java.util.Set;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_BASIC")
+@Table(name = "T_MIDDLE")
 @ToString
 @JsonIgnoreProperties(value = {"handler"})
-public class Basic implements Serializable {
+public class Middle implements Serializable {
     /**
      * 编号
      */
@@ -48,7 +48,14 @@ public class Basic implements Serializable {
      * 对应的原材料集合
      */
     @OneToMany
-    @JoinColumn(name = "basic_id")
+    @JoinColumn(name = "middle_id")
     private Set<MaterialFormula> materialFormulaSet = new HashSet<>();
+
+    /**
+     * 对应的初级产品集合
+     */
+    @OneToMany
+    @JoinColumn(name = "middle_id")
+    private Set<BasicFormula> basicFormulaSet = new HashSet<>();
 
 }

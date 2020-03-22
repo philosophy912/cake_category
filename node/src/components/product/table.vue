@@ -7,15 +7,14 @@
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column prop="type" label="类别"></el-table-column>
             <el-table-column prop="count" label="数量"></el-table-column>
-            <el-table-column prop="price" label="单价"></el-table-column>
-            <el-table-column prop="totalPrice" label="总价"></el-table-column>
+            <el-table-column prop="price" label="总价"></el-table-column>
           </el-table>
         </template>
       </el-table-column>
       <el-table-column fixed prop="name" label="名称"></el-table-column>
       <el-table-column prop="unit" label="单位"></el-table-column>
       <el-table-column prop="count" label="总量"></el-table-column>
-      <el-table-column prop="totalPrice" label="总价"></el-table-column>
+      <el-table-column prop="totalPrice" label="总价(元)"></el-table-column>
       <el-table-column fixed="right" label="操作" width="300">
         <template slot="header" slot-scope="scope">
           <el-input v-model="content" size="mini" placeholder="输入关键字搜索" @change="search(scope.row)">
@@ -55,11 +54,13 @@ export default {
       const tableData = [];
       this.data.forEach(data => {
         data.all = [];
-        data.materials.forEach(material => {
+        data.materialFormulaSet.forEach(material => {
+          material.name = material.material.name;
           data.all.push(material);
         });
-        if (data.hasOwnProperty('products')) {
-          data.products.forEach(product => {
+        if (data.hasOwnProperty('basicFormulaSet')) {
+          data.basicFormulaSet.forEach(product => {
+            product.name = product.basic.name;
             data.all.push(product);
           });
         }

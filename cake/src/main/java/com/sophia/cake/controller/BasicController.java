@@ -1,7 +1,8 @@
 package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
-import com.sophia.cake.entity.Basic;
+import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.vo.BasicVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,18 @@ public class BasicController extends BaseController {
     public ResultResponse<Basic> query() {
         ResultResponse<Basic> response = new ResultResponse<>();
         List<Basic> basicList = basicService.findAll();
+        if (basicList.size() == 0) {
+            response.setSuccess(false);
+        }
+        response.setData(basicList);
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping("/find")
+    public ResultResponse<BasicVo> queryBasic() {
+        ResultResponse<BasicVo> response = new ResultResponse<>();
+        List<BasicVo> basicList = basicService.findBasics();
         if (basicList.size() == 0) {
             response.setSuccess(false);
         }

@@ -4,7 +4,7 @@
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow">
     </ProductDialog>
     <div v-if="show">
-      <ProductForm :row="row" :leave="true" :materialOptions="options" :productOptions="options"></ProductForm>
+      <ProductForm :row="row" :leave="true" :materialOptions="materialOptions" :productOptions="basicOptions"></ProductForm>
       <div class="buttons">
         <el-button type="primary" @click="add()">新增</el-button>
       </div>
@@ -16,7 +16,7 @@
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
-import { middleProduct, options } from '@/resources/product';
+import { middleProduct, basicOptions, materialOptions } from '@/resources/product';
 import Logger from 'chivy';
 
 const log = new Logger('views/Middle');
@@ -30,7 +30,8 @@ export default {
   data() {
     return {
       middle: middleProduct,
-      options: options,
+      basicOptions: basicOptions,
+      materialOptions: materialOptions,
       dialog: {
         title: '',
         show: false,

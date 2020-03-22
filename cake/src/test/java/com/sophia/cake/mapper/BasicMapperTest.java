@@ -1,7 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.CakeApplication;
-import com.sophia.cake.entity.Basic;
+import com.sophia.cake.entity.po.Basic;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -11,8 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lizhe

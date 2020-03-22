@@ -14,7 +14,7 @@
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
-import { basicProduct, options } from '@/resources/product';
+import { basicProduct, materialOptions } from '@/resources/product';
 import Logger from 'chivy';
 
 const log = new Logger('views/Basic');
@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       basic: basicProduct,
-      options: options,
+      options: materialOptions,
       dialog: {
         title: '',
         show: false,

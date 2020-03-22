@@ -1,7 +1,8 @@
 package com.sophia.cake.mapper;
 
 
-import com.sophia.cake.entity.Middle;
+import com.sophia.cake.entity.po.Middle;
+import com.sophia.cake.entity.vo.MiddleVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
@@ -58,4 +59,6 @@ public interface MiddleMapper {
             "where id=#{id}" +
             "</script>")
     int update(Middle middle);
+
+    List<MiddleVo> findMiddles();
 }

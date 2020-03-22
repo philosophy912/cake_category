@@ -1,7 +1,8 @@
 package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
-import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.MaterialVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +31,19 @@ public class MaterialController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping("/find")
+    public ResultResponse<MaterialVo> queryBasic() {
+        ResultResponse<MaterialVo> response = new ResultResponse<>();
+        List<MaterialVo> basicList = materialService.findMaterials();
+        if (basicList.size() == 0) {
+            response.setSuccess(false);
+        }
+        response.setData(basicList);
+        return response;
+    }
+
+
+    @ResponseBody
     @RequestMapping("/add")
     public ResultResponse<Material> add(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
@@ -48,7 +62,7 @@ public class MaterialController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/delete")
-    public ResultResponse<Material> delete(@RequestBody Material material){
+    public ResultResponse<Material> delete(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
         response.setSuccess(materialService.delete(material.getId()));
         return response;

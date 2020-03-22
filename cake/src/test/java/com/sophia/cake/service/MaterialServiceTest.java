@@ -1,7 +1,7 @@
 package com.sophia.cake.service;
 
 import com.sophia.cake.CakeApplication;
-import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.service.impl.MaterialService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;

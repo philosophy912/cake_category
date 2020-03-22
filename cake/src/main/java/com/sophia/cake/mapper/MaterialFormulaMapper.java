@@ -1,7 +1,7 @@
 package com.sophia.cake.mapper;
 
-import com.sophia.cake.entity.MaterialFormula;
-import com.sophia.cake.entity.vo.MaterialFormulaVo;
+import com.sophia.cake.entity.po.MaterialFormula;
+import com.sophia.cake.entity.bo.MaterialFormulaBo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
@@ -99,6 +99,7 @@ public interface MaterialFormulaMapper {
             "</trim>" +
             "where id=#{id}" +
             "</script>")
-    int updateFormula(MaterialFormulaVo vo);
+    int updateFormula(MaterialFormulaBo vo);
+
 
 }

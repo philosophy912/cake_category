@@ -1,8 +1,9 @@
 package com.sophia.cake.service.impl;
 
-import com.sophia.cake.entity.Basic;
-import com.sophia.cake.entity.MaterialFormula;
-import com.sophia.cake.entity.vo.MaterialFormulaVo;
+import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.po.MaterialFormula;
+import com.sophia.cake.entity.vo.BasicVo;
+import com.sophia.cake.entity.bo.MaterialFormulaBo;
 import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.MaterialFormulaMapper;
 import com.sophia.cake.service.api.IService;
@@ -24,6 +25,11 @@ public class BasicService implements IService<Basic> {
     private BasicMapper basicMapper;
     @Resource
     private MaterialFormulaMapper materialFormulaMapper;
+
+
+    public List<BasicVo> findBasics(){
+        return basicMapper.findBasics();
+    }
 
     @Override
     public List<Basic> findAll() {
@@ -76,8 +82,8 @@ public class BasicService implements IService<Basic> {
     }
 
 
-    private MaterialFormulaVo convert(MaterialFormula formula, Integer basicId) {
-        MaterialFormulaVo vo = new MaterialFormulaVo();
+    private MaterialFormulaBo convert(MaterialFormula formula, Integer basicId) {
+        MaterialFormulaBo vo = new MaterialFormulaBo();
         vo.setId(formula.getId());
         vo.setCount(formula.getCount());
         vo.setPrice(formula.getPrice());

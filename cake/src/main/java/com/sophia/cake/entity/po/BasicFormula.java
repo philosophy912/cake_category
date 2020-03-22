@@ -1,4 +1,4 @@
-package com.sophia.cake.entity;
+package com.sophia.cake.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

@@ -2,11 +2,11 @@ package com.sophia.cake.service;
 
 import com.philosophy.base.common.Triple;
 import com.sophia.cake.CakeApplication;
-import com.sophia.cake.entity.Basic;
-import com.sophia.cake.entity.BasicFormula;
-import com.sophia.cake.entity.Material;
-import com.sophia.cake.entity.MaterialFormula;
-import com.sophia.cake.entity.Middle;
+import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.po.BasicFormula;
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.po.MaterialFormula;
+import com.sophia.cake.entity.po.Middle;
 import com.sophia.cake.mapper.BasicFormulaMapper;
 import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.MaterialFormulaMapper;

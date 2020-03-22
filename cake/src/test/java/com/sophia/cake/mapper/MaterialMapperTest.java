@@ -1,7 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.CakeApplication;
-import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.po.Material;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

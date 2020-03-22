@@ -4,8 +4,8 @@ import java.util.List;
 
 /**
  * @author lizhe
- * @date 2020/3/12 15:46
- **/
+ * @date 2020-03-21 19:17
+ */
 public interface IService<T> {
 
     List<T> findAll();
@@ -16,3 +16,4 @@ public interface IService<T> {
 
     boolean update(T t);
 }
+

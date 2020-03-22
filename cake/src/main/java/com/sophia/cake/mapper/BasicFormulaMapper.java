@@ -1,7 +1,7 @@
 package com.sophia.cake.mapper;
 
-import com.sophia.cake.entity.BasicFormula;
-import com.sophia.cake.entity.vo.BasicFormulaVo;
+import com.sophia.cake.entity.po.BasicFormula;
+import com.sophia.cake.entity.bo.BasicFormulaBo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
@@ -83,5 +83,5 @@ public interface BasicFormulaMapper {
             "</trim>" +
             "where id=#{id}" +
             "</script>")
-    int updateFormula(BasicFormulaVo convert);
+    int updateFormula(BasicFormulaBo convert);
 }

@@ -1,4 +1,4 @@
-package com.sophia.cake.entity;
+package com.sophia.cake.entity.po;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -10,20 +10,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author lizhe
- * @date 2020/3/11 9:20
+ * @date 2020/3/11 9:21
  **/
 @Setter
 @Getter
 @Entity
-@Table(name = "T_MATERIAL")
+@Table(name = "T_BASIC")
 @ToString
 @JsonIgnoreProperties(value = {"handler"})
-public class Material implements Serializable {
+public class Basic implements Serializable {
     /**
      * 编号
      */
@@ -36,24 +40,15 @@ public class Material implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
     /**
-     * 容量
-     */
-    @Column(name = "capacity", nullable = false)
-    private Integer capacity;
-    /**
-     * 容量单位
-     */
-    @Column(name = "unit", nullable = false)
-    private String unit;
-    /**
-     * 单价
+     * 总价
      */
     @Column(name = "price", nullable = false)
     private Float price;
     /**
-     * 每单位价格
+     * 对应的原材料集合
      */
-    @Column(name = "price_per_unit", nullable = false)
-    private Float pricePerUnit;
+    @OneToMany
+    @JoinColumn(name = "basic_id")
+    private Set<MaterialFormula> materialFormulaSet = new HashSet<>();
 
 }

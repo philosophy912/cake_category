@@ -1,10 +1,10 @@
 package com.sophia.cake.service.impl;
 
-import com.sophia.cake.entity.BasicFormula;
-import com.sophia.cake.entity.MaterialFormula;
-import com.sophia.cake.entity.Middle;
-import com.sophia.cake.entity.vo.BasicFormulaVo;
-import com.sophia.cake.entity.vo.MaterialFormulaVo;
+import com.sophia.cake.entity.po.BasicFormula;
+import com.sophia.cake.entity.po.MaterialFormula;
+import com.sophia.cake.entity.po.Middle;
+import com.sophia.cake.entity.bo.BasicFormulaBo;
+import com.sophia.cake.entity.bo.MaterialFormulaBo;
 import com.sophia.cake.mapper.BasicFormulaMapper;
 import com.sophia.cake.mapper.MaterialFormulaMapper;
 import com.sophia.cake.mapper.MiddleMapper;
@@ -29,6 +29,7 @@ public class MiddleService implements IService<Middle> {
     private MaterialFormulaMapper materialFormulaMapper;
     @Resource
     private BasicFormulaMapper basicFormulaMapper;
+
 
     @Override
     public List<Middle> findAll() {
@@ -80,8 +81,8 @@ public class MiddleService implements IService<Middle> {
         for (MaterialFormula formula : materialFormulas) {
             count += materialFormulaMapper.updateFormula(convert(formula, middleId));
         }
-        for(BasicFormula formula: basicFormulas){
-            count +=basicFormulaMapper.updateFormula(convert(formula, middleId));
+        for (BasicFormula formula : basicFormulas) {
+            count += basicFormulaMapper.updateFormula(convert(formula, middleId));
         }
         int total = 1 + materialFormulas.size() + basicFormulas.size();
         if (count != total) {
@@ -91,8 +92,8 @@ public class MiddleService implements IService<Middle> {
     }
 
 
-    private MaterialFormulaVo convert(MaterialFormula formula, Integer middleId) {
-        MaterialFormulaVo vo = new MaterialFormulaVo();
+    private MaterialFormulaBo convert(MaterialFormula formula, Integer middleId) {
+        MaterialFormulaBo vo = new MaterialFormulaBo();
         vo.setId(formula.getId());
         vo.setCount(formula.getCount());
         vo.setPrice(formula.getPrice());
@@ -101,8 +102,8 @@ public class MiddleService implements IService<Middle> {
         return vo;
     }
 
-    private BasicFormulaVo convert(BasicFormula formula, Integer middleId) {
-        BasicFormulaVo vo = new BasicFormulaVo();
+    private BasicFormulaBo convert(BasicFormula formula, Integer middleId) {
+        BasicFormulaBo vo = new BasicFormulaBo();
         vo.setId(formula.getId());
         vo.setCount(formula.getCount());
         vo.setPrice(formula.getPrice());

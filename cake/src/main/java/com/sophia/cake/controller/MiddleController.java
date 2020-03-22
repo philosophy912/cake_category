@@ -1,7 +1,7 @@
 package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
-import com.sophia.cake.entity.Middle;
+import com.sophia.cake.entity.po.Middle;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

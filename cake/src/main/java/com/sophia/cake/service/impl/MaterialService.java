@@ -1,6 +1,7 @@
 package com.sophia.cake.service.impl;
 
-import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.MaterialVo;
 import com.sophia.cake.mapper.MaterialMapper;
 import com.sophia.cake.service.api.IService;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,10 @@ public class MaterialService implements IService<Material> {
 
     @Resource
     private MaterialMapper materialMapper;
+
+    public List<MaterialVo> findMaterials(){
+        return materialMapper.findMaterials();
+    }
 
 
     @Override

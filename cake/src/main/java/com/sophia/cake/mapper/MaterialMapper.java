@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
-import com.sophia.cake.entity.Material;
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.MaterialVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
@@ -35,6 +36,13 @@ public interface MaterialMapper {
             @Result(property = "pricePerUnit", column = "price_per_unit")
     })
     List<Material> findAll();
+
+    @Select("select * from " + MATERIAL)
+    @Results(id = "materials", value = {
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "name", column = "name")
+    })
+    List<MaterialVo> findMaterials();
 
     /**
      * 添加原材料
@@ -94,5 +102,6 @@ public interface MaterialMapper {
     @Select("select * from " + MATERIAL + " where name = #{name}")
     @ResultMap(value = "material")
     Material findByName(String name);
+
 
 }

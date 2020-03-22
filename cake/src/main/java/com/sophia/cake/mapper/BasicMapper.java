@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
-import com.sophia.cake.entity.Basic;
+import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.vo.BasicVo;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Many;
@@ -38,6 +39,13 @@ public interface BasicMapper {
     })
     List<Basic> findAll();
 
+    @Select("select * from " + BASIC)
+    @Results(id="basicVo", value = {
+            @Result(id = true, property = "id", column = "id"),
+            @Result(property = "name", column = "name")
+    })
+    List<BasicVo> findBasics();
+
     @Select("select * from " + BASIC + " where NAME = #{name}")
     @ResultMap(value = "basic")
     Basic findByName(String name);
@@ -69,4 +77,5 @@ public interface BasicMapper {
             "where id=#{id}" +
             "</script>")
     int update(Basic basic);
+
 }
