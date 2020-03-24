@@ -43,11 +43,6 @@ public class MaterialFormula implements Serializable {
     @Column(name = "price", nullable = false)
     private Float price;
     /**
-     * 类别，默认原材料
-     */
-    @Column(name = "type", nullable = false)
-    private String type = "原材料";
-    /**
      * 对应的原材料
      */
     @OneToOne

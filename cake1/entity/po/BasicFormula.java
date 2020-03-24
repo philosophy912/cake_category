@@ -17,15 +17,16 @@ import java.io.Serializable;
 
 /**
  * @author lizhe
- * @date 2020/3/11 9:20
+ * @date 2020/3/11 9:21
  **/
 @Setter
 @Getter
 @Entity
-@Table(name = "T_MATERIAL_FORMULA")
+@Table(name = "T_BASIC_FORMULA")
 @ToString
 @JsonIgnoreProperties(value = {"handler"})
-public class MaterialFormula implements Serializable {
+public class BasicFormula implements Serializable {
+
     /**
      * 编号
      */
@@ -43,15 +44,10 @@ public class MaterialFormula implements Serializable {
     @Column(name = "price", nullable = false)
     private Float price;
     /**
-     * 类别，默认原材料
-     */
-    @Column(name = "type", nullable = false)
-    private String type = "原材料";
-    /**
-     * 对应的原材料
+     * 对应的基础产品
      */
     @OneToOne
-    @JoinColumn(name = "material_id", referencedColumnName = "id")
-    private Material material;
+    @JoinColumn(name = "basic_id", referencedColumnName = "id")
+    private Basic basic;
 
 }

@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -22,10 +20,10 @@ import java.io.Serializable;
 @Setter
 @Getter
 @Entity
-@Table(name = "T_MATERIAL_FORMULA")
+@Table(name = "T_MATERIAL")
 @ToString
 @JsonIgnoreProperties(value = {"handler"})
-public class MaterialFormula implements Serializable {
+public class Material implements Serializable {
     /**
      * 编号
      */
@@ -33,25 +31,29 @@ public class MaterialFormula implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     /**
-     * 数量
+     * 名字
      */
-    @Column(name = "count", nullable = false)
-    private Float count;
+    @Column(name = "name", nullable = false)
+    private String name;
     /**
-     * 总价
+     * 容量
+     */
+    @Column(name = "capacity", nullable = false)
+    private Integer capacity;
+    /**
+     * 容量单位
+     */
+    @Column(name = "unit", nullable = false)
+    private String unit;
+    /**
+     * 单价
      */
     @Column(name = "price", nullable = false)
     private Float price;
     /**
-     * 类别，默认原材料
+     * 每单位价格
      */
-    @Column(name = "type", nullable = false)
-    private String type = "原材料";
-    /**
-     * 对应的原材料
-     */
-    @OneToOne
-    @JoinColumn(name = "material_id", referencedColumnName = "id")
-    private Material material;
+    @Column(name = "price_per_unit", nullable = false)
+    private Float pricePerUnit;
 
 }

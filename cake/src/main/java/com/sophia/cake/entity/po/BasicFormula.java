@@ -44,6 +44,11 @@ public class BasicFormula implements Serializable {
     @Column(name = "price", nullable = false)
     private Float price;
     /**
+     * 类别，默认基础材料
+     */
+    @Column(name = "type", nullable = false)
+    private String type = "基础产品";
+    /**
      * 对应的基础产品
      */
     @OneToOne

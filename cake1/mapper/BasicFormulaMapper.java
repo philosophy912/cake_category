@@ -1,7 +1,6 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.BasicFormula;
-import com.sophia.cake.entity.bo.BasicFormulaBo;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -53,10 +52,4 @@ public interface BasicFormulaMapper {
      */
     int deleteMiddle(Integer id);
 
-    /**
-     * 更新Formula
-     * @param convert bo
-     * @return
-     */
-    int updateFormula(BasicFormulaBo convert);
 }
