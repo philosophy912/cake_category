@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+
+    <resultMap id="material" type="Material">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="capacity" column="capacity"/>
+        <result property="unit" column="unit"/>
+        <result property="price" column="price"/>
+        <result property="pricePerUnit" column="pricePerUnit"/>
+    </resultMap>
+
+    <resultMap id="materials" type="Material">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+
+    <select id="findAll" resultMap="material">
+        select *
+        from t_material
+    </select>
+
+    <select id="findMaterials" resultMap="materials">
+        select *
+        from t_material
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_material(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT)
+        VALUES (#{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})
+    </insert>
+
+    <update id="update">
+        update t_material
+        <trim prefix="set" suffixOverrides=",">
+            <if test='name!=null'>NAME=#{name}</if>
+            <if test='capacity!=null'>CAPACITY=#{capacity}</if>
+            <if test='unit!=null'>UNIT=#{unit}</if>
+            <if test='price!=null'>PRICE=#{price}</if>
+            <if test='pricePerUnit!=null'>PRICE_PER_UNIT=#{pricePerUnit}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        delete
+        from t_material
+        where ID = #{id}
+    </delete>
+
+
+    <select id="findById" resultMap="material">
+        select *
+        from t_material
+        where id = #{id}
+    </select>
+
+
+    <select id="findByName" resultMap="material">
+        select *
+        from t_material
+        where name = #{name}
+    </select>
+</mapper>

@@ -26,22 +26,8 @@ public interface MaterialMapper {
      *
      * @return 结果
      */
-    @Select("select * from " + MATERIAL)
-    @Results(id = "material", value = {
-            @Result(id = true, property = "id", column = "id"),
-            @Result(property = "name", column = "name"),
-            @Result(property = "capacity", column = "capacity"),
-            @Result(property = "unit", column = "unit"),
-            @Result(property = "price", column = "price"),
-            @Result(property = "pricePerUnit", column = "price_per_unit")
-    })
     List<Material> findAll();
 
-    @Select("select * from " + MATERIAL)
-    @Results(id = "materials", value = {
-            @Result(id = true, property = "id", column = "id"),
-            @Result(property = "name", column = "name")
-    })
     List<MaterialVo> findMaterials();
 
     /**
@@ -50,9 +36,6 @@ public interface MaterialMapper {
      * @param material 原材料
      * @return 结果
      */
-    @Insert("insert into " + MATERIAL + "(NAME, CAPACITY, UNIT, PRICE, PRICE_PER_UNIT) " +
-            "VALUES (#{name}, #{capacity}, #{unit}, #{price}, #{pricePerUnit})")
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int add(Material material);
 
     /**
@@ -61,17 +44,6 @@ public interface MaterialMapper {
      * @param material 原材料
      * @return 结果
      */
-    @Update("<script>" +
-            "update " + MATERIAL +
-            "<trim prefix='set' suffixOverrides=','>" +
-            "<if test='name!=null'>NAME=#{name}</if>" +
-            "<if test='capacity!=null'>CAPACITY=#{capacity}</if>" +
-            "<if test='unit!=null'>UNIT=#{unit}</if>" +
-            "<if test='price!=null'>PRICE=#{price}</if>" +
-            "<if test='pricePerUnit!=null'>PRICE_PER_UNIT=#{pricePerUnit}</if>" +
-            "</trim>" +
-            "where id=#{id}" +
-            "</script>")
     int update(Material material);
 
     /**
@@ -80,7 +52,6 @@ public interface MaterialMapper {
      * @param id ID
      * @return 结果
      */
-    @Delete("delete from " + MATERIAL + " where ID = #{id}")
     int delete(Integer id);
 
     /**
@@ -89,8 +60,6 @@ public interface MaterialMapper {
      * @param id ID
      * @return 结果
      */
-    @Select("select * from " + MATERIAL + " where id = #{id}")
-    @ResultMap(value = "material")
     Material findById(Integer id);
 
     /**
@@ -99,8 +68,6 @@ public interface MaterialMapper {
      * @param name 名字
      * @return 结果
      */
-    @Select("select * from " + MATERIAL + " where name = #{name}")
-    @ResultMap(value = "material")
     Material findByName(String name);
 
 

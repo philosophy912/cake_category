@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="">
+
+    <resultMap id="materialFormula" type="MaterialFormula">
+        <id property="id" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <association property="material" column="basic_id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.MaterialMapper.findById"/>
+    </resultMap>
+
+    <select id="findById" resultMap="materialFormula">
+        select *
+        from t_material_formula
+        where basic_id = #{basicId}
+    </select>
+
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE)
+        VALUES (#{count}, #{price})
+    </insert>
+
+    <update id="updateMaterial">
+        update t_material_formula
+        set MATERIAL_ID = #{materialId}
+        where id = #{id}
+    </update>
+
+    <update id="updateMiddle">
+        update t_material_formula
+        set MIDDLE_id = #{middleId}
+        where id = #{id}
+    </update>
+
+    <update id="updateBasic">
+        update t_material_formula
+        set BASIC_id = #{basicId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasic">
+        delete
+        from t_material_formula
+        where basic_id = #{id}
+    </delete>
+
+    <delete id="deleteMiddle">
+        delete
+        from t_material_formula
+        where middle_id = #{id}
+    </delete>
+
+    <update id="updateFormula">
+        update t_material_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test='count!=null'>COUNT=#{count}</if>
+            <if test='price!=null'>PRICE=#{price}</if>
+            <if test='materialId!=null'>MATERIAL_ID=#{materialId}</if>
+            <if test='middleId!=null'>MIDDLE_ID=#{middleId}</if>
+            <if test='basicId!=null'>BASIC_ID=#{basicId}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+</mapper>
