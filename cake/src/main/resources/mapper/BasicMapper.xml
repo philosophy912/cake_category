@@ -46,8 +46,24 @@
         insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
         VALUES (#{name}, #{price}, #{capacity}, #{unit})
     </insert>
+    
+    <insert id="addBasicVo" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
+        VALUES (#{name}, #{price}, #{capacity}, #{unit})
+    </insert>
 
     <update id="updateBasic">
+        update t_basic
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="unit!=null">UNIT=#{unit},</if>
+            <if test="capacity!=null">CAPACITY=#{capacity},</if>
+            <if test="price!=null">PRICE=#{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateBasicVo">
         update t_basic
         <trim prefix="set" suffixOverrides=",">
             <if test="name!=null">NAME=#{name},</if>

@@ -20,6 +20,10 @@ public interface BasicMapper {
     int addBasic(Basic basic);
     // 更新基础产品
     int updateBasic(Basic basic);
+    // 添加基础产品
+    int addBasicVo(BasicVo basicVo);
+    // 更新基础产品
+    int updateBasicVo(BasicVo basicVo);
     // 根据ID删除基础产品
     int deleteBasic(Integer id);
     // 查找所有的基础产品VO
