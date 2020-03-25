@@ -2,15 +2,17 @@ package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.Material;
 
+import java.util.List;
+
 /**
  * @author lizhe
  * @date 2020-03-24 22:36
  */
 public interface MaterialMapper {
     // 查找所有的原材料
-    int findMaterials();
+    List<Material> findMaterials();
     // 根据ID找Material
-    int findMaterialById(Integer id);
+    Material findMaterialById(Integer id);
     // 添加一个Material对象
     int addMaterial(Material material);
     // 更新material

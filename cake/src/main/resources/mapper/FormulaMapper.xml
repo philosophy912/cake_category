@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sophia.cake.mapper.FormulaMapper">
+
+    <resultMap id="material" type="FormulaVo">
+        <id property="fid" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="id" column="material_id"/>
+        <result property="pid" column="basic_id"/>
+    </resultMap>
+
+    <resultMap id="basic" type="FormulaVo">
+        <id property="fid" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="id" column="basic_id"/>
+        <result property="pid" column="middle_id"/>
+    </resultMap>
+
+    <resultMap id="materialFormula" type="MaterialFormula">
+        <id property="id" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <association property="material" column="material_id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.MaterialMapper.findMaterialById"/>
+    </resultMap>
+
+    <resultMap id="basicFormula" type="BasicFormula">
+        <id property="id" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <association property="basic" column="basic_id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.BasicMapper.findBasicById"/>
+    </resultMap>
+
+
+    <insert id="addMaterialFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <insert id="addBasicFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <update id="updateMaterialFormula">
+        update t_material_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test="count!=null">COUNT=#{count},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="type!=null">TYPE=#{type},</if>
+            <if test="id!=null">MATERIAL_ID=#{id},</if>
+            <if test="pid!=null">BASIC_ID=#{pid},</if>
+        </trim>
+        where id = #{fid}
+    </update>
+
+    <update id="updateBasicFormula">
+        update t_basic_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test="count!=null">COUNT=#{count},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="type!=null">TYPE=#{type},</if>
+            <if test="id!=null">BASIC_ID=#{id},</if>
+            <if test="pid!=null">MIDDLE_ID=#{pid},</if>
+        </trim>
+        where id = #{fid}
+    </update>
+
+    <select id="findMaterialFormulaVoById" resultMap="material">
+        select mf.id, mf.count, mf.price, mf.type, mf.material_id, mf.basic_id, tm.name
+        from t_material_formula as mf
+                 left join t_material tm on mf.material_id = tm.id
+        where mf.basic_id = #{id}
+    </select>
+
+    <select id="findBasicFormulaVoById" resultMap="basic">
+        select mf.id, mf.count, mf.price, mf.type, mf.basic_id, mf.middle_id, tm.name
+        from t_basic_formula as mf
+                 left join t_material tm on mf.basic_id = tm.id
+        where mf.middle_id = #{id}
+    </select>
+
+    <delete id="deleteMaterialFormula">
+        delete
+        from t_material_formula
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteBasicFormula">
+        delete
+        from t_basic_formula
+        where id = #{id}
+    </delete>
+
+    <select id="findMaterialFormulaById" resultMap="materialFormula">
+        select *
+        from t_material_formula
+        where id = #{id}
+    </select>
+
+    <select id="findBasicFormulaById" resultMap="basicFormula">
+        select *
+        from t_basic_formula
+        where id = #{id}
+    </select>
+
+</mapper>

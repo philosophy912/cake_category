@@ -2,6 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.MiddleMapper">
+    <resultMap id="middle" type="Middle">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="unit" column="unit"/>
+        <result property="capacity" column="capacity"/>
+        <association property="materialFormulaSet" column="id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.MaterialMapper.findMaterialById"/>
+        <association property="basicFormulaSet" column="id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.BasicMapper.findBasicById"/>
+    </resultMap>
 
+    <select id="findMiddles" resultMap="middle">
+        select *
+        from t_middle
+    </select>
 
+    <select id="findMiddleById" resultMap="middle">
+        select *
+        from t_middle
+        where id = #{id}
+    </select>
+
+    <insert id="addMiddle" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
+        VALUES (#{name}, #{price}, #{capacity}, #{unit})
+    </insert>
+
+    <update id="updateMiddle">
+        update t_middle
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="unit!=null">UNIT=#{unit},</if>
+            <if test="capacity!=null">CAPACITY=#{capacity},</if>
+            <if test="price!=null">PRICE=#{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMiddle">
+        delete
+        from t_middle
+        where id = #{id}
+    </delete>
 </mapper>

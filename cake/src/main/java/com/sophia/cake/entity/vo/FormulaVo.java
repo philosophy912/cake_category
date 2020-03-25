@@ -29,11 +29,15 @@ public class FormulaVo {
      */
     private String type;
     /**
-     * 对应的基础产品的名字
+     * 对应的基础产品或者原材料的名字
      */
     private String name;
     /**
-     * 对应的基础产品的ID
+     * 对应的基础产品或者原材料的ID
      */
-    private String id;
+    private Integer id;
+    /**
+     * 对应的中级产品或者基础产品的ID
+     */
+    private Integer pid;
 }

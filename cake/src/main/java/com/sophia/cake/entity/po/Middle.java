@@ -40,6 +40,16 @@ public class Middle implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
     /**
+     * 单位
+     */
+    @Column(name = "unit")
+    private String unit;
+    /**
+     * 总量
+     */
+    @Column(name = "capacity")
+    private Float capacity;
+    /**
      * 总价
      */
     @Column(name = "price", nullable = false)

@@ -53,7 +53,7 @@ public class Material implements Serializable {
     /**
      * 每单位价格
      */
-    @Column(name = "price_per_unit", nullable = false)
+    @Column(name = "pricePerUnit", nullable = false)
     private Float pricePerUnit;
 
 }

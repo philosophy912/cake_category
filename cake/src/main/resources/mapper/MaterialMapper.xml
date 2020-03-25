@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.MaterialMapper">
 
-    <resultMap id="materialVo" type="MaterialVo">
+    <resultMap id="material" type="Material">
         <id property="id" column="id"/>
         <result property="capacity" column="capacity"/>
         <result property="name" column="name"/>
@@ -12,12 +12,12 @@
         <result property="unit" column="unit"/>
     </resultMap>
 
-    <select id="findMaterials" resultMap="materialVo">
+    <select id="findMaterials" resultMap="material">
         select *
         from t_material
     </select>
 
-    <select id="findMaterialById" resultMap="materialVo">
+    <select id="findMaterialById" resultMap="material">
         select *
         from t_material
         where id = #{id}
@@ -30,12 +30,12 @@
 
     <update id="updateMaterial">
         update t_material
-        <trim prefix="set" prefixOverrides=",">
-            <if test='name!=null'>NAME=#{name}</if>
-            <if test='capacity!=null'>CAPACITY=#{capacity}</if>
-            <if test='unit!=null'>UNIT=#{unit}</if>
-            <if test='price!=null'>PRICE=#{price}</if>
-            <if test='pricePerUnit!=null'>PRICE_PER_UNIT=#{pricePerUnit}</if>
+        <trim prefix="set" suffixOverrides=",">
+            <if test='name!=null'>NAME=#{name},</if>
+            <if test='capacity!=null'>CAPACITY=#{capacity},</if>
+            <if test='unit!=null'>UNIT=#{unit},</if>
+            <if test='price!=null'>PRICE=#{price},</if>
+            <if test='pricePerUnit!=null'>PRICE_PER_UNIT=#{pricePerUnit},</if>
         </trim>
         where id = #{id}
     </update>

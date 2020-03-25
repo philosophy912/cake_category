@@ -3,5 +3,64 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.BasicMapper">
 
+    <resultMap id="basic" type="Basic">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="unit" column="unit"/>
+        <result property="capacity" column="capacity"/>
+        <association property="materialFormulaSet" column="id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaById"/>
+    </resultMap>
+
+    <resultMap id="basicVo" type="BasicVo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="unit" column="unit"/>
+        <result property="capacity" column="capacity"/>
+        <result property="price" column="price"/>
+        <association property="materials" column="id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaVoById"/>
+    </resultMap>
+
+
+    <select id="findBasics" resultMap="basic">
+        select *
+        from t_basic
+    </select>
+
+
+    <select id="findBasicById" resultMap="basic">
+        select *
+        from t_basic
+        where id = #{id}
+    </select>
+
+    <insert id="addBasic" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
+        VALUES (#{name}, #{price}, #{capacity}, #{unit})
+    </insert>
+
+    <update id="updateBasic">
+        update t_basic
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="unit!=null">UNIT=#{unit},</if>
+            <if test="capacity!=null">CAPACITY=#{capacity},</if>
+            <if test="price!=null">PRICE=#{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBasic">
+        delete
+        from t_basic
+        where id = #{id}
+    </delete>
+
+    <select id="findBasicVos" resultMap="basicVo">
+        select *
+        from t_basic
+    </select>
 
 </mapper>
