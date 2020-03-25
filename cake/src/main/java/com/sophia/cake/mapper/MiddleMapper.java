@@ -1,6 +1,9 @@
 package com.sophia.cake.mapper;
 
+import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.po.Middle;
+import com.sophia.cake.entity.vo.FormulaVo;
+import com.sophia.cake.entity.vo.MiddleVo;
 
 import java.util.List;
 
@@ -19,7 +22,8 @@ public interface MiddleMapper {
     int updateMiddle(Middle middle);
     // 根据ID删除中级产品
     int deleteMiddle(Integer id);
-
+    // 查找所有的中级产品VO
+    List<MiddleBo> findMiddleBos();
 
 
 

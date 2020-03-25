@@ -42,13 +42,18 @@
     </resultMap>
 
 
-    <insert id="addMaterialFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+    <insert id="addBasicMaterialFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
         VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
     </insert>
 
-    <insert id="addBasicFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+    <insert id="addMiddleBasicFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <insert id="addMiddleMaterialFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
         VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
     </insert>
 
@@ -79,15 +84,15 @@
     <select id="findMaterialFormulaVoById" resultMap="material">
         select mf.id, mf.count, mf.price, mf.type, mf.material_id, mf.basic_id, tm.name
         from t_material_formula as mf
-                 left join t_material tm on mf.material_id = tm.id
+                 left join t_material as tm on mf.material_id = tm.id
         where mf.basic_id = #{id}
     </select>
 
     <select id="findBasicFormulaVoById" resultMap="basic">
-        select mf.id, mf.count, mf.price, mf.type, mf.basic_id, mf.middle_id, tm.name
-        from t_basic_formula as mf
-                 left join t_material tm on mf.basic_id = tm.id
-        where mf.middle_id = #{id}
+        SELECT bf.id, bf.count, bf.price, bf.type, bf.basic_id, bf.middle_id, tb.name
+        FROM t_basic_formula AS bf
+                 LEFT JOIN t_basic AS tb ON bf.basic_id = tb.id
+        WHERE bf.middle_id = #{id};
     </select>
 
     <delete id="deleteMaterialFormula">

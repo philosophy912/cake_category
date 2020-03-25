@@ -14,6 +14,19 @@
                      select="com.sophia.cake.mapper.BasicMapper.findBasicById"/>
     </resultMap>
 
+    <resultMap id="middleBo" type="MiddleBo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="unit" column="unit"/>
+        <result property="capacity" column="capacity"/>
+        <result property="price" column="price"/>
+        <association property="materials" column="id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaVoById"/>
+        <association property="basics" column="id" fetchType="lazy"
+                     select="com.sophia.cake.mapper.FormulaMapper.findBasicFormulaVoById"/>
+    </resultMap>
+
+
     <select id="findMiddles" resultMap="middle">
         select *
         from t_middle
@@ -46,4 +59,9 @@
         from t_middle
         where id = #{id}
     </delete>
+
+    <select id="findMiddleBos" resultMap="middleBo">
+        select *
+        from t_middle
+    </select>
 </mapper>

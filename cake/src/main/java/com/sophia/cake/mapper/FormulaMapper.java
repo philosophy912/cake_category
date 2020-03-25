@@ -9,10 +9,12 @@ import com.sophia.cake.entity.vo.FormulaVo;
  * @date 2020/3/25 14:50
  **/
 public interface FormulaMapper {
-    // 添加原材料配方
-    int addMaterialFormula(FormulaVo formulaVo);
-    // 添加基础产品配方
-    int addBasicFormula(FormulaVo formulaVo);
+    // 添加基础产品的原材料配方
+    int addBasicMaterialFormula(FormulaVo formulaVo);
+    // 添加中级产品的基础产品配方
+    int addMiddleBasicFormula(FormulaVo formulaVo);
+    // 添加中级产品的原材料配方
+    int addMiddleMaterialFormula(FormulaVo formulaVo);
     // 更新原材料配方
     int updateMaterialFormula(FormulaVo formulaVo);
     // 更新原材料配方

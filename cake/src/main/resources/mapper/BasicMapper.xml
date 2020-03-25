@@ -36,6 +36,12 @@
         where id = #{id}
     </select>
 
+    <select id="findBasicByName" resultMap="basic">
+        select *
+        from t_basic
+        where name = #{name}
+    </select>
+
     <insert id="addBasic" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
         insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
         VALUES (#{name}, #{price}, #{capacity}, #{unit})

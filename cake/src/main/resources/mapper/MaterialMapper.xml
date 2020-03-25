@@ -23,6 +23,12 @@
         where id = #{id}
     </select>
 
+    <select id="findMaterialByName" resultMap="material">
+        select *
+        from t_material
+        where name = #{name}
+    </select>
+
     <insert id="addMaterial" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into t_material(CAPACITY, NAME, PRICE, PRICE_PER_UNIT, UNIT)
         VALUES (#{capacity}, #{name}, #{price}, #{pricePerUnit}, #{unit})

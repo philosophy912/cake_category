@@ -14,6 +14,8 @@ public interface BasicMapper {
     List<Basic> findBasics();
     // 根据ID查找基础产品
     Basic findBasicById(Integer id);
+    // 根据ID查找基础产品
+    Basic findBasicByName(String name);
     // 添加基础产品
     int addBasic(Basic basic);
     // 更新基础产品

@@ -35,7 +35,7 @@ class FormulaMapperTest {
         formulaVo.setType(FormulaType.MATERIAL.getValue());
         formulaVo.setId(3);
         formulaVo.setPid(2);
-        mapper.addMaterialFormula(formulaVo);
+        mapper.addBasicMaterialFormula(formulaVo);
         log.info("formula vo = {}", formulaVo.getFid());
     }
 
@@ -47,7 +47,7 @@ class FormulaMapperTest {
         formulaVo.setType(FormulaType.BASIC.getValue());
         formulaVo.setId(30);
         formulaVo.setPid(2);
-        mapper.addBasicFormula(formulaVo);
+        mapper.addMiddleBasicFormula(formulaVo);
         log.info("formula vo = {}", formulaVo.getFid());
     }
 
@@ -75,7 +75,7 @@ class FormulaMapperTest {
 
     @Test
     void findBasicFormulaVoById() {
-        FormulaVo vo = mapper.findBasicFormulaVoById(2);
+        FormulaVo vo = mapper.findBasicFormulaVoById(7);
         log.info("vo = {}", vo);
     }
 

@@ -1,5 +1,6 @@
 package com.sophia.cake.mapper;
 
+import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.po.Middle;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -63,5 +64,11 @@ class MiddleMapperTest {
     void deleteMiddle() {
         int result = mapper.deleteMiddle(7);
         log.info("result = {}", result);
+    }
+
+    @Test
+    void findMiddleVos() {
+        List<MiddleBo> middles = mapper.findMiddleBos();
+        middles.forEach(middleBo -> log.info("middle bo = {}", middleBo));
     }
 }
