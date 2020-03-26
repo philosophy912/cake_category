@@ -22,11 +22,11 @@ public class BasicController extends BaseService{
     @RequestMapping("/query")
     public ResultResponse<BasicVo> query() {
         ResultResponse<BasicVo> response = new ResultResponse<>();
-        List<BasicVo> middles = basicService.query();
-        if (middles.size() == 0) {
+        List<BasicVo> basicVos = basicService.query();
+        if (basicVos.size() == 0) {
             response.setSuccess(false);
         }
-        response.setData(middles);
+        response.setData(basicVos);
         return response;
     }
 

@@ -1,17 +1,22 @@
 package com.sophia.cake.entity.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * @author lizhe
  * @date 2020-03-24 22:32
+ * 如果遇到
  */
 @Setter
 @Getter
 @ToString
-public class FormulaVo {
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+public class FormulaVo implements Serializable {
     /**
      * 编号
      */

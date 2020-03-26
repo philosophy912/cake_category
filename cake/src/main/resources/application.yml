@@ -32,5 +32,5 @@ mybatis:
 
 logging:
   level:
-    com.sophia.cake.mapper: debug
+    com.sophia.cake.mapper: info
     root: info
