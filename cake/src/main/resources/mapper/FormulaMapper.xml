@@ -57,6 +57,23 @@
         VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
     </insert>
 
+    <insert id="addBasicMaterialFormulas">
+        insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
+        VALUES
+        <foreach collection="collection" item="formula" separator=",">
+            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
+        </foreach>
+    </insert>
+
+    <insert id="addMiddleMaterialFormulas">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
+        VALUES
+        <foreach collection="collection" item="formula" separator=",">
+            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
+        </foreach>
+    </insert>
+
+
     <update id="updateMaterialFormula">
         update t_material_formula
         <trim prefix="set" suffixOverrides=",">

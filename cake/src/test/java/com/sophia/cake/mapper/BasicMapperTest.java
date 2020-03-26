@@ -77,7 +77,8 @@ class BasicMapperTest {
         Basic basic = new Basic();
         basic.setId(38);
         basic.setName("test");
-        mapper.updateBasic(basic);
+        int result = mapper.updateBasic(basic);
+        log.info("result = {}", result);
     }
 
     @Test

@@ -12,6 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -35,8 +38,9 @@ class FormulaMapperTest {
         formulaVo.setType(FormulaType.MATERIAL.getValue());
         formulaVo.setId(3);
         formulaVo.setPid(2);
-        mapper.addBasicMaterialFormula(formulaVo);
+        int result = mapper.addBasicMaterialFormula(formulaVo);
         log.info("formula vo = {}", formulaVo.getFid());
+        log.info("result = {}", result);
     }
 
     @Test
@@ -47,8 +51,9 @@ class FormulaMapperTest {
         formulaVo.setType(FormulaType.BASIC.getValue());
         formulaVo.setId(30);
         formulaVo.setPid(2);
-        mapper.addMiddleBasicFormula(formulaVo);
+        int result = mapper.addMiddleBasicFormula(formulaVo);
         log.info("formula vo = {}", formulaVo.getFid());
+        log.info("result = {}", result);
     }
 
     @Test
@@ -101,5 +106,40 @@ class FormulaMapperTest {
     void findBasicFormulaById() {
         BasicFormula formula = mapper.findBasicFormulaById(2);
         log.debug("formula = {}", formula);
+    }
+
+    @Test
+    void addBasicMaterialFormulas() {
+        Set<FormulaVo> vos = new HashSet<>();
+        for (int i = 0; i < 5; i++) {
+            FormulaVo vo = new FormulaVo();
+            vo.setCount(1f + i);
+            vo.setPrice(12f + i);
+            vo.setType(FormulaType.MATERIAL.getValue());
+            vo.setName("123" + i);
+            vo.setId(1 + i);
+            vo.setPid(1 + i);
+            vos.add(vo);
+        }
+        int result = mapper.addBasicMaterialFormulas(vos);
+        log.debug("result = {}", result);
+
+    }
+
+    @Test
+    void addMiddleMaterialFormula() {
+        Set<FormulaVo> vos = new HashSet<>();
+        for (int i = 0; i < 5; i++) {
+            FormulaVo vo = new FormulaVo();
+            vo.setCount(1f + i);
+            vo.setPrice(12f + i);
+            vo.setType(FormulaType.MATERIAL.getValue());
+            vo.setName("123" + i);
+            vo.setId(1 + i);
+            vo.setPid(1 + i);
+            vos.add(vo);
+        }
+        int result = mapper.addMiddleMaterialFormulas(vos);
+        log.debug("result = {}", result);
     }
 }

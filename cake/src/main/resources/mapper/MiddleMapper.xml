@@ -54,6 +54,22 @@
         where id = #{id}
     </update>
 
+    <insert id="addMiddleVo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
+        VALUES (#{name}, #{price}, #{capacity}, #{unit})
+    </insert>
+
+    <update id="updateMiddleVo">
+        update t_middle
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="unit!=null">UNIT=#{unit},</if>
+            <if test="capacity!=null">CAPACITY=#{capacity},</if>
+            <if test="price!=null">PRICE=#{price},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
     <delete id="deleteMiddle">
         delete
         from t_middle

@@ -1,6 +1,8 @@
 package com.sophia.cake.config;
 
+import com.sophia.cake.utils.EntityUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -10,5 +12,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class BeanConfigure {
+
+    @Bean
+    public EntityUtils getEntityUtils(){
+        return new EntityUtils();
+    }
 
 }

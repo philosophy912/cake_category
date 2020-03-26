@@ -4,6 +4,8 @@ import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.FormulaMapper;
 import com.sophia.cake.mapper.MaterialMapper;
 import com.sophia.cake.mapper.MiddleMapper;
+import com.sophia.cake.utils.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 
@@ -20,4 +22,12 @@ public abstract class BaseService {
     protected MaterialMapper materialMapper;
     @Resource
     protected MiddleMapper middleMapper;
+    @Autowired
+    protected EntityUtils utils;
+
+    protected void checkResult(int expect, int actual) {
+        if (expect != actual) {
+            throw new RuntimeException("operate sql failed");
+        }
+    }
 }
