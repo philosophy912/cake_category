@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { queryBasics } from '@/api/basics';
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
@@ -20,6 +21,15 @@ import Logger from 'chivy';
 const log = new Logger('views/Basic');
 export default {
   name: 'Basic',
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      log.debug('beforeRouteEnter to path is ' + to.path);
+      queryBasics().then(resp => {
+        log.debug("resp = " + JSON.stringify(resp));
+        vm.basic = resp;
+      });
+    });
+  },
   components: {
     ProductTable,
     ProductForm,
@@ -27,7 +37,7 @@ export default {
   },
   data() {
     return {
-      basic: basicProduct,
+      basic: [],
       options: materialOptions,
       dialog: {
         title: '',

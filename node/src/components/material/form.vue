@@ -8,7 +8,7 @@
         <el-input v-model="row.capacity" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="容量单位" label-width="100px" required>
-        <el-input v-model="row.capacityType" autocomplete="off"></el-input>
+        <el-input v-model="row.unit" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="单价" label-width="100px" required>
         <el-input v-model="row.price" autocomplete="off"></el-input>

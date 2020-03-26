@@ -1,9 +1,9 @@
 import service from '@/utils/request';
 import Logger from 'chivy';
 
-const log = new Logger('api/middle');
+const log = new Logger('api/basic');
 
-const baseUrl = "/middle/";
+const baseUrl = "/basic/";
 const query = baseUrl + 'query';
 const add = baseUrl + 'add';
 const update = baseUrl + 'update';
@@ -11,14 +11,14 @@ const del = baseUrl + 'delete';
 
 
 // 获取所有的中级产品数据
-export const queryMiddle = () => {
+export const queryBasics = () => {
     return service({
         url: query,
         method: 'post',
     });
 };
 // 更新
-export const updateMiddle = param => {
+export const updateBasic = param => {
     const data = {
         name: param.name,
         unit: param.unit,
@@ -31,7 +31,7 @@ export const updateMiddle = param => {
     });
 };
 // 添加
-export const addMiddle = param => {
+export const addBasic = param => {
     const data = {
         name: param.name,
         unit: param.unit,
@@ -45,7 +45,7 @@ export const addMiddle = param => {
 };
 
 // 删除
-export const delMiddle = param => {
+export const delBasic = param => {
     const data = {
         id: param.id
     };

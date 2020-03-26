@@ -11,14 +11,23 @@
 </template>
 <script>
 import Logger from 'chivy';
+import { queryMaterials } from '@/api/materials';
 import MaterialDialog from '@/components/material/dialog.vue';
 import MaterialForm from '@/components/material/form.vue';
 import MaterialTable from '@/components/material/table.vue';
-import { material } from '@/resources/product';
 
 const log = new Logger('views/material');
 export default {
   name: 'Material',
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      log.debug('beforeRouteEnter to path is ' + to.path);
+      queryMaterials().then(resp => {
+        log.debug("resp = " + JSON.stringify(resp));
+        vm.materials = resp;
+      });
+    });
+  },
   components: {
     MaterialDialog,
     MaterialForm,
@@ -31,7 +40,7 @@ export default {
   },
   data() {
     return {
-      materials: material,
+      materials: [],
       dialog: {
         title: '',
         show: false,
