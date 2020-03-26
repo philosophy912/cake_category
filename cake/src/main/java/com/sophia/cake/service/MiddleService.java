@@ -1,8 +1,5 @@
 package com.sophia.cake.service;
 
-import com.sophia.cake.entity.po.BasicFormula;
-import com.sophia.cake.entity.po.Middle;
-import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
@@ -13,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author lizhe
@@ -39,6 +35,7 @@ public class MiddleService extends BaseService {
         List<MiddleVo> middleVos = new ArrayList<>();
         middleMapper.findMiddleBos().forEach(middleBo -> {
             MiddleVo vo = utils.convert(middleBo);
+            middleVos.add(vo);
         });
         return middleVos;
     }

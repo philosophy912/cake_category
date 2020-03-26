@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2020/3/26 14:41
  **/
 @RestController
-@RequestMapping("/middle")
+@RequestMapping("/basic")
 public class BasicController extends BaseService{
     
     @ResponseBody
