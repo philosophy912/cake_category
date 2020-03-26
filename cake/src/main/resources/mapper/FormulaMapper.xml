@@ -9,6 +9,7 @@
         <result property="price" column="price"/>
         <result property="type" column="type"/>
         <result property="name" column="name"/>
+        <result property="formulaPrice" column="price_per_unit"/>
         <result property="id" column="material_id"/>
         <result property="pid" column="basic_id"/>
     </resultMap>
@@ -19,6 +20,7 @@
         <result property="price" column="price"/>
         <result property="type" column="type"/>
         <result property="name" column="name"/>
+        <result property="formulaPrice" column="price"/>
         <result property="id" column="basic_id"/>
         <result property="pid" column="middle_id"/>
     </resultMap>
@@ -99,14 +101,14 @@
     </update>
 
     <select id="findMaterialFormulaVoById" resultMap="material">
-        select mf.id, mf.count, mf.price, mf.type, mf.material_id, mf.basic_id, tm.name
+        select mf.id, mf.count, mf.price, mf.type, mf.material_id, mf.basic_id, tm.name, tm.price_per_unit
         from t_material_formula as mf
                  left join t_material as tm on mf.material_id = tm.id
         where mf.basic_id = #{id}
     </select>
 
     <select id="findBasicFormulaVoById" resultMap="basic">
-        SELECT bf.id, bf.count, bf.price, bf.type, bf.basic_id, bf.middle_id, tb.name
+        SELECT bf.id, bf.count, bf.price, bf.type, bf.basic_id, bf.middle_id, tb.name, tb.price
         FROM t_basic_formula AS bf
                  LEFT JOIN t_basic AS tb ON bf.basic_id = tb.id
         WHERE bf.middle_id = #{id};

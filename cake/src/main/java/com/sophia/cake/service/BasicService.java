@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.FormView;
 import java.util.List;
 import java.util.Set;
 
@@ -26,8 +27,21 @@ public class BasicService extends BaseService {
     }
 
 
+    private void updateVo(BasicVo vo) {
+        float price = 0f;
+        Set<FormulaVo> formulaVos = vo.getMaterials();
+        for (FormulaVo formulaVo : formulaVos) {
+            float formulaPrice = formulaVo.getCount() * formulaVo.getFormulaPrice();
+            formulaVo.setPrice(formulaPrice);
+            price += formulaPrice;
+        }
+        vo.setPrice(price);
+    }
+
+
     @Transactional
     public void add(BasicVo basicVo) {
+        updateVo(basicVo);
         int count = 0;
         count += basicMapper.addBasicVo(basicVo);
         Set<FormulaVo> materials = basicVo.getMaterials();
@@ -49,6 +63,7 @@ public class BasicService extends BaseService {
 
     @Transactional
     public void update(BasicVo basicVo) {
+        updateVo(basicVo);
         int count = 0;
         Set<FormulaVo> materials = basicVo.getMaterials();
         for (FormulaVo vo : materials) {

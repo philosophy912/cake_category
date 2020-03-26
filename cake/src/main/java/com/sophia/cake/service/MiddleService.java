@@ -1,5 +1,8 @@
 package com.sophia.cake.service;
 
+import com.sophia.cake.entity.po.BasicFormula;
+import com.sophia.cake.entity.po.Middle;
+import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
@@ -20,6 +23,18 @@ import java.util.stream.Collectors;
 @Service
 public class MiddleService extends BaseService {
 
+    private void updateVo(MiddleVo vo) {
+        float price = 0f;
+        Set<FormulaVo> formulaVos = vo.getFormulas();
+        for (FormulaVo formulaVo : formulaVos) {
+            float formulaPrice = formulaVo.getCount() * formulaVo.getFormulaPrice();
+            formulaVo.setPrice(formulaPrice);
+            price += formulaPrice;
+        }
+        vo.setPrice(price);
+    }
+
+
     public List<MiddleVo> query() {
         List<MiddleVo> middleVos = new ArrayList<>();
         middleMapper.findMiddleBos().forEach(middleBo -> {
@@ -30,6 +45,7 @@ public class MiddleService extends BaseService {
 
     @Transactional
     public void add(MiddleVo middleVo) {
+        updateVo(middleVo);
         int count = 0;
         count += middleMapper.addMiddleVo(middleVo);
         Set<FormulaVo> formulas = middleVo.getFormulas();
@@ -61,6 +77,7 @@ public class MiddleService extends BaseService {
     }
 
     public void update(MiddleVo middleVo) {
+        updateVo(middleVo);
         int count = 0;
         Set<FormulaVo> formulas = middleVo.getFormulas();
         for (FormulaVo vo : formulas) {

@@ -6,6 +6,7 @@ import com.sophia.cake.entity.po.BasicFormula;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.po.Middle;
+import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
@@ -77,17 +78,6 @@ public class EntityUtils {
         }
     }
 
-
-    public FormulaVo convert(MaterialFormula formula, Integer basicId) {
-        FormulaVo vo = new FormulaVo();
-        vo.setCount(formula.getCount());
-        vo.setPrice(formula.getPrice());
-        vo.setType(FormulaType.MATERIAL.getValue());
-        vo.setName(formula.getMaterial().getName());
-        vo.setId(formula.getMaterial().getId());
-        vo.setPid(basicId);
-        return vo;
-    }
 
     public MiddleVo convert(MiddleBo bo) {
         MiddleVo vo = new MiddleVo();

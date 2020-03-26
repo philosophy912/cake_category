@@ -33,6 +33,10 @@ public class FormulaVo {
      */
     private String name;
     /**
+     * 对应的基础产品或者原材料的价格
+     */
+    private Float formulaPrice;
+    /**
      * 对应的基础产品或者原材料的ID
      */
     private Integer id;
