@@ -5,6 +5,7 @@ const log = new Logger('api/middle');
 
 const baseUrl = "/middle/";
 const query = baseUrl + 'query';
+const queryName = baseUrl + 'queryName?name=';
 const add = baseUrl + 'add';
 const update = baseUrl + 'update';
 const del = baseUrl + 'delete';
@@ -14,9 +15,18 @@ const del = baseUrl + 'delete';
 export const queryMiddles = () => {
     return service({
         url: query,
-        method: 'post',
+        method: 'get',
     });
 };
+
+// 获取单个原材料的名称
+export const queryMiddleByName = name => {
+    return service({
+        url: queryName + name,
+        method: 'get',
+    });
+};
+
 // 更新
 export const updateMiddle = param => {
     const data = {

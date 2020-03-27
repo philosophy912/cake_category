@@ -5,6 +5,7 @@ const log = new Logger('api/basic');
 
 const baseUrl = '/basic/';
 const query = baseUrl + 'query';
+const queryName = baseUrl + 'queryName?name=';
 const add = baseUrl + 'add';
 const update = baseUrl + 'update';
 const del = baseUrl + 'delete';
@@ -15,16 +16,23 @@ const basic = baseUrl + 'queryBasic'
 export const queryBasicName = () => {
     return service({
         url: basic,
-        method: 'post'
+        method: 'get'
     })
 }
 
+// 获取单个中级产品的名称
+export const queryBasicByName = name => {
+    return service({
+        url: queryName + name,
+        method: 'get',
+    });
+};
 
 // 获取所有的中级产品数据
 export const queryBasics = () => {
     return service({
         url: query,
-        method: 'post',
+        method: 'get',
     });
 };
 // 更新
