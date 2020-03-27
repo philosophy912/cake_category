@@ -3,14 +3,24 @@ import Logger from 'chivy';
 
 const log = new Logger('api/material');
 
-const baseUrl = "/material/";
+const baseUrl = '/material/';
 const query = baseUrl + 'query';
 const add =  baseUrl + 'add';
 const update =  baseUrl +'update';
 const del =  baseUrl +'delete';
+const material = baseUrl + 'queryMaterial'
 
 
-// 获取所有的中级产品数据
+// 获取所有原材料的序号以及名称
+export const queryMaterialName = () => {
+    return service({
+        url: material,
+        method: 'post'
+    })
+}
+
+
+// 获取所有的原材料数据
 export const queryMaterials = () => {
     return service({
         url: query,

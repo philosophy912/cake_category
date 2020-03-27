@@ -5,7 +5,7 @@
         <el-input v-model="row.name" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="数量" label-width="100px" required>
-        <el-input v-model="row.count" autocomplete="off"></el-input>
+        <el-input v-model="row.capacity" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="单位" label-width="100px" required>
         <el-input v-model="row.unit" autocomplete="off"></el-input>

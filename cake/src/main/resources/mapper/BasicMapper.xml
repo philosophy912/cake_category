@@ -19,7 +19,7 @@
         <result property="unit" column="unit"/>
         <result property="capacity" column="capacity"/>
         <result property="price" column="price"/>
-        <association property="materials" column="id" fetchType="lazy"
+        <association property="formulas" column="id" fetchType="lazy"
                      select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaVoById"/>
     </resultMap>
 

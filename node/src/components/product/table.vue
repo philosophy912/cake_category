@@ -1,9 +1,9 @@
 <template>
   <div class="table">
-    <el-table :data="tableData" border style="width: 100%" v-if="showTable">
+    <el-table :data="data" border style="width: 100%" v-if="showTable">
       <el-table-column fixed type="expand">
         <template slot-scope="scope">
-          <el-table :data="scope.row.all" border style="width: 100%">
+          <el-table :data="scope.row.formulas" border style="width: 100%">
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column prop="type" label="类别"></el-table-column>
             <el-table-column prop="count" label="数量"></el-table-column>
@@ -13,8 +13,8 @@
       </el-table-column>
       <el-table-column fixed prop="name" label="名称"></el-table-column>
       <el-table-column prop="unit" label="单位"></el-table-column>
-      <el-table-column prop="count" label="总量"></el-table-column>
-      <el-table-column prop="totalPrice" label="总价(元)"></el-table-column>
+      <el-table-column prop="capacity" label="数量"></el-table-column>
+      <el-table-column prop="price" label="总价(元)"></el-table-column>
       <el-table-column fixed="right" label="操作" width="300">
         <template slot="header" slot-scope="scope">
           <el-input v-model="content" size="mini" placeholder="输入关键字搜索" @change="search(scope.row)">
@@ -49,24 +49,6 @@ export default {
   computed: {
     showTable() {
       return this.data.length != 0;
-    },
-    tableData() {
-      const tableData = [];
-      this.data.forEach(data => {
-        data.all = [];
-        data.materialFormulaSet.forEach(material => {
-          material.name = material.material.name;
-          data.all.push(material);
-        });
-        if (data.hasOwnProperty('basicFormulaSet')) {
-          data.basicFormulaSet.forEach(product => {
-            product.name = product.basic.name;
-            data.all.push(product);
-          });
-        }
-        tableData.push(data);
-      });
-      return tableData;
     }
   },
   methods: {

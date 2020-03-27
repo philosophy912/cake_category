@@ -2,7 +2,7 @@
   <div class="product">
     <el-form-item v-for="(material, index) in materials" :key="index" :label="material.type" label-width="100px">
       <el-col :span="6">
-        <el-select v-model="material.value" placeholder="请选择">
+        <el-select v-model="material.id" placeholder="请选择">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-col>

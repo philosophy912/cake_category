@@ -34,7 +34,7 @@ public class BasicService extends BaseService {
 
     private void updateVo(BasicVo vo) {
         float price = 0f;
-        Set<FormulaVo> formulaVos = vo.getMaterials();
+        Set<FormulaVo> formulaVos = vo.getFormulas();
         for (FormulaVo formulaVo : formulaVos) {
             float formulaPrice = formulaVo.getCount() * formulaVo.getFormulaPrice();
             formulaVo.setPrice(formulaPrice);
@@ -49,7 +49,7 @@ public class BasicService extends BaseService {
         updateVo(basicVo);
         int count = 0;
         count += basicMapper.addBasicVo(basicVo);
-        Set<FormulaVo> materials = basicVo.getMaterials();
+        Set<FormulaVo> materials = basicVo.getFormulas();
         count += formulaMapper.addMiddleMaterialFormulas(materials);
         checkResult(count, materials.size() + 1);
     }
@@ -70,7 +70,7 @@ public class BasicService extends BaseService {
     public void update(BasicVo basicVo) {
         updateVo(basicVo);
         int count = 0;
-        Set<FormulaVo> materials = basicVo.getMaterials();
+        Set<FormulaVo> materials = basicVo.getFormulas();
         for (FormulaVo vo : materials) {
             count += formulaMapper.updateMaterialFormula(vo);
         }

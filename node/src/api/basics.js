@@ -3,11 +3,21 @@ import Logger from 'chivy';
 
 const log = new Logger('api/basic');
 
-const baseUrl = "/basic/";
+const baseUrl = '/basic/';
 const query = baseUrl + 'query';
 const add = baseUrl + 'add';
 const update = baseUrl + 'update';
 const del = baseUrl + 'delete';
+const basic = baseUrl + 'queryBasic'
+
+
+// 获取所有中级产品的序号以及名称
+export const queryBasicName = () => {
+    return service({
+        url: basic,
+        method: 'post'
+    })
+}
 
 
 // 获取所有的中级产品数据

@@ -41,5 +41,5 @@ public class BasicVo implements Serializable {
     /**
      * 对应的原材料集合
      */
-    private Set<FormulaVo> materials = new HashSet<>();
+    private Set<FormulaVo> formulas = new HashSet<>();
 }

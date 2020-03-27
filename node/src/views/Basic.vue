@@ -12,6 +12,7 @@
 </template>
 <script>
 import { queryBasics } from '@/api/basics';
+import { queryMaterialName } from '@/api/materials';
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
@@ -28,6 +29,10 @@ export default {
         log.debug("resp = " + JSON.stringify(resp));
         vm.basic = resp;
       });
+      queryMaterialName().then(resp => {
+        log.debug("resp = " + JSON.stringify(resp));
+        vm.options = resp;
+      })
     });
   },
   components: {
@@ -38,7 +43,7 @@ export default {
   data() {
     return {
       basic: [],
-      options: materialOptions,
+      options: [],
       dialog: {
         title: '',
         show: false,

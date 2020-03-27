@@ -1,7 +1,7 @@
 <template>
   <div class="basic">
     <ProductTable :data="middle" @del="del" @add="addNewBasic" @modify="modify" @search="search"></ProductTable>
-    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow">
+    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="materialOptions" :productOptions="basicOptions" @add="addNewRow">
     </ProductDialog>
     <div v-if="show">
       <ProductForm :row="row" :leave="true" :materialOptions="materialOptions" :productOptions="basicOptions"></ProductForm>
@@ -13,6 +13,9 @@
   </div>
 </template>
 <script>
+import { queryMiddles } from '@/api/middles';
+import { queryBasicName } from '@/api/basics';
+import { queryMaterialName } from '@/api/materials';
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
@@ -22,6 +25,23 @@ import Logger from 'chivy';
 const log = new Logger('views/Middle');
 export default {
   name: 'Middle',
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      log.debug('beforeRouteEnter to path is ' + to.path);
+      queryMaterialName().then(resp => {
+        log.debug("queryMaterialName resp = " + JSON.stringify(resp));
+        vm.materialOptions = resp;
+      });
+      queryBasicName().then(resp => {
+        log.debug("queryBasicName resp = " + JSON.stringify(resp));
+        vm.basicOptions = resp;
+      });
+      queryMiddles().then(resp => {
+        log.debug("queryMiddles resp = " + JSON.stringify(resp));
+        vm.middle = resp;
+      });
+    });
+  },
   components: {
     ProductTable,
     ProductForm,
@@ -29,9 +49,9 @@ export default {
   },
   data() {
     return {
-      middle: middleProduct,
-      basicOptions: basicOptions,
-      materialOptions: materialOptions,
+      middle: [],
+      basicOptions: [],
+      materialOptions: [],
       dialog: {
         title: '',
         show: false,
