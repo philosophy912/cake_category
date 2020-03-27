@@ -80,4 +80,10 @@
         select *
         from t_middle
     </select>
+
+    <select id="findMiddleBosByName" resultMap="middleBo">
+        select *
+        from t_middle
+        where NAME like #{name}
+    </select>
 </mapper>

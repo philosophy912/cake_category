@@ -5,6 +5,8 @@ import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,26 +22,29 @@ import java.util.List;
 public class MaterialController extends BaseService {
 
     @ResponseBody
-    @RequestMapping("/queryMaterial")
+    @RequestMapping(value = "/queryMaterial",  method = RequestMethod.GET)
     public ResultResponse<MVo> queryBasic() {
         ResultResponse<MVo> response = new ResultResponse<>();
         List<MVo> mVos = materialService.queryMaterial();
-        if (mVos.size() == 0) {
-            response.setSuccess(false);
-        }
         response.setData(mVos);
         return response;
     }
 
 
     @ResponseBody
-    @RequestMapping("/query")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResultResponse<Material> query() {
         ResultResponse<Material> response = new ResultResponse<>();
         List<Material> materials = materialService.query();
-        if (materials.size() == 0) {
-            response.setSuccess(false);
-        }
+        response.setData(materials);
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    public ResultResponse<Material> queryByName(@RequestParam("name") String name) {
+        ResultResponse<Material> response = new ResultResponse<>();
+        List<Material> materials = materialService.queryName(name);
         response.setData(materials);
         return response;
     }

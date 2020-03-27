@@ -1,5 +1,6 @@
 package com.sophia.cake.service;
 
+import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
@@ -39,6 +40,16 @@ public class MiddleService extends BaseService {
         });
         return middleVos;
     }
+
+    public List<MiddleVo> queryName(String name) {
+        List<MiddleVo> middleVos = new ArrayList<>();
+        middleMapper.findMiddleBosByName("%"+name + "%").forEach(middleBo -> {
+            MiddleVo vo = utils.convert(middleBo);
+            middleVos.add(vo);
+        });
+        return middleVos;
+    }
+
 
     @Transactional
     public void add(MiddleVo middleVo) {

@@ -1,6 +1,7 @@
 package com.sophia.cake.service;
 
 import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.MVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,10 @@ public class MaterialService extends BaseService {
 
     public List<Material> query() {
         return materialMapper.findMaterials();
+    }
+
+    public List<Material> queryName(String name) {
+        return materialMapper.findMaterialsByName("%" + name + "%");
     }
 
     public boolean add(Material material) {

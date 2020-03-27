@@ -29,6 +29,8 @@ public interface BasicMapper {
     int deleteBasic(Integer id);
     // 查找所有的基础产品VO
     List<BasicVo> findBasicVos();
+    // 查找所有的基础产品VO
+    List<BasicVo> findBasicVosByName(String name);
     // 查找所有的基础产品的BVo
     List<BVo> findBVos();
 }

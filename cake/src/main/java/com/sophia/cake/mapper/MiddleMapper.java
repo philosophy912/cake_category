@@ -27,6 +27,8 @@ public interface MiddleMapper {
     int deleteMiddle(Integer id);
     // 查找所有的中级产品VO
     List<MiddleBo> findMiddleBos();
+    // 查找所有的中级产品VO
+    List<MiddleBo> findMiddleBosByName(String name);
 
 
 

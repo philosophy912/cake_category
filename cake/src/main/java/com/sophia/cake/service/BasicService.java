@@ -23,12 +23,16 @@ import java.util.Set;
 public class BasicService extends BaseService {
 
 
-    public List<BVo> queryBasic(){
+    public List<BVo> queryBasic() {
         return basicMapper.findBVos();
     }
 
     public List<BasicVo> query() {
         return basicMapper.findBasicVos();
+    }
+
+    public List<BasicVo> queryName(String name) {
+        return basicMapper.findBasicVosByName("%" + name + "%");
     }
 
 

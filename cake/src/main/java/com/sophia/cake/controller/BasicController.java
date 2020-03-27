@@ -1,10 +1,13 @@
 package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
+import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,13 +23,10 @@ import java.util.List;
 public class BasicController extends BaseService{
 
     @ResponseBody
-    @RequestMapping("/queryBasic")
+    @RequestMapping(value = "/queryBasic",  method = RequestMethod.GET)
     public ResultResponse<BVo> queryBasic(){
         ResultResponse<BVo> response = new ResultResponse<>();
         List<BVo> bVos = basicService.queryBasic();
-        if(bVos.size()==0){
-            response.setSuccess(false);
-        }
         response.setData(bVos);
         return response;
     }
@@ -34,13 +34,19 @@ public class BasicController extends BaseService{
 
 
     @ResponseBody
-    @RequestMapping("/query")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResultResponse<BasicVo> query() {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         List<BasicVo> basicVos = basicService.query();
-        if (basicVos.size() == 0) {
-            response.setSuccess(false);
-        }
+        response.setData(basicVos);
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    public ResultResponse<BasicVo> queryByName(@RequestParam("name") String name) {
+        ResultResponse<BasicVo> response = new ResultResponse<>();
+        List<BasicVo> basicVos = basicService.queryName(name);
         response.setData(basicVos);
         return response;
     }

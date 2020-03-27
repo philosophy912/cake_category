@@ -16,6 +16,8 @@ public interface MaterialMapper {
     Material findMaterialById(Integer id);
     // 根据Name找Material
     Material findMaterialByName(String name);
+    // 根据Name找Material
+    List<Material> findMaterialsByName(String name);
     // 添加一个Material对象
     int addMaterial(Material material);
     // 更新material

@@ -51,7 +51,7 @@
         insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
         VALUES (#{name}, #{price}, #{capacity}, #{unit})
     </insert>
-    
+
     <insert id="addBasicVo" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
         insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
         VALUES (#{name}, #{price}, #{capacity}, #{unit})
@@ -90,8 +90,16 @@
         from t_basic
     </select>
 
+    <select id="findBasicVosByName" resultMap="basicVo">
+        select *
+        from t_basic
+        where NAME like #{name}
+    </select>
+
+
     <select id="findBVos" resultMap="bvo">
-        select id, name from t_basic
+        select id, name
+        from t_basic
     </select>
 
 </mapper>

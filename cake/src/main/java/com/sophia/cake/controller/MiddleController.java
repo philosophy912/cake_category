@@ -4,6 +4,8 @@ import com.philosophy.base.entity.ResultResponse;
 import com.sophia.cake.entity.vo.MiddleVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,14 +21,20 @@ import java.util.List;
 public class MiddleController extends BaseService {
 
     @ResponseBody
-    @RequestMapping("/query")
+    @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResultResponse<MiddleVo> query() {
         ResultResponse<MiddleVo> response = new ResultResponse<>();
-        List<MiddleVo> middles = middleService.query();
-        if (middles.size() == 0) {
-            response.setSuccess(false);
-        }
-        response.setData(middles);
+        List<MiddleVo> middleVos = middleService.query();
+        response.setData(middleVos);
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    public ResultResponse<MiddleVo> queryByName(@RequestParam("name") String name) {
+        ResultResponse<MiddleVo> response = new ResultResponse<>();
+        List<MiddleVo> middleVos = middleService.queryName(name);
+        response.setData(middleVos);
         return response;
     }
 
