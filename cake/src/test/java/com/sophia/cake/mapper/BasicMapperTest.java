@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
 import lombok.extern.slf4j.Slf4j;
@@ -85,5 +86,11 @@ class BasicMapperTest {
     void findBasicVos() {
         List<BasicVo> basicVos = mapper.findBasicVos();
         basicVos.forEach(basicVo -> log.info("basicVo = {}", basicVo));
+    }
+
+    @Test
+    void findBVos() {
+        List<BVo> bVos = mapper.findBVos();
+        bVos.forEach(bVo -> log.info("bVo ={}", bVo));
     }
 }

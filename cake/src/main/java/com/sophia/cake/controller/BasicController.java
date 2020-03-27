@@ -1,6 +1,7 @@
 package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
+import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,21 @@ import java.util.List;
 @RestController
 @RequestMapping("/basic")
 public class BasicController extends BaseService{
-    
+
+    @ResponseBody
+    @RequestMapping("/queryBasic")
+    public ResultResponse<BVo> queryBasic(){
+        ResultResponse<BVo> response = new ResultResponse<>();
+        List<BVo> bVos = basicService.queryBasic();
+        if(bVos.size()==0){
+            response.setSuccess(false);
+        }
+        response.setData(bVos);
+        return response;
+    }
+
+
+
     @ResponseBody
     @RequestMapping("/query")
     public ResultResponse<BasicVo> query() {

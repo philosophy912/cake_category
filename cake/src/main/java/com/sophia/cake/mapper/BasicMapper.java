@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface BasicMapper {
     int deleteBasic(Integer id);
     // 查找所有的基础产品VO
     List<BasicVo> findBasicVos();
+    // 查找所有的基础产品的BVo
+    List<BVo> findBVos();
 }

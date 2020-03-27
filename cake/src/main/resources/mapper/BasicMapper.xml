@@ -24,6 +24,11 @@
     </resultMap>
 
 
+    <resultMap id="bvo" type="BVo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
     <select id="findBasics" resultMap="basic">
         select *
         from t_basic
@@ -83,6 +88,10 @@
     <select id="findBasicVos" resultMap="basicVo">
         select *
         from t_basic
+    </select>
+
+    <select id="findBVos" resultMap="bvo">
+        select id, name from t_basic
     </select>
 
 </mapper>

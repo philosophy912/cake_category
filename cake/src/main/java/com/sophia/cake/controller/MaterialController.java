@@ -2,6 +2,7 @@ package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
 import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.MVo;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +18,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/material")
 public class MaterialController extends BaseService {
+
+    @ResponseBody
+    @RequestMapping("/queryMaterial")
+    public ResultResponse<MVo> queryBasic() {
+        ResultResponse<MVo> response = new ResultResponse<>();
+        List<MVo> mVos = materialService.queryMaterial();
+        if (mVos.size() == 0) {
+            response.setSuccess(false);
+        }
+        response.setData(mVos);
+        return response;
+    }
+
 
     @ResponseBody
     @RequestMapping("/query")

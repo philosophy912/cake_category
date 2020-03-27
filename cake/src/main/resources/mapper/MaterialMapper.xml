@@ -12,6 +12,11 @@
         <result property="unit" column="unit"/>
     </resultMap>
 
+    <resultMap id="mvo" type="MVo">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
     <select id="findMaterials" resultMap="material">
         select *
         from t_material
@@ -45,5 +50,9 @@
         </trim>
         where id = #{id}
     </update>
+
+    <select id="findMVos" resultMap="mvo">
+        select id, name from t_material
+    </select>
 
 </mapper>

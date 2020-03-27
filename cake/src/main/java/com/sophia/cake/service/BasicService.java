@@ -3,6 +3,7 @@ package com.sophia.cake.service;
 import com.sophia.cake.entity.po.Basic;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.po.MaterialFormula;
+import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,10 @@ import java.util.Set;
 @Service
 public class BasicService extends BaseService {
 
+
+    public List<BVo> queryBasic(){
+        return basicMapper.findBVos();
+    }
 
     public List<BasicVo> query() {
         return basicMapper.findBasicVos();

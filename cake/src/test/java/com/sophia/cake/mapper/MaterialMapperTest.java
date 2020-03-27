@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.MVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,13 +26,14 @@ class MaterialMapperTest {
     private MaterialMapper mapper;
 
     private Material material;
+
     @BeforeEach
-    public void Before(){
-        material= new Material();
+    public void Before() {
+        material = new Material();
         material.setName("test");
         material.setPrice(15f);
         material.setCapacity(1000);
-        material.setPricePerUnit(material.getPrice()/material.getCapacity());
+        material.setPricePerUnit(material.getPrice() / material.getCapacity());
         material.setUnit("升");
     }
 
@@ -67,5 +69,11 @@ class MaterialMapperTest {
     void deleteMaterialByID() {
         int result = mapper.deleteMaterialByID(56);
         log.info("result = {}", result);
+    }
+
+    @Test
+    void findMVos() {
+        List<MVo> mVos = mapper.findMVos();
+        mVos.forEach(mVo -> log.info("mVo ={}", mVo));
     }
 }

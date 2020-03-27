@@ -1,6 +1,7 @@
 package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.MVo;
 
 import java.util.List;
 
@@ -21,5 +22,6 @@ public interface MaterialMapper {
     int updateMaterial(Material material);
     // 删除Material
     int deleteMaterialByID(Integer id);
-
+    // 查找所有的基础产品的MVo
+    List<MVo> findMVos();
 }
