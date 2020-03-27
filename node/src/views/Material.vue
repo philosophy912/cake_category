@@ -44,7 +44,7 @@ export default {
       dialog: {
         title: '',
         show: false,
-        material: '',
+        formulas: '',
         row: '',
         left: '取消',
         right: ''

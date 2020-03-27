@@ -16,6 +16,9 @@
 
     <properties>
         <java.version>1.8</java.version>
+		<!--跳过单元测试 -->
+        <maven.test.skip>true</maven.test.skip>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
     </properties>
     <dependencies>
         <dependency>

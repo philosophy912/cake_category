@@ -32,7 +32,7 @@ export default {
       queryMaterialName().then(resp => {
         log.debug("resp = " + JSON.stringify(resp));
         vm.options = resp;
-      })
+      });
     });
   },
   components: {
@@ -74,14 +74,14 @@ export default {
       this.dialog.show = true;
       this.dialog.title = '新增基础产品';
       this.dialog.right = '新增';
-      if (this.row.materials.length == 0) {
-        this.row.materials.push(this.$tools.createMaterial());
+      if (this.row.formulas.length == 0) {
+        this.row.formulas.push(this.$tools.createMaterial());
       }
       this.dialog.row = this.row;
     },
     addNewRow() {
       log.debug('add new row in dialog');
-      this.dialog.row.materials.push(this.$tools.createMaterial());
+      this.dialog.row.formulas.push(this.$tools.createMaterial());
     },
     closeDialog() {
       this.dialog.show = false;

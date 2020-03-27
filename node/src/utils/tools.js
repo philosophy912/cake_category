@@ -20,9 +20,14 @@ export default class Tools {
 
   static isNotEqual = (obj1, obj2) => !Tools.isEqual(obj1, obj2);
 
+  static MaterialName = '原材料';
+
+  static BasicName = '基础产品';
+
+
   static createMaterial() {
     const material = {
-      type: '原材料',
+      type: Tools.MaterialName,
       value: '',
       count: 0
     };
@@ -30,42 +35,38 @@ export default class Tools {
   };
   static createProduct() {
     const product = {
-      type: '基础产品',
+      type: Tools.BasicName,
       value: '',
       count: 0
     };
     return product;
   };
 
-  static createRow(flag) {
+  static createRow() {
     const row = {
       name: '',
-      count: 0,
+      capacity: 0,
       price: 0,
       unit: '个',
-      totalPrice: 0,
-      materials: []
+      formulas: []
     };
-    if (flag) {
-      row.products = []
-    }
     return row;
   }
 
   static createMaterialRow(flag) {
-    const row = Tools.createRow(false);
-    if(!flag){
-      row.materials.push(Tools.createMaterial());
+    const row = Tools.createRow();
+    if (!flag) {
+      row.formulas.push(Tools.createMaterial());
     }
     // 为真返回无数据的row，
     return row;
   }
 
   static createProductRow(flag) {
-    const row = Tools.createRow(true);
+    const row = Tools.createRow();
     if (!flag) {
-      row.materials.push(Tools.createMaterial());
-      row.products.push(Tools.createProduct());
+      row.formulas.push(Tools.createMaterial());
+      row.formulas.push(Tools.createProduct());
     }
     return row;
   }

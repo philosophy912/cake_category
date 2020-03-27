@@ -13,8 +13,8 @@
       <!-- <el-form-item label="总价" label-width="100px">
         <el-input :value="totalPrice(row)" autocomplete="off" :disabled="true"></el-input>
       </el-form-item> -->
-      <Product :materials="row.materials" :options="materialOptions" @add="addMaterial" @del="delMaterial"></Product>
-      <Product v-if="show" :materials="row.products" :options="productOptions" @del="delProduct" @add="addProduct">
+      <Product :materials="materials" :options="materialOptions" @add="addMaterial" @del="delMaterial"></Product>
+      <Product v-if="show" :materials="products" :options="productOptions" @del="delProduct" @add="addProduct">
       </Product>
     </el-form>
   </div>
@@ -49,43 +49,38 @@ export default {
   },
   computed: {
     show() {
-      const hasProducts = this.row.hasOwnProperty('products');
-      // 当products没有的时候，或者长度为0的时候就不显示
-      if (hasProducts) {
-        log.debug('row include products');
-        if (typeof this.row.products == undefined) {
-          return false;
-        } else if (this.row.products.length == 0) {
-          return false;
-        } else {
-          return true;
+      return this.products.length !== 0;
+    },
+    materials() {
+      const materialArrays = [];
+      this.row.formulas.forEach(formula => {
+        if (formula.type === this.$tools.MaterialName) {
+          materialArrays.push(formula);
         }
-      } else {
-        return false;
-      }
+      });
+      return materialArrays;
+    },
+    products() {
+      const productArrays = [];
+      this.row.formulas.forEach(formula => {
+        if (formula.type === this.$tools.BasicName) {
+          productArrays.push(formula);
+        }
+      });
+      return productArrays;
     }
   },
   methods: {
     addMaterial(index) {
       log.debug('add material');
-      const material = {
-        type: '原材料',
-        value: '',
-        count: 0
-      };
-      this.row.materials.push(material);
+      this.row.formulas.push(this.$tools.createMaterial());
     },
     addProduct(index) {
       log.debug('add product');
-      const product = {
-        type: '基础产品',
-        value: '',
-        count: 0
-      };
-      this.row.products.push(product);
+      this.row.formulas.push(this.$tools.createProduct());
     },
     delMaterial(index) {
-      this.row.materials.splice(index, 1);
+      this.row.formulas.splice(index, 1);
       log.debug('materials length is ' + JSON.stringify(this.row.materials.length));
       if (this.leave && this.row.materials.length == 0) {
         log.debug('materials is empty, now add new one');
