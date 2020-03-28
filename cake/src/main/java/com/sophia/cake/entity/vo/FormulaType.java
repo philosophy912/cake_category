@@ -8,7 +8,7 @@ import lombok.Getter;
  **/
 public enum FormulaType {
     MATERIAL("原材料"),
-    BASIC("基础材料");
+    BASIC("基础产品");
 
     @Getter
     private String value;
