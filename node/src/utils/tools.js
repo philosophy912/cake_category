@@ -24,6 +24,8 @@ export default class Tools {
 
   static BasicName = '基础产品';
 
+  static MiddleName = '中级产品';
+
 
   static createMaterial() {
     const material = {
@@ -65,7 +67,6 @@ export default class Tools {
   static createProductRow(flag) {
     const row = Tools.createRow();
     if (!flag) {
-      row.formulas.push(Tools.createMaterial());
       row.formulas.push(Tools.createProduct());
     }
     return row;

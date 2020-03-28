@@ -4,7 +4,7 @@
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow">
     </ProductDialog>
     <div v-if="show">
-      <ProductForm :row="row" :materialOptions="options" :productOptions="options" :leave="true"></ProductForm>
+      <ProductForm :row="row" :materialOptions="options" :leave="true"></ProductForm>
       <el-button type="primary" @click="add()">新增</el-button>
     </div>
   </div>
@@ -49,9 +49,9 @@ export default {
       basic: [],
       options: [],
       dialog: {
+        type: this.$tools.BasicName,
         title: '',
         show: false,
-        material: [],
         row: '',
         left: '取消',
         right: ''

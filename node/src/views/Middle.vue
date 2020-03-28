@@ -26,13 +26,13 @@ export default {
   name: 'Middle',
   mounted() {
     queryMaterialName().then(resp => {
-        vm.materialOptions = resp;
+        this.materialOptions = resp;
       });
       queryBasicName().then(resp => {
-        vm.basicOptions = resp;
+        this.basicOptions = resp;
       });
       queryMiddles().then(resp => {
-        vm.middle = resp;
+        this.middle = resp;
       });
   },
   beforeRouteEnter(to, from, next) {
@@ -60,9 +60,9 @@ export default {
       basicOptions: [],
       materialOptions: [],
       dialog: {
+        type: this.$tools.MiddleName,
         title: '',
         show: false,
-        material: [],
         row: '',
         left: '取消',
         right: ''

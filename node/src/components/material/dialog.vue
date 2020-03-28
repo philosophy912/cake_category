@@ -10,6 +10,7 @@
   </div>
 </template>
 <script>
+import { updateMaterial, addMaterial } from '@/api/materials';
 import Form from '@/components/material/form';
 import Logger from 'chivy';
 
@@ -17,7 +18,7 @@ const log = new Logger('components/material/dialog');
 export default {
   name: 'MaterialDialog',
   components: {
-    Form,
+    Form
   },
   props: {
     dialog: {
@@ -31,6 +32,23 @@ export default {
     },
     confirm() {
       log.info('config button on and send data to background');
+      log.debug('button value is' + JSON.stringify(this.dialog.right));
+      const data = {
+        name: this.dialog.row.name,
+        price: this.dialog.row.price,
+        capacity: this.dialog.row.capacity,
+        unit: this.dialog.row.unit
+      };
+      if (this.dialog.right === '保存') {
+        data.id = this.dialog.row.id,
+        updateMaterial(data).then(() => {
+          this.$message.success('更新原材料[' + data.name + ']成功');
+        });
+      } else if (this.dialog.right === '新增') {
+        addMaterial(data).then(()=>{
+          this.$message.success('添加原材料[' + data.name + ']成功');
+        });
+      }
       this.closeDialog();
     },
     closeDialog() {
