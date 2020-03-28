@@ -1,8 +1,7 @@
 <template>
   <div class="basic">
     <ProductTable :data="basic" @del="del" @add="addNewBasic" @modify="modify" @search="search"></ProductTable>
-    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options"
-      @add="addNewRow">
+    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow">
     </ProductDialog>
     <div v-if="show">
       <ProductForm :row="row" :materialOptions="options" :productOptions="options" :leave="true"></ProductForm>
@@ -11,26 +10,31 @@
   </div>
 </template>
 <script>
-import { queryBasics } from '@/api/basics';
+import { queryBasics, queryBasicByName } from '@/api/basics';
 import { queryMaterialName } from '@/api/materials';
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
-import { basicProduct, materialOptions } from '@/resources/product';
 import Logger from 'chivy';
 
 const log = new Logger('views/Basic');
 export default {
   name: 'Basic',
+  mounted() {
+    queryBasics().then(resp => {
+      this.basic = resp;
+    });
+    queryMaterialName().then(resp => {
+      this.options = resp;
+    });
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       log.debug('beforeRouteEnter to path is ' + to.path);
       queryBasics().then(resp => {
-        log.debug("resp = " + JSON.stringify(resp));
         vm.basic = resp;
       });
       queryMaterialName().then(resp => {
-        log.debug("resp = " + JSON.stringify(resp));
         vm.options = resp;
       });
     });
@@ -97,17 +101,19 @@ export default {
       log.debug('execute method search');
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
-      // 做filter之前必须恢复所有数据
-      this.basic = basicProduct;
       if (!this.$tools.isEmpty(content)) {
-        const filterData = this.basic.filter(
-          product => product.name.indexOf(content) != -1
-        );
-        if (filterData.length != 0) {
-          this.basic = filterData;
-        } else {
-          this.$message.error('没有找到基础产品[' + content + ']');
-        }
+        queryBasicByName(content).then(resp => {
+          if (resp.length !== 0) {
+            this.basic = resp;
+          } else {
+            this.$message.error('没有找到基础产品[' + content + ']');
+          }
+        });
+      } else {
+        queryBasics().then(resp => {
+          log.debug('resp = ' + JSON.stringify(resp));
+          this.basic = resp;
+        });
       }
     }
   }

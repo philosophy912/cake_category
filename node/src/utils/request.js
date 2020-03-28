@@ -18,17 +18,10 @@ service.interceptors.response.use(
     response => {
         if (response.status === 200) {
             const data = response.data;
+            log.debug('response data is ' + JSON.stringify(data));
             const status = data.success;
             if(status){
-                if (Tools.isEmpty(data.data)) {
-                    return data;
-                } else {
-                    if (data.data.length === 1) {
-                        return data.data[0];
-                    } else {
-                        return data.data;
-                    }
-                } 
+                return data.data;
             }else {
                 return Promise.reject(JSON.stringify({ type: status }));
             }

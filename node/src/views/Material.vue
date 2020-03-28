@@ -11,7 +11,7 @@
 </template>
 <script>
 import Logger from 'chivy';
-import { queryMaterials } from '@/api/materials';
+import { queryMaterials, queryMaterialByName } from '@/api/materials';
 import MaterialDialog from '@/components/material/dialog.vue';
 import MaterialForm from '@/components/material/form.vue';
 import MaterialTable from '@/components/material/table.vue';
@@ -19,11 +19,15 @@ import MaterialTable from '@/components/material/table.vue';
 const log = new Logger('views/material');
 export default {
   name: 'Material',
+  mounted() {
+    queryMaterials().then(resp => {
+      this.materials = resp;
+    });
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       log.debug('beforeRouteEnter to path is ' + to.path);
       queryMaterials().then(resp => {
-        log.debug("resp = " + JSON.stringify(resp));
         vm.materials = resp;
       });
     });
@@ -88,17 +92,19 @@ export default {
       log.debug('execute method search');
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
-      // 做filter之前必须恢复所有数据
-      this.materials = material;
       if (!this.$tools.isEmpty(content)) {
-        const filterData = this.materials.filter(
-          product => product.name.indexOf(content) != -1
-        );
-        if (filterData.length != 0) {
-          this.materials = filterData;
-        } else {
-          this.$message.error('没有找到原材料[' + content + ']');
-        }
+        queryMaterialByName(content).then(resp => {
+          if (resp.length !== 0) {
+            this.materials = resp;
+          } else {
+            this.$message.error('没有找到原材料[' + content + ']');
+          }
+        });
+      } else {
+        queryMaterials().then(resp => {
+          log.debug('resp = ' + JSON.stringify(resp));
+          this.materials = resp;
+        });
       }
     }
   }

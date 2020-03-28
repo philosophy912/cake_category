@@ -81,6 +81,7 @@ public class EntityUtils {
 
     public MiddleVo convert(MiddleBo bo) {
         MiddleVo vo = new MiddleVo();
+        vo.setId(bo.getId());
         vo.setName(bo.getName());
         vo.setUnit(bo.getUnit());
         vo.setCapacity(bo.getCapacity());

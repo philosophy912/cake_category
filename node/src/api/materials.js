@@ -40,6 +40,7 @@ export const queryMaterials = () => {
 // 更新
 export const updateMaterial = param => {
     const data = {
+        id: param.id,
         name: param.name,
         capacity: param.capacity,
         unit: param.unit,

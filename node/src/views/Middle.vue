@@ -13,31 +13,38 @@
   </div>
 </template>
 <script>
-import { queryMiddles } from '@/api/middles';
+import { queryMiddles, queryMiddleByName } from '@/api/middles';
 import { queryBasicName } from '@/api/basics';
 import { queryMaterialName } from '@/api/materials';
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
 import ProductDialog from '@/components/product/dialog.vue';
-import { middleProduct, basicOptions, materialOptions } from '@/resources/product';
 import Logger from 'chivy';
 
 const log = new Logger('views/Middle');
 export default {
   name: 'Middle',
+  mounted() {
+    queryMaterialName().then(resp => {
+        vm.materialOptions = resp;
+      });
+      queryBasicName().then(resp => {
+        vm.basicOptions = resp;
+      });
+      queryMiddles().then(resp => {
+        vm.middle = resp;
+      });
+  },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       log.debug('beforeRouteEnter to path is ' + to.path);
       queryMaterialName().then(resp => {
-        log.debug("queryMaterialName resp = " + JSON.stringify(resp));
         vm.materialOptions = resp;
       });
       queryBasicName().then(resp => {
-        log.debug("queryBasicName resp = " + JSON.stringify(resp));
         vm.basicOptions = resp;
       });
       queryMiddles().then(resp => {
-        log.debug("queryMiddles resp = " + JSON.stringify(resp));
         vm.middle = resp;
       });
     });
@@ -111,15 +118,21 @@ export default {
       log.debug('execute method search');
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
-      // 做filter之前必须恢复所有数据
-      this.middle = middleProduct;
+      // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
       if (!this.$tools.isEmpty(content)) {
-        const filterData = this.middle.filter(product => product.name.indexOf(content) != -1);
-        if (filterData.length != 0) {
-          this.middle = filterData;
-        } else {
-          this.$message.error('没有找到中级产品[' + content + ']');
-        }
+        queryMiddleByName(content).then(resp => {
+          log.debug('resp = ' + JSON.stringify(resp));
+          if (resp.length !== 0) {
+            this.middle = resp;
+          } else {
+            this.$message.error('没有找到原材料[' + content + ']');
+          }
+        });
+      } else {
+        queryMiddles().then(resp => {
+          log.debug('resp = ' + JSON.stringify(resp));
+          this.middle = resp;
+        });
       }
     }
   }
