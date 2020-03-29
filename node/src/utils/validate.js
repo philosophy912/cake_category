@@ -1,4 +1,5 @@
 import Logger from 'chivy';
+
 const log = new Logger('utils/validate');
 const regexMatch = (str, regex) => new RegExp(regex).test(str);
 // 账号校验，不能有特殊字符
@@ -97,7 +98,7 @@ export const isDateValid = (rule, value, callback) => {
 
 // 日期校验
 export const isCapacityTypeValid = (rule, value, callback) => {
-  const capacityType = ['克', '千克' , '个', '毫升', '升', '片']
+  const capacityType = ['克', '千克', '个', '毫升', '升', '片'];
   if (value.content === '') {
     value.must ? callback(new Error('请输入' + value.label)) : callback();
   } else if (capacityType.indexOf(value.count) == -1) {

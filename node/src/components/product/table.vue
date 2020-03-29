@@ -22,9 +22,12 @@
           </el-input>
         </template>
         <template slot-scope="scope">
-          <el-button @click="modify(scope.row)" type="primary" size="small" icon="el-icon-edit">修改</el-button>
-          <el-button @click="add()" type="success" size="small" icon="el-icon-document-add">新增</el-button>
-          <el-button @click="del(scope.$index)" type="danger" size="small" icon="el-icon-document-add">删除</el-button>
+          <el-button @click="modify(scope.row)" type="primary" size="small" icon="el-icon-edit">修改
+          </el-button>
+          <el-button @click="add()" type="success" size="small" icon="el-icon-document-add">新增
+          </el-button>
+          <el-button @click="del(scope.row)" type="danger" size="small" icon="el-icon-document-add">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -60,9 +63,9 @@ export default {
       log.debug('click add button');
       this.$emit('add');
     },
-    del(index) {
-      log.debug('click add button');
-      this.$emit('del', index);
+    del(row) {
+      log.debug('click del button');
+      this.$emit('del', row);
     },
     search(row) {
       log.debug('it will search content[' + this.content + ']');

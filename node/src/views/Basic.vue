@@ -1,8 +1,7 @@
 <template>
   <div class="basic">
-    <ProductTable :data="basic" @del="del" @add="addNewBasic" @modify="modify" @search="search"></ProductTable>
-    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow">
-    </ProductDialog>
+    <ProductTable :data="basic" @del="del" @add="add" @modify="modify" @search="search" />
+    <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow" />
     <div v-if="show">
       <ProductForm :row="row" :materialOptions="options" :leave="true"></ProductForm>
       <el-button type="primary" @click="add()">新增</el-button>
@@ -10,7 +9,7 @@
   </div>
 </template>
 <script>
-import { queryBasics, queryBasicByName } from '@/api/basics';
+import { queryBasics, queryBasicByName, delBasic } from '@/api/basics';
 import { queryMaterialName } from '@/api/materials';
 import ProductTable from '@/components/product/table.vue';
 import ProductForm from '@/components/product/form.vue';
@@ -21,22 +20,12 @@ const log = new Logger('views/Basic');
 export default {
   name: 'Basic',
   mounted() {
-    queryBasics().then(resp => {
-      this.basic = resp;
-    });
-    queryMaterialName().then(resp => {
-      this.options = resp;
-    });
+    this.getData();
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       log.debug('beforeRouteEnter to path is ' + to.path);
-      queryBasics().then(resp => {
-        vm.basic = resp;
-      });
-      queryMaterialName().then(resp => {
-        vm.options = resp;
-      });
+      vm.getData();
     });
   },
   components: {
@@ -65,15 +54,39 @@ export default {
     }
   },
   methods: {
+    getData() {
+      queryBasics().then(resp => {
+        this.basic = resp;
+      });
+      queryMaterialName().then(resp => {
+        this.options = resp;
+      });
+    },
+    del(row) {
+      log.debug('row = ' + JSON.stringify(row));
+      const data = {
+        id: row.id
+      };
+      this.$confirm('此操作将删除[' + row.name + '], 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          delBasic(data)
+            .then(() => {
+              this.$message.success('成功删除基础产品[' + row.name + ']');
+            })
+            .catch(() => {
+              this.$message.error('删除基础产品[' + row.name + ']失败');
+            });
+        })
+        .catch(() => {
+          this.$message.info('已取消删除[' + row.name + ']');
+        });
+      this.getData();
+    },
     add() {
-      log.debug('add');
-      this.basic.push(this.$tools.createMaterialRow(true));
-    },
-    del(index) {
-      log.debug('delete index[' + index + ']');
-      this.basic.splice(index, 1);
-    },
-    addNewBasic() {
       log.debug('add new in table');
       this.dialog.show = true;
       this.dialog.title = '新增基础产品';
@@ -95,7 +108,7 @@ export default {
       this.dialog.show = true;
       this.dialog.title = '修改';
       this.dialog.right = '保存';
-      this.dialog.row = row;
+      this.dialog.row = this.$tools.deepClone(row);
     },
     search(content) {
       log.debug('execute method search');

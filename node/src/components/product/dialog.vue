@@ -4,14 +4,18 @@
       <ProductForm :row='dialog.row' :dialogType='dialog.type' @add='add' :materialOptions='materialOptions' :productOptions='productOptions' :leave='true'>
       </ProductForm>
       <div slot='footer' class='dialog-footer'>
-        <el-button v-if='show' @click='add()' type='success' icon='el-icon-document-add'>新增</el-button>
+        <el-button v-if='show' @click='add()' type='success' icon='el-icon-document-add'>新增
+        </el-button>
         <el-button @click='cancle()'>{{dialog.left}}</el-button>
-        <el-button type='primary' @click='confirm()'>{{dialog.right}}</el-button>
+        <el-button type='primary' @click='confirm()'>{{dialog.right}}
+        </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 <script>
+import { updateBasic, addBasic } from '@/api/basics';
+import { updateMiddle, addMiddle } from '@/api/middles';
 import ProductForm from '@/components/product/form';
 import Logger from 'chivy';
 
@@ -64,7 +68,55 @@ export default {
     },
     confirm() {
       log.info('config button on and send data to background');
+      // todo 在正在保存之前需要校验是否正确
       // 保存或者更新，而且需要判断是在基础产品还是在中级产品的时候做的操作
+      const type = this.dialog.type;
+      const action = this.dialog.right;
+      const formulas = [];
+        this.dialog.row.formulas.forEach(formula => {
+          const vo = {
+            fid: formula.fid,
+            count: formula.count,
+            type: formula.type,
+            id: formula.id,
+            pid: formula.pid
+          };
+          formulas.push(vo);
+        });
+        const data = {
+          id: this.dialog.row.id,
+          name: this.dialog.row.name,
+          unit: this.dialog.row.unit,
+          capacity: this.dialog.row.capacity,
+          formulas: formulas
+        };
+      if (type === this.$tools.BasicName) {
+        // 基础产品的情况下
+        if (action === this.$tools.saveButton) {
+          // 更新
+          updateBasic(data).then(() => {
+            this.$message.success('更新中级材料[' + data.name + ']成功');
+          });
+        } else if (action === this.$tools.addButton) {
+          // 新增
+          addBasic(data).then(() => {
+            this.$message.success('添加中级材料[' + data.name + ']成功');
+          });
+        }
+      } else if (type === this.$tools.MiddleName) {
+        // 中级产品的情况下
+        if (action === this.$tools.saveButton) {
+          // 更新
+          updateMiddle(data).then(() => {
+            this.$message.success('更新中级材料[' + data.name + ']成功');
+          });
+        } else if (action === this.$tools.addButton) {
+          // 新增
+          addMiddle(data).then(() => {
+            this.$message.success('添加中级材料[' + data.name + ']成功');
+          });
+        }
+      }
       this.closeDialog();
     },
     closeDialog() {

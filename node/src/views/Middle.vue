@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import { queryMiddles, queryMiddleByName } from '@/api/middles';
+import { queryMiddles, queryMiddleByName, delMiddle } from '@/api/middles';
 import { queryBasicName } from '@/api/basics';
 import { queryMaterialName } from '@/api/materials';
 import ProductTable from '@/components/product/table.vue';
@@ -25,28 +25,12 @@ const log = new Logger('views/Middle');
 export default {
   name: 'Middle',
   mounted() {
-    queryMaterialName().then(resp => {
-        this.materialOptions = resp;
-      });
-      queryBasicName().then(resp => {
-        this.basicOptions = resp;
-      });
-      queryMiddles().then(resp => {
-        this.middle = resp;
-      });
+    this.getData();
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       log.debug('beforeRouteEnter to path is ' + to.path);
-      queryMaterialName().then(resp => {
-        vm.materialOptions = resp;
-      });
-      queryBasicName().then(resp => {
-        vm.basicOptions = resp;
-      });
-      queryMiddles().then(resp => {
-        vm.middle = resp;
-      });
+      vm.getData();
     });
   },
   components: {
@@ -76,13 +60,44 @@ export default {
     }
   },
   methods: {
+    getData() {
+      queryMaterialName().then(resp => {
+        this.materialOptions = resp;
+      });
+      queryBasicName().then(resp => {
+        this.basicOptions = resp;
+      });
+      queryMiddles().then(resp => {
+        this.middle = resp;
+      });
+    },
+    del(row) {
+      log.debug('row = ' + JSON.stringify(row));
+      const data = {
+        id: row.id
+      };
+      this.$confirm('此操作将删除[' + row.name + '], 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          delMiddle(data)
+            .then(() => {
+              this.$message.success('成功删除中级产品[' + row.name + ']');
+            })
+            .catch(() => {
+              this.$message.error('删除中级产品[' + row.name + ']失败');
+            });
+        })
+        .catch(() => {
+          this.$message.info('已取消删除[' + row.name + ']');
+        });
+      this.getData();
+    },
     add() {
       log.debug('add');
       this.middle.push(this.$tools.createProductRow(true));
-    },
-    del(index) {
-      log.debug('delete index[' + index + ']');
-      this.middle.splice(index, 1);
     },
     addNewBasic() {
       log.debug('add new in table');
@@ -109,7 +124,7 @@ export default {
       this.dialog.show = true;
       this.dialog.title = '修改';
       this.dialog.right = '保存';
-      this.dialog.row = row;
+      this.dialog.row = this.$tools.deepClone(row);
     },
     addOne() {
       log.debug('execute add one methods');

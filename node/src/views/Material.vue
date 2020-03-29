@@ -1,6 +1,6 @@
 <template>
   <div class="material">
-    <MaterialTable :data="materials" @del="del" @add="addNew" @modify="modify" @search="search">
+    <MaterialTable :data="materials" @del="del" @add="add" @modify="modify" @search="search">
     </MaterialTable>
     <MaterialDialog :dialog="dialog" @closeDialog="closeDialog"></MaterialDialog>
     <div v-if="show">
@@ -11,7 +11,7 @@
 </template>
 <script>
 import Logger from 'chivy';
-import { queryMaterials, queryMaterialByName } from '@/api/materials';
+import { queryMaterials, queryMaterialByName, delMaterial } from '@/api/materials';
 import MaterialDialog from '@/components/material/dialog.vue';
 import MaterialForm from '@/components/material/form.vue';
 import MaterialTable from '@/components/material/table.vue';
@@ -20,16 +20,12 @@ const log = new Logger('views/material');
 export default {
   name: 'Material',
   mounted() {
-    queryMaterials().then(resp => {
-      this.materials = resp;
-    });
+    this.getData();
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
       log.debug('beforeRouteEnter to path is ' + to.path);
-      queryMaterials().then(resp => {
-        vm.materials = resp;
-      });
+      vm.getData();
     });
   },
   components: {
@@ -63,15 +59,36 @@ export default {
     };
   },
   methods: {
+    getData() {
+      queryMaterials().then(resp => {
+        this.materials = resp;
+      });
+    },
+    del(row) {
+      log.debug('row = ' + JSON.stringify(row));
+      const data = {
+        id: row.id
+      };
+      this.$confirm('此操作将删除[' + row.name + '], 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          delBasic(data)
+            .then(() => {
+              this.$message.success('成功删除原材料[' + row.name + ']');
+            })
+            .catch(() => {
+              this.$message.error('删除原材料[' + row.name + ']失败');
+            });
+        })
+        .catch(() => {
+          this.$message.info('已取消删除[' + row.name + ']');
+        });
+      this.getData();
+    },
     add() {
-      log.debug('add');
-      this.materials.push(this.row);
-    },
-    del(index) {
-      log.debug('delete index[' + index + ']');
-      this.materials.splice(index, 1);
-    },
-    addNew() {
       log.debug('add new in table');
       this.dialog.show = true;
       this.dialog.title = '新增原材料';
@@ -86,7 +103,7 @@ export default {
       this.dialog.show = true;
       this.dialog.title = '修改';
       this.dialog.right = '保存';
-      this.dialog.row = row;
+      this.dialog.row = this.$tools.deepClone(row);
     },
     search(content) {
       log.debug('execute method search');
