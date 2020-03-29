@@ -61,4 +61,8 @@
         from t_material
     </select>
 
+    <delete id="deleteMaterialByID">
+        delete from t_material where id=#{id}
+    </delete>
+
 </mapper>

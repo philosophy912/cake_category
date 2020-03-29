@@ -75,7 +75,7 @@ export default {
         type: 'warning'
       })
         .then(() => {
-          delBasic(data)
+          delMaterial(data)
             .then(() => {
               this.$message.success('成功删除原材料[' + row.name + ']');
             })

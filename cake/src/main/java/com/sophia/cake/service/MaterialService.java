@@ -34,6 +34,7 @@ public class MaterialService extends BaseService {
     }
 
     public boolean delete(Integer id) {
+        // todo 先要判断是否其他地方引用了这个原材料，如果有则不会删除成功
         return materialMapper.deleteMaterialByID(id) == 1;
     }
 

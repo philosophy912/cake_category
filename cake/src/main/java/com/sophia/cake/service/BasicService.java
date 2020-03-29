@@ -60,6 +60,7 @@ public class BasicService extends BaseService {
 
     @Transactional
     public void delete(BasicVo basicVo) {
+        // todo 先要判断是否其他地方引用了这个原材料，如果有则不会删除成功
         int count = 0;
         Basic basic = basicMapper.findBasicById(basicVo.getId());
         Set<MaterialFormula> formulas = basic.getMaterialFormulaSet();
