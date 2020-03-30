@@ -65,7 +65,7 @@ public class BasicController extends BaseService {
         try {
             basicService.add(basicVo);
             response.setData(Collections.singletonList(basicVo));
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             response.setSuccess(false);
         }
         return response;
@@ -79,7 +79,7 @@ public class BasicController extends BaseService {
         try {
             basicService.update(basicVo);
             response.setData(Collections.singletonList(basicVo));
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             response.setSuccess(false);
         }
         return response;
@@ -93,7 +93,7 @@ public class BasicController extends BaseService {
         try {
             basicService.delete(basicVo);
             response.setData(Collections.singletonList(basicVo));
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             response.setSuccess(false);
         }
         return response;

@@ -4,7 +4,6 @@ import com.philosophy.base.entity.ResultResponse;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +25,7 @@ import java.util.List;
 public class MaterialController extends BaseService {
 
     @ResponseBody
-    @RequestMapping(value = "/queryMaterial",  method = RequestMethod.GET)
+    @RequestMapping(value = "/queryMaterial", method = RequestMethod.GET)
     @ApiOperation("查询所有原材料(仅包含id和name)的接口")
     public ResultResponse<MVo> queryBasic() {
         ResultResponse<MVo> response = new ResultResponse<>();
@@ -57,31 +56,43 @@ public class MaterialController extends BaseService {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/add",  method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation("添加原材料")
     public ResultResponse<Material> add(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(materialService.add(material));
+        try {
+            response.setSuccess(materialService.add(material));
+        } catch (Exception e) {
+            response.setSuccess(false);
+        }
         response.setData(Collections.singletonList(material));
         return response;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/update",  method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ApiOperation("更新原材料")
     public ResultResponse<Material> update(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(materialService.update(material));
+        try {
+            response.setSuccess(materialService.update(material));
+        } catch (Exception e) {
+            response.setSuccess(false);
+        }
         response.setData(Collections.singletonList(material));
         return response;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete",  method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ApiOperation("删除原材料")
     public ResultResponse<Material> delete(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
-        response.setSuccess(materialService.delete(material.getId()));
+        try {
+            response.setSuccess(materialService.delete(material.getId()));
+        } catch (Exception e) {
+            response.setSuccess(false);
+        }
         response.setData(Collections.singletonList(material));
         return response;
     }
