@@ -1,9 +1,11 @@
 package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
-import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +22,13 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/basic")
-public class BasicController extends BaseService{
+@Api(tags = "基础产品相关接口")
+public class BasicController extends BaseService {
 
     @ResponseBody
-    @RequestMapping(value = "/queryBasic",  method = RequestMethod.GET)
-    public ResultResponse<BVo> queryBasic(){
+    @RequestMapping(value = "/queryBasic", method = RequestMethod.GET)
+    @ApiOperation("查询所有基础产品(仅包含id和name)的接口")
+    public ResultResponse<BVo> queryBasic() {
         ResultResponse<BVo> response = new ResultResponse<>();
         List<BVo> bVos = basicService.queryBasic();
         response.setData(bVos);
@@ -32,7 +36,7 @@ public class BasicController extends BaseService{
     }
 
 
-
+    @ApiOperation("查询所有基础产品的接口")
     @ResponseBody
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResultResponse<BasicVo> query() {
@@ -44,6 +48,8 @@ public class BasicController extends BaseService{
 
     @ResponseBody
     @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    @ApiOperation("根据名字查询基础产品")
+    @ApiImplicitParam(name = "name", value = "中级产品名字", required = true)
     public ResultResponse<BasicVo> queryByName(@RequestParam("name") String name) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         List<BasicVo> basicVos = basicService.queryName(name);
@@ -52,7 +58,8 @@ public class BasicController extends BaseService{
     }
 
     @ResponseBody
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @ApiOperation("添加基础产品")
     public ResultResponse<BasicVo> add(@RequestBody BasicVo basicVo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         try {
@@ -65,7 +72,8 @@ public class BasicController extends BaseService{
     }
 
     @ResponseBody
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ApiOperation("更新基础产品")
     public ResultResponse<BasicVo> update(@RequestBody BasicVo basicVo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         try {
@@ -78,7 +86,8 @@ public class BasicController extends BaseService{
     }
 
     @ResponseBody
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ApiOperation("删除基础产品")
     public ResultResponse<BasicVo> delete(@RequestBody BasicVo basicVo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         try {

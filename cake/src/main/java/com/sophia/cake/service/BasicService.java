@@ -1,7 +1,6 @@
 package com.sophia.cake.service;
 
 import com.sophia.cake.entity.po.Basic;
-import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.FormView;
 import java.util.List;
 import java.util.Set;
 

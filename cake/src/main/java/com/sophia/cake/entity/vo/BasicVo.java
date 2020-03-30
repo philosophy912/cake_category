@@ -1,6 +1,8 @@
 package com.sophia.cake.entity.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,29 +19,36 @@ import java.util.Set;
 @Getter
 @ToString
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
+@ApiModel
 public class BasicVo implements Serializable {
     /**
      * 编号
      */
+    @ApiModelProperty(value = "编号")
     private Integer id;
     /**
      * 名字
      */
+    @ApiModelProperty(value = "名字")
     private String name;
     /**
      * 单位
      */
+    @ApiModelProperty(value = "单位")
     private String unit;
     /**
      * 总量
      */
+    @ApiModelProperty(value = "总量")
     private Float capacity;
     /**
      * 总价
      */
+    @ApiModelProperty(value = "总价")
     private Float price;
     /**
      * 对应的原材料集合
      */
+    @ApiModelProperty(value = "原材料集合")
     private Set<FormulaVo> formulas = new HashSet<>();
 }

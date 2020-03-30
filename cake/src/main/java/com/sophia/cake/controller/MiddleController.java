@@ -2,6 +2,9 @@ package com.sophia.cake.controller;
 
 import com.philosophy.base.entity.ResultResponse;
 import com.sophia.cake.entity.vo.MiddleVo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,8 +21,10 @@ import java.util.List;
  **/
 @RestController
 @RequestMapping("/middle")
+@Api(tags = "中级产品相关接口")
 public class MiddleController extends BaseService {
 
+    @ApiOperation("查询所有中级产品的接口")
     @ResponseBody
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public ResultResponse<MiddleVo> query() {
@@ -29,6 +34,8 @@ public class MiddleController extends BaseService {
         return response;
     }
 
+    @ApiOperation("根据名字查询中级产品")
+    @ApiImplicitParam(name = "name", value = "中级产品名字", required = true)
     @ResponseBody
     @RequestMapping(value = "/queryName", method = RequestMethod.GET)
     public ResultResponse<MiddleVo> queryByName(@RequestParam("name") String name) {
@@ -38,8 +45,9 @@ public class MiddleController extends BaseService {
         return response;
     }
 
+    @ApiOperation("添加中级产品")
     @ResponseBody
-    @RequestMapping("/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResultResponse<MiddleVo> add(@RequestBody MiddleVo middleVo) {
         ResultResponse<MiddleVo> response = new ResultResponse<>();
         try {
@@ -51,8 +59,9 @@ public class MiddleController extends BaseService {
         return response;
     }
 
+    @ApiOperation("更新中级产品")
     @ResponseBody
-    @RequestMapping("/update")
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ResultResponse<MiddleVo> update(@RequestBody MiddleVo middleVo) {
         ResultResponse<MiddleVo> response = new ResultResponse<>();
         try {
@@ -64,8 +73,9 @@ public class MiddleController extends BaseService {
         return response;
     }
 
+    @ApiOperation("删除中级产品")
     @ResponseBody
-    @RequestMapping("/delete")
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ResultResponse<MiddleVo> delete(@RequestBody MiddleVo middleVo) {
         ResultResponse<MiddleVo> response = new ResultResponse<>();
         try {
