@@ -63,7 +63,7 @@ public class BasicService extends BaseService {
         Basic basic = basicMapper.findBasicById(basicVo.getId());
         Set<MaterialFormula> formulas = basic.getMaterialFormulaSet();
         for (MaterialFormula formula : formulas) {
-            count += formulaMapper.deleteMaterialFormula(formula.getId());
+            count += formulaMapper.deleteMaterialFormulaByBasicId(formula.getId());
         }
         count += basicMapper.deleteBasic(basicVo.getId());
         checkResult(count, formulas.size() + 1);

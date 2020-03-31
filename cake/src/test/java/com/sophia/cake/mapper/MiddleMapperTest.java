@@ -62,7 +62,7 @@ class MiddleMapperTest {
 
     @Test
     void deleteMiddle() {
-        int result = mapper.deleteMiddle(7);
+        int result = mapper.deleteMiddle(6);
         log.info("result = {}", result);
     }
 
@@ -70,5 +70,11 @@ class MiddleMapperTest {
     void findMiddleVos() {
         List<MiddleBo> middles = mapper.findMiddleBos();
         middles.forEach(middleBo -> log.info("middle bo = {}", middleBo));
+    }
+
+    @Test
+    void findMiddleBo() {
+        MiddleBo middleBo = mapper.findMiddleBo(2);
+        log.info("middleBo = {}", middleBo);
     }
 }

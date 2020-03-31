@@ -114,6 +114,26 @@
         WHERE bf.middle_id = #{id};
     </select>
 
+    <delete id="deleteMaterialFormulaByBasicId">
+        delete
+        from t_material_formula
+        where basic_id = #{id}
+    </delete>
+
+    <delete id="deleteMaterialFormulaByMiddleId">
+        delete
+        from t_material_formula
+        where middle_id = #{id}
+    </delete>
+
+
+    <delete id="deleteBasicFormulaByMiddleId">
+        delete
+        from t_basic_formula
+        where middle_id = #{id}
+    </delete>
+
+
     <delete id="deleteMaterialFormula">
         delete
         from t_material_formula
@@ -130,6 +150,24 @@
         select *
         from t_material_formula
         where id = #{id}
+    </select>
+    
+    <select id="findMaterialFormulaVoByMiddleId" resultMap="material">
+        select *
+        from t_material_formula
+        where middle_id = #{id}
+    </select>
+    
+    <select id="findMaterialFormulaVoByBasicId" resultMap="material">
+        select *
+        from t_material_formula
+        where basic_id = #{id}
+    </select>
+    
+    <select id="findBasicFormulaVoByMiddleId" resultMap="basic">
+        select *
+        from t_basic_formula
+        where middle_id = #{id}
     </select>
 
     <select id="findBasicFormulaById" resultMap="basicFormula">

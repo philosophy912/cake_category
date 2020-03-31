@@ -1,6 +1,6 @@
 package com.sophia.cake.service;
 
-import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
@@ -43,7 +43,7 @@ public class MiddleService extends BaseService {
 
     public List<MiddleVo> queryName(String name) {
         List<MiddleVo> middleVos = new ArrayList<>();
-        middleMapper.findMiddleBosByName("%"+name + "%").forEach(middleBo -> {
+        middleMapper.findMiddleBosByName("%" + name + "%").forEach(middleBo -> {
             MiddleVo vo = utils.convert(middleBo);
             middleVos.add(vo);
         });
@@ -70,18 +70,26 @@ public class MiddleService extends BaseService {
 
     @Transactional
     public void delete(MiddleVo middleVo) {
-        int count = 0;
-        Set<FormulaVo> formulas = middleVo.getFormulas();
-        for (FormulaVo vo : formulas) {
-            FormulaType type = FormulaType.fromValue(vo.getType());
-            if (type == FormulaType.MATERIAL) {
-                count += formulaMapper.deleteMaterialFormula(vo.getId());
-            } else if (type == FormulaType.BASIC) {
-                count += formulaMapper.deleteBasicFormula(vo.getId());
+        MiddleBo bo = middleMapper.findMiddleBo(middleVo.getId());
+        if (bo == null) {
+            throw new RuntimeException("not found Middle where id = " + middleVo.getId());
+        } else {
+            MiddleVo mvo = utils.convert(bo);
+            int count = 0;
+            Set<FormulaVo> formulas = mvo.getFormulas();
+            for (FormulaVo vo : formulas) {
+                log.debug("vo = {}", vo);
+                FormulaType type = FormulaType.fromValue(vo.getType());
+                if (type == FormulaType.MATERIAL) {
+                    count += formulaMapper.deleteMaterialFormulaByMiddleId(vo.getId());
+                } else if (type == FormulaType.BASIC) {
+                    count += formulaMapper.deleteBasicFormulaByMiddleId(vo.getId());
+                }
             }
+            count += middleMapper.deleteMiddle(middleVo.getId());
+            checkResult(count, formulas.size() + 1);
         }
-        count += middleMapper.deleteMiddle(middleVo.getId());
-        checkResult(count, formulas.size() + 1);
+
     }
 
     public void update(MiddleVo middleVo) {

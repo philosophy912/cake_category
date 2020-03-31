@@ -26,9 +26,21 @@ public interface FormulaMapper {
     // 更新原材料配方
     int updateBasicFormula(FormulaVo formulaVo);
     // 根据ID查找原材料配方
+    FormulaVo findMaterialFormulaVoByMiddleId(Integer id);
+    // 根据ID查找原材料配方
+    FormulaVo findMaterialFormulaVoByBasicId(Integer id);
+    // 根据ID查找基础产品配方
+    FormulaVo findBasicFormulaVoByMiddleId(Integer id);
+    // 根据ID查找原材料配方
     FormulaVo findMaterialFormulaVoById(Integer id);
     // 根据ID查找基础产品配方
     FormulaVo findBasicFormulaVoById(Integer id);
+    //  根据Basic ID删除原材料配方
+    int deleteMaterialFormulaByBasicId(Integer id);
+    // 根据Middle ID删除原材料配方
+    int deleteMaterialFormulaByMiddleId(Integer id);
+    // 根据Middle ID删除基础产品配方
+    int deleteBasicFormulaByMiddleId(Integer id);
     // 根据ID删除原材料配方
     int deleteMaterialFormula(Integer id);
     // 根据ID删除原材料配方

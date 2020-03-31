@@ -142,4 +142,28 @@ class FormulaMapperTest {
         int result = mapper.addMiddleMaterialFormulas(vos);
         log.debug("result = {}", result);
     }
+
+    @Test
+    void deleteMaterialFormulaByBasicId() {
+    }
+
+    @Test
+    void deleteMaterialFormulaByMiddleId() {
+    }
+
+    @Test
+    void deleteBasicFormulaByMiddleId() {
+    }
+
+    @Test
+    void findMaterialFormulaVoByMiddleId() {
+    }
+
+    @Test
+    void findMaterialFormulaVoByBasicId() {
+    }
+
+    @Test
+    void findBasicFormulaVoByMiddleId() {
+    }
 }

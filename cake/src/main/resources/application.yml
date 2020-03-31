@@ -2,17 +2,17 @@ server:
   port: 80
 
 config:
-  # excel: D:\Workspace\cake_category\cake\src\main\resources\价格核算.xlsx
-  excel: D:\Workspace\github\cake_category\cake\src\test\resources\价格核算.xlsx
+  excel: C:\cake_category\cake\src\test\resources\价格核算.xlsx
+  # excel: D:\Workspace\github\cake_category\cake\src\test\resources\价格核算.xlsx
 
 spring:
   datasource:
     #配置h2数据库的连接地址， 当前配置的是以文件方式连接
-    url: jdbc:h2:file:./db/cake
-    driver-class-name: org.h2.Driver
+    # url: jdbc:h2:file:./db/cake
+    # driver-class-name: org.h2.Driver
     # url: jdbc:mysql://10.100.193.59:3306/cake?setUnicode=true&characterEncoding=utf8
-    # url: jdbc:mysql://192.168.50.30:3307/cake?setUnicode=true&characterEncoding=utf8
-    # driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.50.30:3307/cake?setUnicode=true&characterEncoding=utf8
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
   jpa:
@@ -33,4 +33,6 @@ mybatis:
 logging:
   level:
     com.sophia.cake.mapper: debug
+    com.sophia.cake.controller: info
+    com.sophia.cake.service: debug
     root: info

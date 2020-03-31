@@ -21,9 +21,9 @@
         <result property="capacity" column="capacity"/>
         <result property="price" column="price"/>
         <association property="materials" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaVoById"/>
+                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaVoByMiddleId"/>
         <association property="basics" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findBasicFormulaVoById"/>
+                     select="com.sophia.cake.mapper.FormulaMapper.findBasicFormulaVoByMiddleId"/>
     </resultMap>
 
 
@@ -75,6 +75,12 @@
         from t_middle
         where id = #{id}
     </delete>
+
+    <select id="findMiddleBo" resultMap="middleBo">
+        select *
+        from t_middle
+        where id = #{id}
+    </select>
 
     <select id="findMiddleBos" resultMap="middleBo">
         select *

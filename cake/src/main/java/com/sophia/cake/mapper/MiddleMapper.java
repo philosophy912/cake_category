@@ -25,6 +25,8 @@ public interface MiddleMapper {
     int updateMiddleVo(MiddleVo middleVo);
     // 根据ID删除中级产品
     int deleteMiddle(Integer id);
+    // 查找指定ID的中级产品VO
+    MiddleBo findMiddleBo(Integer id);
     // 查找所有的中级产品VO
     List<MiddleBo> findMiddleBos();
     // 查找所有的中级产品VO

@@ -5,6 +5,7 @@ import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/material")
 @Api(tags = "原材料相关接口")
+@Slf4j
 public class MaterialController extends BaseService {
 
     @ResponseBody
@@ -63,6 +65,7 @@ public class MaterialController extends BaseService {
         try {
             response.setSuccess(materialService.add(material));
         } catch (Exception e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         response.setData(Collections.singletonList(material));
@@ -77,6 +80,7 @@ public class MaterialController extends BaseService {
         try {
             response.setSuccess(materialService.update(material));
         } catch (Exception e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         response.setData(Collections.singletonList(material));
@@ -91,6 +95,7 @@ public class MaterialController extends BaseService {
         try {
             response.setSuccess(materialService.delete(material.getId()));
         } catch (Exception e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         response.setData(Collections.singletonList(material));

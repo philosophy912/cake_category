@@ -6,6 +6,7 @@ import com.sophia.cake.entity.vo.BasicVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/basic")
 @Api(tags = "基础产品相关接口")
+@Slf4j
 public class BasicController extends BaseService {
 
     @ResponseBody
@@ -66,6 +68,7 @@ public class BasicController extends BaseService {
             basicService.add(basicVo);
             response.setData(Collections.singletonList(basicVo));
         } catch (Exception e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         return response;
@@ -80,6 +83,7 @@ public class BasicController extends BaseService {
             basicService.update(basicVo);
             response.setData(Collections.singletonList(basicVo));
         } catch (Exception e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         return response;
@@ -94,6 +98,7 @@ public class BasicController extends BaseService {
             basicService.delete(basicVo);
             response.setData(Collections.singletonList(basicVo));
         } catch (Exception e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         return response;

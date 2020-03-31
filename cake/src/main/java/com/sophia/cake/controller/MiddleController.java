@@ -5,6 +5,7 @@ import com.sophia.cake.entity.vo.MiddleVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/middle")
 @Api(tags = "中级产品相关接口")
+@Slf4j
 public class MiddleController extends BaseService {
 
     @ApiOperation("查询所有中级产品的接口")
@@ -54,6 +56,7 @@ public class MiddleController extends BaseService {
             middleService.add(middleVo);
             response.setData(Collections.singletonList(middleVo));
         } catch (RuntimeException e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         return response;
@@ -68,6 +71,7 @@ public class MiddleController extends BaseService {
             middleService.update(middleVo);
             response.setData(Collections.singletonList(middleVo));
         } catch (RuntimeException e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         return response;
@@ -82,6 +86,7 @@ public class MiddleController extends BaseService {
             middleService.delete(middleVo);
             response.setData(Collections.singletonList(middleVo));
         } catch (RuntimeException e) {
+            log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
         }
         return response;
