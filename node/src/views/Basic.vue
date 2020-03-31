@@ -78,11 +78,11 @@ export default {
               this.$message.success('成功删除基础产品[' + row.name + ']');
             })
             .catch(() => {
-              this.$message.error('删除基础产品[' + row.name + ']失败');
+              this.$message.error('删除基础产品[' + row.name + ']失败，请检查是否有中级产品使用了该基础产品');
             });
         })
         .catch(() => {
-          this.$message.info('已取消删除[' + row.name + ']');
+          log.debug('已取消删除[' + row.name + ']')
         });
       this.getData();
     },

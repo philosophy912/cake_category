@@ -80,11 +80,11 @@ export default {
               this.$message.success('成功删除原材料[' + row.name + ']');
             })
             .catch(() => {
-              this.$message.error('删除原材料[' + row.name + ']失败');
+              this.$message.error('删除原材料[' + row.name + ']失败，请检查是否有中级产品或者基础产品使用了该原材料');
             });
         })
         .catch(() => {
-          this.$message.info('已取消删除[' + row.name + ']');
+          log.debug('已取消删除[' + row.name + ']')
         });
       this.getData();
     },

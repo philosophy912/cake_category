@@ -91,7 +91,7 @@ export default {
             });
         })
         .catch(() => {
-          this.$message.info('已取消删除[' + row.name + ']');
+          log.debug('已取消删除[' + row.name + ']')
         });
       this.getData();
     },
