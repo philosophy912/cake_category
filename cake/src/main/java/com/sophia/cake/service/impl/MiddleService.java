@@ -65,6 +65,7 @@ public class MiddleService extends BaseService implements IMiddleService {
         for (FormulaVo vo : formulas) {
             FormulaType type = FormulaType.fromValue(vo.getType());
             if (type == FormulaType.MATERIAL) {
+
                 count += formulaMapper.addMaterialFormulaInMiddle(vo);
             } else if (type == FormulaType.BASIC) {
                 count += formulaMapper.addBasicFormulaInMiddle(vo);

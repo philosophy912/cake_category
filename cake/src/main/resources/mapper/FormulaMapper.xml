@@ -157,8 +157,8 @@
     <!-- 批量添加原材料配方到基础产品中 -->
     <insert id="addMaterialFormulasInBasic" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
-        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
-        <foreach collection="collection" item="formulaVos" separator=",">
+        VALUES
+        <foreach collection="collection" item="formula" separator=",">
             (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
         </foreach>
     </insert>
@@ -166,8 +166,8 @@
     <!-- 批量添加基础产品配方到中级产品中 -->
     <insert id="addBasicFormulasInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
-        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
-        <foreach collection="collection" item="formulaVos" separator=",">
+        VALUES
+        <foreach collection="collection" item="formula" separator=",">
             (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
         </foreach>
     </insert>
@@ -175,8 +175,8 @@
     <!-- 批量添加原材料配方到中级产品中 -->
     <insert id="addMaterialFormulasInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
-        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
-        <foreach collection="collection" item="formulaVos" separator=",">
+        VALUES
+        <foreach collection="collection" item="formula" separator=",">
             (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
         </foreach>
     </insert>

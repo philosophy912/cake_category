@@ -1,12 +1,17 @@
 package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.vo.BasicVo;
+import com.sophia.cake.entity.vo.FormulaType;
+import com.sophia.cake.entity.vo.FormulaVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,6 +40,23 @@ class BasicServiceTest {
 
     @Test
     void add() {
+        BasicVo basicVo = new BasicVo();
+        basicVo.setName("基础产品");
+        basicVo.setUnit("个");
+        basicVo.setCapacity(12f);
+        Set<FormulaVo> formulaVos = new HashSet<>();
+        FormulaVo formula1 = new FormulaVo();
+        formula1.setId(4);
+        formula1.setCount(15f);
+        formula1.setType("原材料");
+        FormulaVo formula2 = new FormulaVo();
+        formula2.setId(2);
+        formula2.setCount(12f);
+        formula2.setType("原材料");
+        formulaVos.add(formula1);
+        formulaVos.add(formula2);
+        basicVo.setFormulas(formulaVos);
+        service.add(basicVo);
     }
 
     @Test

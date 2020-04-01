@@ -1,6 +1,7 @@
 package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author lizhe
@@ -26,10 +28,12 @@ public class BasicService extends BaseService implements IBasicService {
     public List<BVo> queryBasic() {
         return basicMapper.findBVos();
     }
+
     @Override
     public List<BasicVo> query() {
         return basicMapper.findBasicVos();
     }
+
     @Override
     public List<BasicVo> queryName(String name) {
         return basicMapper.findBasicVosByName("%" + name + "%");
@@ -40,7 +44,11 @@ public class BasicService extends BaseService implements IBasicService {
         float price = 0f;
         Set<FormulaVo> formulaVos = vo.getFormulas();
         for (FormulaVo formulaVo : formulaVos) {
-            float formulaPrice = formulaVo.getCount() * formulaVo.getFormulaPrice();
+            // 只有原材料的ID，所以要获取原材料的价格
+            Material material = materialMapper.findMaterialById(formulaVo.getId());
+            // 计算出来总价
+            float formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
+            // 将总价设置到其中
             formulaVo.setPrice(formulaPrice);
             price += formulaPrice;
         }
@@ -54,9 +62,12 @@ public class BasicService extends BaseService implements IBasicService {
         updateVo(basicVo);
         int count = 0;
         count += basicMapper.addBasicVo(basicVo);
-        Set<FormulaVo> materials = basicVo.getFormulas();
-        count += formulaMapper.addMaterialFormulasInMiddle(materials);
-        checkResult(count, materials.size() + 1);
+        int pid = basicVo.getId();
+        Set<FormulaVo> formulas = basicVo.getFormulas().stream()
+                .peek(formulaVo -> formulaVo.setPid(pid))
+                .collect(Collectors.toSet());
+        count += formulaMapper.addMaterialFormulasInBasic(formulas);
+        checkResult(count, formulas.size() + 1);
     }
 
     @Transactional
@@ -64,9 +75,9 @@ public class BasicService extends BaseService implements IBasicService {
     public void delete(BasicVo basicVo) {
         int count = 0;
         BasicVo basic = basicMapper.findBasicVoById(basicVo.getId());
-        if(basic==null){
+        if (basic == null) {
             throw new RuntimeException("not found Basic where id = " + basicVo.getId());
-        }else{
+        } else {
             int basicId = basic.getId();
             Set<FormulaVo> formulas = basic.getFormulas();
             for (FormulaVo formula : formulas) {

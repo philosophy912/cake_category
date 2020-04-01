@@ -33,6 +33,7 @@ public class MaterialService extends BaseService implements IMaterialService {
 
     @Override
     public void add(Material material) {
+        utils.update(material);
         checkResult(materialMapper.addMaterial(material), 1);
     }
 
