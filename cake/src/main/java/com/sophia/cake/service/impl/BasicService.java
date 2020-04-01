@@ -1,10 +1,12 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.po.Basic;
 import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
+import com.sophia.cake.service.api.BaseService;
+import com.sophia.cake.service.api.IBasicService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,17 +20,17 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-public class BasicService extends BaseService {
+public class BasicService extends BaseService implements IBasicService {
 
-
+    @Override
     public List<BVo> queryBasic() {
         return basicMapper.findBVos();
     }
-
+    @Override
     public List<BasicVo> query() {
         return basicMapper.findBasicVos();
     }
-
+    @Override
     public List<BasicVo> queryName(String name) {
         return basicMapper.findBasicVosByName("%" + name + "%");
     }
@@ -47,29 +49,32 @@ public class BasicService extends BaseService {
 
 
     @Transactional
+    @Override
     public void add(BasicVo basicVo) {
         updateVo(basicVo);
         int count = 0;
         count += basicMapper.addBasicVo(basicVo);
         Set<FormulaVo> materials = basicVo.getFormulas();
-        count += formulaMapper.addMiddleMaterialFormulas(materials);
+        count += formulaMapper.addMaterialFormulasInMiddle(materials);
         checkResult(count, materials.size() + 1);
     }
 
     @Transactional
+    @Override
     public void delete(BasicVo basicVo) {
         // todo 先要判断是否其他地方引用了这个原材料，如果有则不会删除成功
         int count = 0;
         Basic basic = basicMapper.findBasicById(basicVo.getId());
         Set<MaterialFormula> formulas = basic.getMaterialFormulaSet();
         for (MaterialFormula formula : formulas) {
-            count += formulaMapper.deleteMaterialFormulaByBasicId(formula.getId());
+            count += formulaMapper.deleteFormulaByBasicIdInMaterialFormula(formula.getId());
         }
-        count += basicMapper.deleteBasic(basicVo.getId());
+        count += basicMapper.deleteBasicById(basicVo.getId());
         checkResult(count, formulas.size() + 1);
     }
 
     @Transactional
+    @Override
     public void update(BasicVo basicVo) {
         updateVo(basicVo);
         int count = 0;

@@ -67,7 +67,7 @@ class MaterialMapperTest {
 
     @Test
     void deleteMaterialByID() {
-        int result = mapper.deleteMaterialByID(1);
+        int result = mapper.deleteMaterialById(1);
         log.info("result = {}", result);
     }
 

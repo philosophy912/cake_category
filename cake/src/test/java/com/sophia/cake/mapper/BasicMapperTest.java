@@ -69,7 +69,7 @@ class BasicMapperTest {
 
     @Test
     void deleteBasic() {
-        int result = mapper.deleteBasic(41);
+        int result = mapper.deleteBasicById(41);
         log.info("result = {}", result);
     }
 

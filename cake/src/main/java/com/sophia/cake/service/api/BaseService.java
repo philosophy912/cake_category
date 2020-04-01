@@ -1,4 +1,4 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.api;
 
 import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.FormulaMapper;

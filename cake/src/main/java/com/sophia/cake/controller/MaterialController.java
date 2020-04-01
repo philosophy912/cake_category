@@ -6,6 +6,9 @@ import com.sophia.cake.entity.vo.MVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +30,7 @@ import java.util.List;
 @RequestMapping("/material")
 @Api(tags = "原材料相关接口")
 @Slf4j
-public class MaterialController extends BaseService {
+public class MaterialController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/queryMaterial", method = RequestMethod.GET)
@@ -63,7 +69,7 @@ public class MaterialController extends BaseService {
     public ResultResponse<Material> add(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
         try {
-            response.setSuccess(materialService.add(material));
+            materialService.add(material);
         } catch (Exception e) {
             log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
@@ -78,7 +84,7 @@ public class MaterialController extends BaseService {
     public ResultResponse<Material> update(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
         try {
-            response.setSuccess(materialService.update(material));
+            materialService.update(material);
         } catch (Exception e) {
             log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);
@@ -93,7 +99,7 @@ public class MaterialController extends BaseService {
     public ResultResponse<Material> delete(@RequestBody Material material) {
         ResultResponse<Material> response = new ResultResponse<>();
         try {
-            response.setSuccess(materialService.delete(material.getId()));
+            materialService.delete(material);
         } catch (Exception e) {
             log.warn("found issue , the message is {}", e.getMessage());
             response.setSuccess(false);

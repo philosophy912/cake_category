@@ -11,26 +11,42 @@ import java.util.List;
  * @date 2020-03-24 22:35
  */
 public interface BasicMapper {
+
     // 查找所有的基础产品
     List<Basic> findBasics();
+
     // 根据ID查找基础产品
     Basic findBasicById(Integer id);
-    // 根据ID查找基础产品
+
+    // 根据名字查找基础产品
     Basic findBasicByName(String name);
-    // 添加基础产品
-    int addBasic(Basic basic);
-    // 更新基础产品
-    int updateBasic(Basic basic);
-    // 添加基础产品
-    int addBasicVo(BasicVo basicVo);
-    // 更新基础产品
-    int updateBasicVo(BasicVo basicVo);
-    // 根据ID删除基础产品
-    int deleteBasic(Integer id);
-    // 查找所有的基础产品VO
+
+    // 查找所有的基础产品Vo
     List<BasicVo> findBasicVos();
-    // 查找所有的基础产品VO
+
+    // 根据基础产品的ID查找基础产品Vo
+    BasicVo findBasicVoById(Integer id);
+
+    // 查找所有的基础产品Vo
     List<BasicVo> findBasicVosByName(String name);
+
     // 查找所有的基础产品的BVo
     List<BVo> findBVos();
+
+    // 添加基础产品
+    int addBasic(Basic basic);
+
+    // 添加基础产品Vo
+    int addBasicVo(BasicVo basicVo);
+
+    // 更新基础产品
+    int updateBasic(Basic basic);
+
+    // 更新基础产品Vo
+    int updateBasicVo(BasicVo basicVo);
+
+    // 根据ID删除基础产品
+    int deleteBasicById(Integer id);
+
+
 }

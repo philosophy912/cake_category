@@ -38,7 +38,7 @@ class FormulaMapperTest {
         formulaVo.setType(FormulaType.MATERIAL.getValue());
         formulaVo.setId(3);
         formulaVo.setPid(2);
-        int result = mapper.addBasicMaterialFormula(formulaVo);
+        int result = mapper.addMaterialFormulaInBasic(formulaVo);
         log.info("formula vo = {}", formulaVo.getFid());
         log.info("result = {}", result);
     }
@@ -51,14 +51,14 @@ class FormulaMapperTest {
         formulaVo.setType(FormulaType.BASIC.getValue());
         formulaVo.setId(30);
         formulaVo.setPid(2);
-        int result = mapper.addMiddleBasicFormula(formulaVo);
+        int result = mapper.addBasicFormulaInMiddle(formulaVo);
         log.info("formula vo = {}", formulaVo.getFid());
         log.info("result = {}", result);
     }
 
     @Test
     void updateMaterialFormula() {
-        FormulaVo vo = mapper.findMaterialFormulaVoById(2);
+        FormulaVo vo = mapper.findFormulaByIdInMaterialFormula(2);
         vo.setPid(3);
         int result = mapper.updateMaterialFormula(vo);
         log.info("result = {}", result);
@@ -66,35 +66,12 @@ class FormulaMapperTest {
 
     @Test
     void updateBasicFormula() {
-        FormulaVo vo = mapper.findBasicFormulaVoById(2);
+        FormulaVo vo = mapper.findFormulaByIdInBasicFormula(2);
         vo.setPid(3);
         int result = mapper.updateBasicFormula(vo);
         log.info("result = {}", result);
     }
 
-    @Test
-    void findMaterialFormulaVoById() {
-        FormulaVo vo = mapper.findMaterialFormulaVoById(2);
-        log.info("vo = {}", vo);
-    }
-
-    @Test
-    void findBasicFormulaVoById() {
-        FormulaVo vo = mapper.findBasicFormulaVoById(7);
-        log.info("vo = {}", vo);
-    }
-
-    @Test
-    void deleteMaterialFormula() {
-        int result = mapper.deleteMaterialFormula(165);
-        log.debug("result = {}", result);
-    }
-
-    @Test
-    void deleteBasicFormula() {
-        int result = mapper.deleteBasicFormula(9);
-        log.debug("result = {}", result);
-    }
 
     @Test
     void findMaterialFormulaById() {
@@ -121,7 +98,7 @@ class FormulaMapperTest {
             vo.setPid(1 + i);
             vos.add(vo);
         }
-        int result = mapper.addBasicMaterialFormulas(vos);
+        int result = mapper.addMaterialFormulasInBasic(vos);
         log.debug("result = {}", result);
 
     }
@@ -139,7 +116,7 @@ class FormulaMapperTest {
             vo.setPid(1 + i);
             vos.add(vo);
         }
-        int result = mapper.addMiddleMaterialFormulas(vos);
+        int result = mapper.addMaterialFormulasInMiddle(vos);
         log.debug("result = {}", result);
     }
 

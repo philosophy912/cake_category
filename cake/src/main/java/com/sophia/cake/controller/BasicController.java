@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/basic")
 @Api(tags = "基础产品相关接口")
 @Slf4j
-public class BasicController extends BaseService {
+public class BasicController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/queryBasic", method = RequestMethod.GET)

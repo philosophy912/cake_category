@@ -62,7 +62,7 @@ class MiddleMapperTest {
 
     @Test
     void deleteMiddle() {
-        int result = mapper.deleteMiddle(6);
+        int result = mapper.deleteMiddleById(6);
         log.info("result = {}", result);
     }
 

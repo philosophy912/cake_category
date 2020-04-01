@@ -4,6 +4,7 @@ import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lizhe
@@ -12,18 +13,30 @@ import java.util.List;
 public interface MaterialMapper {
     // 查找所有的原材料
     List<Material> findMaterials();
-    // 根据ID找Material
+
+    // 根据ID查找原材料
     Material findMaterialById(Integer id);
-    // 根据Name找Material
+
+    // 根据名字查找原材料
     Material findMaterialByName(String name);
-    // 根据Name找Material
+
+    // 根据名字找原材料集合
     List<Material> findMaterialsByName(String name);
-    // 添加一个Material对象
-    int addMaterial(Material material);
-    // 更新material
-    int updateMaterial(Material material);
-    // 删除Material
-    int deleteMaterialByID(Integer id);
-    // 查找所有的基础产品的MVo
+
+    // 查找所有的原材料的MVo
     List<MVo> findMVos();
+
+    // 添加一个原材料
+    int addMaterial(Material material);
+
+    // 添加多个原材料
+    int addMaterials(Set<Material> materials);
+
+    // 更新原材料
+    int updateMaterial(Material material);
+
+    // 删除原材料
+    int deleteMaterialById(Integer id);
+
+
 }

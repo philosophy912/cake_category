@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.MiddleMapper">
+
+    <!-- Middle对象 -->
     <resultMap id="middle" type="Middle">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
@@ -9,11 +11,12 @@
         <result property="unit" column="unit"/>
         <result property="capacity" column="capacity"/>
         <association property="materialFormulaSet" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.MaterialMapper.findMaterialById"/>
+                     select="com.sophia.cake.mapper.MaterialMapper.findMaterialFormulaById"/>
         <association property="basicFormulaSet" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.BasicMapper.findBasicById"/>
+                     select="com.sophia.cake.mapper.BasicMapper.findBasicFormulaById"/>
     </resultMap>
 
+    <!-- 基于Middle的MiddleBo对象 -->
     <resultMap id="middleBo" type="MiddleBo">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
@@ -21,28 +24,57 @@
         <result property="capacity" column="capacity"/>
         <result property="price" column="price"/>
         <association property="materials" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaVoByMiddleId"/>
+                     select="com.sophia.cake.mapper.FormulaMapper.findFormulaByMiddleIdInMaterialFormula"/>
         <association property="basics" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findBasicFormulaVoByMiddleId"/>
+                     select="com.sophia.cake.mapper.FormulaMapper.findFormulaByMiddleIdInBasicFormula"/>
     </resultMap>
 
-
+    <!-- 查找所有的中级产品 -->
     <select id="findMiddles" resultMap="middle">
         select *
         from t_middle
     </select>
 
+    <!-- 根据ID查找中级产品 -->
     <select id="findMiddleById" resultMap="middle">
         select *
         from t_middle
         where id = #{id}
     </select>
 
+    <!-- 查找指定ID的中级产品VO -->
+    <select id="findMiddleBo" resultMap="middleBo">
+        select *
+        from t_middle
+        where id = #{id}
+    </select>
+
+    <!-- 查找所有的中级产品VO的集合 -->
+    <select id="findMiddleBos" resultMap="middleBo">
+        select *
+        from t_middle
+    </select>
+
+    <!-- 根据名字查找所有的中级产品VO的集合 -->
+    <select id="findMiddleBosByName" resultMap="middleBo">
+        select *
+        from t_middle
+        where NAME like #{name}
+    </select>
+
+    <!-- 添加中级产品 -->
     <insert id="addMiddle" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
         VALUES (#{name}, #{price}, #{capacity}, #{unit})
     </insert>
 
+    <!-- 添加中级产品Vo -->
+    <insert id="addMiddleVo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
+        VALUES (#{name}, #{price}, #{capacity}, #{unit})
+    </insert>
+
+    <!-- 更新中级产品 -->
     <update id="updateMiddle">
         update t_middle
         <trim prefix="set" suffixOverrides=",">
@@ -54,11 +86,7 @@
         where id = #{id}
     </update>
 
-    <insert id="addMiddleVo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
-        VALUES (#{name}, #{price}, #{capacity}, #{unit})
-    </insert>
-
+    <!-- 更新中级产品Vo -->
     <update id="updateMiddleVo">
         update t_middle
         <trim prefix="set" suffixOverrides=",">
@@ -70,26 +98,11 @@
         where id = #{id}
     </update>
 
-    <delete id="deleteMiddle">
+    <!-- 根据ID删除中级产品 -->
+    <delete id="deleteMiddleById">
         delete
         from t_middle
         where id = #{id}
     </delete>
 
-    <select id="findMiddleBo" resultMap="middleBo">
-        select *
-        from t_middle
-        where id = #{id}
-    </select>
-
-    <select id="findMiddleBos" resultMap="middleBo">
-        select *
-        from t_middle
-    </select>
-
-    <select id="findMiddleBosByName" resultMap="middleBo">
-        select *
-        from t_middle
-        where NAME like #{name}
-    </select>
 </mapper>

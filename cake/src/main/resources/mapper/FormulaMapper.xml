@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.FormulaMapper">
 
+    <!-- 基于Material的FormulaVo对象 -->
     <resultMap id="material" type="FormulaVo">
         <id property="fid" column="id"/>
         <result property="count" column="count"/>
@@ -14,6 +15,7 @@
         <result property="pid" column="basic_id"/>
     </resultMap>
 
+    <!-- 基于Basic的FormulaVo对象 -->
     <resultMap id="basic" type="FormulaVo">
         <id property="fid" column="id"/>
         <result property="count" column="count"/>
@@ -25,6 +27,7 @@
         <result property="pid" column="middle_id"/>
     </resultMap>
 
+    <!-- MaterialFormula对象 -->
     <resultMap id="materialFormula" type="MaterialFormula">
         <id property="id" column="id"/>
         <result property="count" column="count"/>
@@ -34,6 +37,7 @@
                      select="com.sophia.cake.mapper.MaterialMapper.findMaterialById"/>
     </resultMap>
 
+    <!-- BasicFormula对象 -->
     <resultMap id="basicFormula" type="BasicFormula">
         <id property="id" column="id"/>
         <result property="count" column="count"/>
@@ -43,41 +47,143 @@
                      select="com.sophia.cake.mapper.BasicMapper.findBasicById"/>
     </resultMap>
 
+    <!-- 在原材料配方表中根据ID查找配方 -->
+    <select id="findBasicFormulaById" resultMap="materialFormula">
+        select *
+        from t_material_formula
+        where id = #{id}
+    </select>
 
-    <insert id="addBasicMaterialFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+    <!-- 在基础产品配方表中根据ID查找配方 -->
+    <select id="findMaterialFormulaById" resultMap="basicFormula">
+        select *
+        from t_basic_formula
+        where id = #{id}
+    </select>
+
+    <!-- 在原材料配方表中根据配方ID查找配方-->
+    <select id="findFormulaByIdInMaterialFormula" resultMap="material">
+        select mf.id,
+               mf.count,
+               mf.price,
+               mf.type,
+               mf.material_id,
+               mf.basic_id,
+               m.name,
+               m.price_per_unit
+        from t_material_formula as mf
+                 left join t_material as m on mf.material_id = m.id
+        where mf.id = #{id}
+    </select>
+
+    <!-- 在基础产品配方表中根据配方ID查找配方 -->
+    <select id="findFormulaByIdInBasicFormula" resultMap="basic">
+        SELECT bf.id,
+               bf.count,
+               bf.price,
+               bf.type,
+               bf.basic_id,
+               bf.middle_id,
+               b.name,
+               b.price
+        FROM t_basic_formula AS bf
+                 LEFT JOIN t_basic AS b ON bf.basic_id = b.id
+        WHERE bf.id = #{id};
+    </select>
+
+    <!-- 在原材料配方表中根据中级产品的ID查找配方 -->
+    <select id="findFormulaByMiddleIdInMaterialFormula" resultMap="material">
+        select mf.id,
+               mf.count,
+               mf.price,
+               mf.type,
+               mf.material_id,
+               mf.basic_id,
+               m.name,
+               m.price_per_unit
+        from t_material_formula as mf
+                 left join t_material as m on mf.material_id = m.id
+        where mf.middle_id = #{id}
+    </select>
+
+    <!-- 在原材料配方表中根据基础产品的ID查找配方 -->
+    <select id="findFormulaByBasicIdInMaterialFormula" resultMap="material">
+        select mf.id,
+               mf.count,
+               mf.price,
+               mf.type,
+               mf.material_id,
+               mf.basic_id,
+               m.name,
+               m.price_per_unit
+        from t_material_formula as mf
+                 left join t_material as m on mf.material_id = m.id
+        where mf.basic_id = #{id}
+    </select>
+
+    <!-- 在基础产品配方表中根据中级产品的ID查找配方 -->
+    <select id="findFormulaByMiddleIdInBasicFormula" resultMap="basic">
+        SELECT bf.id,
+               bf.count,
+               bf.price,
+               bf.type,
+               bf.basic_id,
+               bf.middle_id,
+               b.name,
+               b.price
+        FROM t_basic_formula AS bf
+                 LEFT JOIN t_basic AS b ON bf.basic_id = b.id
+        WHERE bf.middle_id = #{id};
+    </select>
+
+    <!-- 添加原材料配方到基础产品中 -->
+    <insert id="addMaterialFormulaInBasic" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
         VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
     </insert>
 
-    <insert id="addMiddleBasicFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+    <!-- 添加基础产品配方到中级产品中 -->
+    <insert id="addBasicFormulaInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
         VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
     </insert>
 
-    <insert id="addMiddleMaterialFormula" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+    <!-- 添加原材料配方到中级产品中 -->
+    <insert id="addMaterialFormulaInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
         VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
     </insert>
 
-    <insert id="addBasicMaterialFormulas">
+    <!-- 批量添加原材料配方到基础产品中 -->
+    <insert id="addMaterialFormulasInBasic" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+        <foreach collection="collection" item="formulaVos" separator=",">
+            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
+        </foreach>
+    </insert>
+
+    <!-- 批量添加基础产品配方到中级产品中 -->
+    <insert id="addBasicFormulasInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
-        VALUES
-        <foreach collection="collection" item="formula" separator=",">
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+        <foreach collection="collection" item="formulaVos" separator=",">
             (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
         </foreach>
     </insert>
 
-    <insert id="addMiddleMaterialFormulas">
+    <!-- 批量添加原材料配方到中级产品中 -->
+    <insert id="addMaterialFormulasInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
-        VALUES
-        <foreach collection="collection" item="formula" separator=",">
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+        <foreach collection="collection" item="formulaVos" separator=",">
             (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
         </foreach>
     </insert>
 
-
+    <!-- 更新原材料配方 -->
     <update id="updateMaterialFormula">
-        update t_material_formula
+        pdate t_material_formula
         <trim prefix="set" suffixOverrides=",">
             <if test="count!=null">COUNT=#{count},</if>
             <if test="price!=null">price=#{price},</if>
@@ -88,6 +194,7 @@
         where id = #{fid}
     </update>
 
+    <!-- 更新基础产品配方 -->
     <update id="updateBasicFormula">
         update t_basic_formula
         <trim prefix="set" suffixOverrides=",">
@@ -100,80 +207,39 @@
         where id = #{fid}
     </update>
 
-    <select id="findMaterialFormulaVoById" resultMap="material">
-        select mf.id, mf.count, mf.price, mf.type, mf.material_id, mf.basic_id, tm.name, tm.price_per_unit
-        from t_material_formula as mf
-                 left join t_material as tm on mf.material_id = tm.id
-        where mf.basic_id = #{id}
-    </select>
+    <!-- 在原材料配方表中根据配方ID删除配方 -->
+    <delete id="deleteFormulaByIdInMaterialFormula">
+        delete
+        from t_material_formula
+        where id = #{id}
+    </delete>
 
-    <select id="findBasicFormulaVoById" resultMap="basic">
-        SELECT bf.id, bf.count, bf.price, bf.type, bf.basic_id, bf.middle_id, tb.name, tb.price
-        FROM t_basic_formula AS bf
-                 LEFT JOIN t_basic AS tb ON bf.basic_id = tb.id
-        WHERE bf.middle_id = #{id};
-    </select>
+    <!-- 在基础产品配方表中根据配方ID删除配方 -->
+    <delete id="deleteFormulaByIdInBasicFormula">
+        delete
+        from t_basic_formula
+        where id = #{id}
+    </delete>
 
-    <delete id="deleteMaterialFormulaByBasicId">
+    <!-- 在原材料配方表中根据基础产品ID删除配方 -->
+    <delete id="deleteFormulaByBasicIdInMaterialFormula">
         delete
         from t_material_formula
         where basic_id = #{id}
     </delete>
 
-    <delete id="deleteMaterialFormulaByMiddleId">
+    <!-- 在原材料配方表中根据中级产品ID删除配方 -->
+    <delete id="deleteFormulaByMiddleIdInMaterialFormula">
         delete
         from t_material_formula
         where middle_id = #{id}
     </delete>
 
-
-    <delete id="deleteBasicFormulaByMiddleId">
+    <!-- 在基础产品配方表中根据中级产品ID删除配方-->
+    <delete id="deleteFormulaByMiddleIdInBasicFormula">
         delete
         from t_basic_formula
         where middle_id = #{id}
     </delete>
-
-
-    <delete id="deleteMaterialFormula">
-        delete
-        from t_material_formula
-        where id = #{id}
-    </delete>
-
-    <delete id="deleteBasicFormula">
-        delete
-        from t_basic_formula
-        where id = #{id}
-    </delete>
-
-    <select id="findMaterialFormulaById" resultMap="materialFormula">
-        select *
-        from t_material_formula
-        where id = #{id}
-    </select>
-    
-    <select id="findMaterialFormulaVoByMiddleId" resultMap="material">
-        select *
-        from t_material_formula
-        where middle_id = #{id}
-    </select>
-    
-    <select id="findMaterialFormulaVoByBasicId" resultMap="material">
-        select *
-        from t_material_formula
-        where basic_id = #{id}
-    </select>
-    
-    <select id="findBasicFormulaVoByMiddleId" resultMap="basic">
-        select *
-        from t_basic_formula
-        where middle_id = #{id}
-    </select>
-
-    <select id="findBasicFormulaById" resultMap="basicFormula">
-        select *
-        from t_basic_formula
-        where id = #{id}
-    </select>
 
 </mapper>

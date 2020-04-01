@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping("/middle")
 @Api(tags = "中级产品相关接口")
 @Slf4j
-public class MiddleController extends BaseService {
+public class MiddleController extends BaseController {
 
     @ApiOperation("查询所有中级产品的接口")
     @ResponseBody

@@ -17,33 +17,46 @@
         <result property="name" column="name"/>
     </resultMap>
 
+    <!--  查找所有的原材料 -->
     <select id="findMaterials" resultMap="material">
         select *
         from t_material
     </select>
 
+    <!--  查找所有的原材料 -->
     <select id="findMaterialById" resultMap="material">
         select *
         from t_material
         where id = #{id}
     </select>
 
+    <!-- 根据名字查找原材料 -->
     <select id="findMaterialByName" resultMap="material">
         select *
         from t_material
         where name = #{name}
     </select>
+
+    <!-- 根据名字找原材料集合 -->
     <select id="findMaterialsByName" resultMap="material">
         select *
         from t_material
         where name like #{name}
     </select>
 
+    <!-- 查找所有的原材料的MVo -->
+    <select id="findMVos" resultMap="mvo">
+        select id, name
+        from t_material
+    </select>
+
+    <!-- 添加一个原材料 -->
     <insert id="addMaterial" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into t_material(CAPACITY, NAME, PRICE, PRICE_PER_UNIT, UNIT)
         VALUES (#{capacity}, #{name}, #{price}, #{pricePerUnit}, #{unit})
     </insert>
 
+    <!-- 更新原材料 -->
     <update id="updateMaterial">
         update t_material
         <trim prefix="set" suffixOverrides=",">
@@ -56,13 +69,11 @@
         where id = #{id}
     </update>
 
-    <select id="findMVos" resultMap="mvo">
-        select id, name
-        from t_material
-    </select>
-
+    <!-- 删除原材料 -->
     <delete id="deleteMaterialByID">
-        delete from t_material where id=#{id}
+        delete
+        from t_material
+        where id = #{id}
     </delete>
 
 </mapper>

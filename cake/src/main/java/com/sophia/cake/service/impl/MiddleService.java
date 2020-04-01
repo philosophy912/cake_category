@@ -1,9 +1,11 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
+import com.sophia.cake.service.api.BaseService;
+import com.sophia.cake.service.api.IMiddleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,8 @@ import java.util.Set;
  */
 @Slf4j
 @Service
-public class MiddleService extends BaseService {
+public class MiddleService extends BaseService implements IMiddleService {
+
 
     private void updateVo(MiddleVo vo) {
         float price = 0f;
@@ -31,7 +34,7 @@ public class MiddleService extends BaseService {
         vo.setPrice(price);
     }
 
-
+    @Override
     public List<MiddleVo> query() {
         List<MiddleVo> middleVos = new ArrayList<>();
         middleMapper.findMiddleBos().forEach(middleBo -> {
@@ -40,7 +43,7 @@ public class MiddleService extends BaseService {
         });
         return middleVos;
     }
-
+    @Override
     public List<MiddleVo> queryName(String name) {
         List<MiddleVo> middleVos = new ArrayList<>();
         middleMapper.findMiddleBosByName("%" + name + "%").forEach(middleBo -> {
@@ -52,6 +55,7 @@ public class MiddleService extends BaseService {
 
 
     @Transactional
+    @Override
     public void add(MiddleVo middleVo) {
         updateVo(middleVo);
         int count = 0;
@@ -60,15 +64,16 @@ public class MiddleService extends BaseService {
         for (FormulaVo vo : formulas) {
             FormulaType type = FormulaType.fromValue(vo.getType());
             if (type == FormulaType.MATERIAL) {
-                count += formulaMapper.addMiddleMaterialFormula(vo);
+                count += formulaMapper.addMaterialFormulaInMiddle(vo);
             } else if (type == FormulaType.BASIC) {
-                count += formulaMapper.addMiddleBasicFormula(vo);
+                count += formulaMapper.addBasicFormulaInMiddle(vo);
             }
         }
         checkResult(count, formulas.size() + 1);
     }
 
     @Transactional
+    @Override
     public void delete(MiddleVo middleVo) {
         MiddleBo bo = middleMapper.findMiddleBo(middleVo.getId());
         if (bo == null) {
@@ -81,12 +86,12 @@ public class MiddleService extends BaseService {
                 log.debug("vo = {}", vo);
                 FormulaType type = FormulaType.fromValue(vo.getType());
                 if (type == FormulaType.MATERIAL) {
-                    count += formulaMapper.deleteMaterialFormulaByMiddleId(vo.getId());
+                    count += formulaMapper.deleteFormulaByMiddleIdInMaterialFormula(vo.getId());
                 } else if (type == FormulaType.BASIC) {
-                    count += formulaMapper.deleteBasicFormulaByMiddleId(vo.getId());
+                    count += formulaMapper.deleteFormulaByMiddleIdInBasicFormula(vo.getId());
                 }
             }
-            count += middleMapper.deleteMiddle(middleVo.getId());
+            count += middleMapper.deleteMiddleById(middleVo.getId());
             checkResult(count, formulas.size() + 1);
         }
 

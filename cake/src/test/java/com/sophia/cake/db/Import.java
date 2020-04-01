@@ -68,7 +68,7 @@ public class Import {
                 Integer materialId = materialMapper.findMaterialByName(name).getId();
                 vo.setId(materialId);
                 vo.setPid(basicId);
-                formulaMapper.addBasicMaterialFormula(vo);
+                formulaMapper.addMaterialFormulaInBasic(vo);
             });
         });
     }
@@ -91,7 +91,7 @@ public class Import {
                 Integer materialId = materialMapper.findMaterialByName(name).getId();
                 vo.setId(materialId);
                 vo.setPid(middleId);
-                formulaMapper.addMiddleMaterialFormula(vo);
+                formulaMapper.addMaterialFormulaInMiddle(vo);
             });
 
             Set<BasicFormula> basicFormulas = middle.getBasicFormulaSet();
@@ -105,7 +105,7 @@ public class Import {
                 Integer basicId = basicMapper.findBasicByName(name).getId();
                 vo.setId(basicId);
                 vo.setPid(middleId);
-                formulaMapper.addMiddleBasicFormula(vo);
+                formulaMapper.addBasicFormulaInMiddle(vo);
             });
         });
     }
