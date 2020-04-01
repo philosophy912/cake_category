@@ -1,7 +1,6 @@
-package com.sophia.cake.service;
+package com.sophia.cake.service.impl;
 
-import com.sophia.cake.entity.vo.MiddleVo;
-import com.sophia.cake.service.impl.MiddleService;
+import com.sophia.cake.entity.vo.BasicVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -9,16 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author lizhe
- * @date 2020-03-31 21:58
+ * @date 2020-04-01 21:05
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-class MiddleServiceTest {
+class BasicServiceTest {
     @Autowired
-    private MiddleService service;
+    private BasicService service;
+
+    @Test
+    void queryBasic() {
+    }
 
     @Test
     void query() {
@@ -34,9 +39,9 @@ class MiddleServiceTest {
 
     @Test
     void delete() {
-        MiddleVo vo = new MiddleVo();
-        vo.setId(6);
-        service.delete(vo);
+        BasicVo basicVo = new BasicVo();
+        basicVo.setId(8);
+        service.delete(basicVo);
     }
 
     @Test

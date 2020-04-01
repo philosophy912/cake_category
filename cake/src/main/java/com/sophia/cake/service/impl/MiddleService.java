@@ -43,6 +43,7 @@ public class MiddleService extends BaseService implements IMiddleService {
         });
         return middleVos;
     }
+
     @Override
     public List<MiddleVo> queryName(String name) {
         List<MiddleVo> middleVos = new ArrayList<>();
@@ -80,18 +81,20 @@ public class MiddleService extends BaseService implements IMiddleService {
             throw new RuntimeException("not found Middle where id = " + middleVo.getId());
         } else {
             MiddleVo mvo = utils.convert(bo);
+            int middleId = mvo.getId();
+            log.debug("try to delete middle id = {}", middleId);
             int count = 0;
             Set<FormulaVo> formulas = mvo.getFormulas();
             for (FormulaVo vo : formulas) {
                 log.debug("vo = {}", vo);
                 FormulaType type = FormulaType.fromValue(vo.getType());
                 if (type == FormulaType.MATERIAL) {
-                    count += formulaMapper.deleteFormulaByMiddleIdInMaterialFormula(vo.getId());
+                    count += formulaMapper.deleteFormulaByIdInMaterialFormula(vo.getFid());
                 } else if (type == FormulaType.BASIC) {
-                    count += formulaMapper.deleteFormulaByMiddleIdInBasicFormula(vo.getId());
+                    count += formulaMapper.deleteFormulaByIdInBasicFormula(vo.getFid());
                 }
             }
-            count += middleMapper.deleteMiddleById(middleVo.getId());
+            count += middleMapper.deleteMiddleById(middleId);
             checkResult(count, formulas.size() + 1);
         }
 

@@ -62,15 +62,20 @@ public class BasicService extends BaseService implements IBasicService {
     @Transactional
     @Override
     public void delete(BasicVo basicVo) {
-        // todo 先要判断是否其他地方引用了这个原材料，如果有则不会删除成功
         int count = 0;
-        Basic basic = basicMapper.findBasicById(basicVo.getId());
-        Set<MaterialFormula> formulas = basic.getMaterialFormulaSet();
-        for (MaterialFormula formula : formulas) {
-            count += formulaMapper.deleteFormulaByBasicIdInMaterialFormula(formula.getId());
+        BasicVo basic = basicMapper.findBasicVoById(basicVo.getId());
+        if(basic==null){
+            throw new RuntimeException("not found Basic where id = " + basicVo.getId());
+        }else{
+            int basicId = basic.getId();
+            Set<FormulaVo> formulas = basic.getFormulas();
+            for (FormulaVo formula : formulas) {
+                count += formulaMapper.deleteFormulaByIdInMaterialFormula(formula.getFid());
+            }
+            count += basicMapper.deleteBasicById(basicId);
+            checkResult(count, formulas.size() + 1);
         }
-        count += basicMapper.deleteBasicById(basicVo.getId());
-        checkResult(count, formulas.size() + 1);
+
     }
 
     @Transactional
