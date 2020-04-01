@@ -66,39 +66,66 @@ export default {
       log.info('cancle button on');
       this.closeDialog();
     },
+    getUpdateData() {
+      const formulas = [];
+      this.dialog.row.formulas.forEach(formula => {
+        const vo = {
+          fid: formula.fid,
+          count: formula.count,
+          type: formula.type,
+          id: formula.id,
+          pid: formula.pid
+        };
+        formulas.push(vo);
+      });
+      log.debug('formulas is ' + JSON.stringify(formulas));
+      const data = {
+        id: this.dialog.row.id,
+        name: this.dialog.row.name,
+        unit: this.dialog.row.unit,
+        capacity: this.dialog.row.capacity,
+        formulas: formulas
+      };
+      log.debug('data is ' + JSON.stringify(data));
+      return data;
+    },
+    getAddData() {
+      const formulas = [];
+      this.dialog.row.formulas.forEach(formula => {
+        const vo = {
+          count: formula.count,
+          type: formula.type,
+          id: formula.id
+        };
+        formulas.push(vo);
+      });
+      log.debug('formulas is ' + JSON.stringify(formulas));
+      const data = {
+        name: this.dialog.row.name,
+        unit: this.dialog.row.unit,
+        capacity: this.dialog.row.capacity,
+        formulas: formulas
+      };
+      log.debug('data is ' + JSON.stringify(data));
+      return data;
+    },
     confirm() {
       log.info('config button on and send data to background');
       // todo 在正在保存之前需要校验是否正确
       // 保存或者更新，而且需要判断是在基础产品还是在中级产品的时候做的操作
       const type = this.dialog.type;
       const action = this.dialog.right;
-      const formulas = [];
-        this.dialog.row.formulas.forEach(formula => {
-          const vo = {
-            fid: formula.fid,
-            count: formula.count,
-            type: formula.type,
-            id: formula.id,
-            pid: formula.pid
-          };
-          formulas.push(vo);
-        });
-        const data = {
-          id: this.dialog.row.id,
-          name: this.dialog.row.name,
-          unit: this.dialog.row.unit,
-          capacity: this.dialog.row.capacity,
-          formulas: formulas
-        };
       if (type === this.$tools.BasicName) {
         // 基础产品的情况下
         if (action === this.$tools.saveButton) {
           // 更新
+          const data = this.getUpdateData();
           updateBasic(data).then(() => {
             this.$message.success('更新中级材料[' + data.name + ']成功');
           });
         } else if (action === this.$tools.addButton) {
           // 新增
+          const data = this.getAddData();
           addBasic(data).then(() => {
             this.$message.success('添加中级材料[' + data.name + ']成功');
           });
@@ -107,11 +134,13 @@ export default {
         // 中级产品的情况下
         if (action === this.$tools.saveButton) {
           // 更新
+          const data = this.getUpdateData();
           updateMiddle(data).then(() => {
             this.$message.success('更新中级材料[' + data.name + ']成功');
           });
         } else if (action === this.$tools.addButton) {
           // 新增
+          const data = this.getAddData();
           addMiddle(data).then(() => {
             this.$message.success('添加中级材料[' + data.name + ']成功');
           });

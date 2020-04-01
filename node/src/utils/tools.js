@@ -33,7 +33,7 @@ export default class Tools {
   static createMaterial() {
     const material = {
       type: Tools.MaterialName,
-      value: '',
+      id: '',
       count: 0
     };
     return material;
@@ -42,7 +42,7 @@ export default class Tools {
   static createProduct() {
     const product = {
       type: Tools.BasicName,
-      value: '',
+      id: '',
       count: 0
     };
     return product;

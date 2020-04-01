@@ -133,7 +133,6 @@ export default {
       log.debug('execute method search');
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
-      // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
       if (!this.$tools.isEmpty(content)) {
         queryMiddleByName(content).then(resp => {
           log.debug('resp = ' + JSON.stringify(resp));
