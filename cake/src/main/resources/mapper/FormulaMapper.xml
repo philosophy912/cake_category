@@ -183,7 +183,7 @@
 
     <!-- 更新原材料配方 -->
     <update id="updateMaterialFormula">
-        pdate t_material_formula
+        update t_material_formula
         <trim prefix="set" suffixOverrides=",">
             <if test="count!=null">COUNT=#{count},</if>
             <if test="price!=null">price=#{price},</if>

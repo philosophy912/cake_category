@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -68,5 +69,11 @@ class BasicServiceTest {
 
     @Test
     void update() {
+        List<BasicVo> basicVos = service.queryName("榴莲芝士");
+        log.debug("basicVos = {}", basicVos);
+        BasicVo basicVo = basicVos.get(0);
+        basicVo.setName(basicVo.getName() + "test");
+        basicVo.getFormulas().forEach(formulaVo -> formulaVo.setCount(formulaVo.getCount() + 1));
+        service.update(basicVo);
     }
 }
