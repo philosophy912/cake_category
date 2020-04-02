@@ -1,14 +1,18 @@
 <template>
-  <div class='productDialog'>
-    <el-dialog :title='dialog.title' :visible.sync='dialog.show' :show-close='false'>
-      <ProductForm :row='dialog.row' :dialogType='dialog.type' @add='add' :materialOptions='materialOptions' :productOptions='productOptions' :leave='true'>
-      </ProductForm>
-      <div slot='footer' class='dialog-footer'>
-        <el-button v-if='show' @click='add()' type='success' icon='el-icon-document-add'>新增
-        </el-button>
-        <el-button @click='cancle()'>{{dialog.left}}</el-button>
-        <el-button type='primary' @click='confirm()'>{{dialog.right}}
-        </el-button>
+  <div class="productDialog">
+    <el-dialog :title="dialog.title" :visible.sync="dialog.show" :show-close="false">
+      <ProductForm
+        :row="dialog.row"
+        :dialogType="dialog.type"
+        @add="add"
+        :materialOptions="materialOptions"
+        :productOptions="productOptions"
+        :leave="true"
+      ></ProductForm>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="add()" type="success" icon="el-icon-document-add">新增配方</el-button>
+        <el-button @click="cancle()">{{dialog.left}}</el-button>
+        <el-button type="primary" @click="confirm()">{{dialog.right}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -37,29 +41,29 @@ export default {
     }
   },
   computed: {
-    show() {
-      // debugger;
-      if (this.$tools.isNotEmpty(this.dialog.row)) {
-        const type = this.dialog.type;
-        const materials = this.dialog.row.formulas.filter(formula => {
-          // log.info('formula is ' + JSON.stringify(formula));
-          return formula.type === this.$tools.MaterialName;
-        });
-        log.info('materials = ' + JSON.stringify(materials));
-        const products = this.dialog.row.formulas.filter(formula => {
-          return formula.type === this.$tools.BasicName;
-        });
-        log.info('products = ' + JSON.stringify(products));
-        if (type === this.$tools.BasicName && materials.length === 0) {
-          return true;
-        } else if (type === this.$tools.MiddleName) {
-          if (materials.length === 0 || products.length === 0) {
-            return true;
-          }
-        }
-      }
-      return false;
-    }
+    // show() {
+    //   // debugger;
+    //   if (this.$tools.isNotEmpty(this.dialog.row)) {
+    //     const type = this.dialog.type;
+    //     const materials = this.dialog.row.formulas.filter(formula => {
+    //       // log.info('formula is ' + JSON.stringify(formula));
+    //       return formula.type === this.$tools.MaterialName;
+    //     });
+    //     log.info('materials = ' + JSON.stringify(materials));
+    //     const products = this.dialog.row.formulas.filter(formula => {
+    //       return formula.type === this.$tools.BasicName;
+    //     });
+    //     log.info('products = ' + JSON.stringify(products));
+    //     if (type === this.$tools.BasicName && materials.length === 0) {
+    //       return true;
+    //     } else if (type === this.$tools.MiddleName) {
+    //       if (materials.length === 0 || products.length === 0) {
+    //         return true;
+    //       }
+    //     }
+    //   }
+    //   return false;
+    // }
   },
   methods: {
     cancle() {
@@ -147,6 +151,7 @@ export default {
         }
       }
       this.closeDialog();
+      this.$parent.getData();
     },
     closeDialog() {
       log.info('material Dialog closeDialog');

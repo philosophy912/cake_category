@@ -51,7 +51,7 @@ export default {
         left: '取消',
         right: ''
       },
-      row: this.$tools.createProductRow(false)
+      row: this.$tools.createBothRow(true)
     };
   },
   computed: {
@@ -104,17 +104,25 @@ export default {
       this.dialog.show = true;
       this.dialog.title = '新增中级产品';
       this.dialog.right = '新增';
-      if (this.row.formulas.length == 0) {
-        this.row.formulas.push(this.$tools.createMaterial());
-        this.row.formulas.push(this.$tools.createProduct());
-      }
-
+      // if (this.row.formulas.length == 0) {
+      //   this.row.formulas.push(this.$tools.createMaterial());
+      //   this.row.formulas.push(this.$tools.createProduct());
+      // }
       this.dialog.row = this.row;
     },
     addNewRow() {
       log.debug('add new row in dialog');
-      this.dialog.row.formulas.push(this.$tools.createMaterial());
-      this.dialog.row.formulas.push(this.$tools.createProduct());
+      this.$confirm('此选择要添加的类型', '提示', {
+          confirmButtonText: '原材料',
+          cancelButtonText: '基础产品',
+          type: 'info'
+        }).then(() => {
+          this.row.formulas.push(this.$tools.createMaterial());
+        }).catch(() => {
+          this.row.formulas.push(this.$tools.createProduct());         
+        });
+      // this.dialog.row.formulas.push(this.$tools.createMaterial());
+      // this.dialog.row.formulas.push(this.$tools.createProduct());
     },
     closeDialog() {
       this.dialog.show = false;

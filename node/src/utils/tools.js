@@ -75,6 +75,16 @@ export default class Tools {
     }
     return row;
   }
+
+  static createBothRow(flag){
+    const row = Tools.createRow();
+    if (!flag) {
+      row.formulas.push(Tools.createMaterial());
+      row.formulas.push(Tools.createProduct());
+    }
+    return row;
+  }
+
   // 深拷贝
   static deepClone(target) {
     // 定义一个变量

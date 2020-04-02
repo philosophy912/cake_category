@@ -45,7 +45,8 @@ export const addMiddle = param => {
   const data = {
     name: param.name,
     unit: param.unit,
-    materials: param.materials
+    capacity: param.capacity,
+    formulas: param.formulas
   };
   return service({
     url: add,

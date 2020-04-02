@@ -1,5 +1,5 @@
-// const server = "http://10.100.193.59:9999";
-const server = "http://127.0.0.1:80";
+const server = "http://10.100.193.59:9999";
+// const server = "http://127.0.0.1:80";
 module.exports = {
   // 项目部署的基础路径
   // 我们默认假设你的应用将会部署在域名的根部，

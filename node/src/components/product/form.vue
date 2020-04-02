@@ -63,15 +63,15 @@
         this.row.formulas.splice(index, 1);
         log.debug('materials length is ' + JSON.stringify(this.row.formulas.length));
         // 无论如何都要检查原材料是否被删成了0
-        if (this.leave && this.materials.length === 0) {
-          this.row.formulas.push(this.$tools.createMaterial());
-        }
-        if (this.dialogType === this.$tools.MiddleName) {
-          // 高级产品
-          if (this.leave && this.products.length == 0) {
-            this.row.formulas.push(this.$tools.createProduct());
-          }
-        }
+        // if (this.leave && this.materials.length === 0) {
+        //   this.row.formulas.push(this.$tools.createMaterial());
+        // }
+        // if (this.dialogType === this.$tools.MiddleName) {
+        //   // 高级产品
+        //   if (this.leave && this.products.length == 0) {
+        //     this.row.formulas.push(this.$tools.createProduct());
+        //   }
+        // }
       },
       add(type) {
         log.debug('type is ' + JSON.stringify(type));
