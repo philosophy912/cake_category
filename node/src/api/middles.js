@@ -30,9 +30,11 @@ export const queryMiddleByName = name => {
 // 更新
 export const updateMiddle = param => {
   const data = {
+    id: param.id,
     name: param.name,
     unit: param.unit,
-    materials: param.materials
+    capacity: param.capacity,
+    formulas: param.formulas
   };
   return service({
     url: update,

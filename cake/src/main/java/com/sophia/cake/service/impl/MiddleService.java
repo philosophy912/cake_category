@@ -1,6 +1,8 @@
 package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.bo.MiddleBo;
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
@@ -27,7 +29,16 @@ public class MiddleService extends BaseService implements IMiddleService {
         float price = 0f;
         Set<FormulaVo> formulaVos = vo.getFormulas();
         for (FormulaVo formulaVo : formulaVos) {
-            float formulaPrice = formulaVo.getCount() * formulaVo.getFormulaPrice();
+            float formulaPrice;
+            // 原材料
+            if (formulaVo.getType().equalsIgnoreCase(FormulaType.MATERIAL.getValue())) {
+                Material material = materialMapper.findMaterialById(formulaVo.getId());
+                formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
+            }else{
+                //基础产品
+                BasicVo basicVo = basicMapper.findBasicVoById(formulaVo.getId());
+                formulaPrice = formulaVo.getCount() * basicVo.getPrice();
+            }
             formulaVo.setPrice(formulaPrice);
             price += formulaPrice;
         }
@@ -113,7 +124,7 @@ public class MiddleService extends BaseService implements IMiddleService {
                 count += formulaMapper.updateBasicFormula(vo);
             }
         }
-        middleMapper.updateMiddleVo(middleVo);
+        count += middleMapper.updateMiddleVo(middleVo);
         checkResult(count, formulas.size() + 1);
     }
 

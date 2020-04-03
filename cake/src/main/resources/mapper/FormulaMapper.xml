@@ -4,7 +4,7 @@
 <mapper namespace="com.sophia.cake.mapper.FormulaMapper">
 
     <!-- 基于Material的FormulaVo对象 -->
-    <resultMap id="material" type="FormulaVo">
+    <resultMap id="materialBasic" type="FormulaVo">
         <id property="fid" column="id"/>
         <result property="count" column="count"/>
         <result property="price" column="price"/>
@@ -13,6 +13,18 @@
         <result property="formulaPrice" column="price_per_unit"/>
         <result property="id" column="material_id"/>
         <result property="pid" column="basic_id"/>
+    </resultMap>
+
+    <!-- 基于Material的FormulaVo对象 -->
+    <resultMap id="materialMiddle" type="FormulaVo">
+        <id property="fid" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="formulaPrice" column="price_per_unit"/>
+        <result property="id" column="material_id"/>
+        <result property="pid" column="middle_id"/>
     </resultMap>
 
     <!-- 基于Basic的FormulaVo对象 -->
@@ -62,7 +74,7 @@
     </select>
 
     <!-- 在原材料配方表中根据配方ID查找配方-->
-    <select id="findFormulaByIdInMaterialFormula" resultMap="material">
+    <select id="findFormulaByIdInMaterialFormula" resultMap="materialBasic">
         select mf.id,
                mf.count,
                mf.price,
@@ -92,13 +104,13 @@
     </select>
 
     <!-- 在原材料配方表中根据中级产品的ID查找配方 -->
-    <select id="findFormulaByMiddleIdInMaterialFormula" resultMap="material">
+    <select id="findFormulaByMiddleIdInMaterialFormula" resultMap="materialMiddle">
         select mf.id,
                mf.count,
                mf.price,
                mf.type,
                mf.material_id,
-               mf.basic_id,
+               mf.middle_id,
                m.name,
                m.price_per_unit
         from t_material_formula as mf
@@ -107,7 +119,7 @@
     </select>
 
     <!-- 在原材料配方表中根据基础产品的ID查找配方 -->
-    <select id="findFormulaByBasicIdInMaterialFormula" resultMap="material">
+    <select id="findFormulaByBasicIdInMaterialFormula" resultMap="materialBasic">
         select mf.id,
                mf.count,
                mf.price,

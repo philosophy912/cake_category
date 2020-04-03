@@ -1,6 +1,6 @@
 <template>
   <div class="basic">
-    <ProductTable :data="middle" @del="del" @add="addNewBasic" @modify="modify" @search="search"></ProductTable>
+    <ProductTable :data="middle" @del="del" @add="addNewMiddle" @modify="modify" @search="search"></ProductTable>
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="materialOptions" :productOptions="basicOptions" @add="addNewRow">
     </ProductDialog>
     <div v-if="show">
@@ -99,7 +99,7 @@ export default {
       log.debug('add');
       this.middle.push(this.$tools.createProductRow(true));
     },
-    addNewBasic() {
+    addNewMiddle() {
       log.debug('add new in table');
       this.dialog.show = true;
       this.dialog.title = '新增中级产品';

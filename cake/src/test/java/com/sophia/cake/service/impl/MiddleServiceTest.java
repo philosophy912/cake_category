@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
+
 /**
  * @author lizhe
  * @date 2020-03-31 21:58
@@ -26,6 +28,8 @@ class MiddleServiceTest {
 
     @Test
     void queryName() {
+        List<MiddleVo> middleVos = service.queryName("±ù°ôµ°¸â12¸ö");
+        log.debug("middleVos = {}", middleVos);
     }
 
     @Test
@@ -41,5 +45,10 @@ class MiddleServiceTest {
 
     @Test
     void update() {
+        MiddleVo middleVo = service.queryName("±ù°ôµ°¸â12¸ö").get(0);
+        middleVo.setCapacity(12f);
+        middleVo.setUnit("ºÐ");
+        middleVo.getFormulas().forEach(formulaVo -> formulaVo.setCount(formulaVo.getCount() + 1));
+        service.update(middleVo);
     }
 }
