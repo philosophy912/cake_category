@@ -28,7 +28,7 @@ class MiddleServiceTest {
 
     @Test
     void queryName() {
-        List<MiddleVo> middleVos = service.queryName("±ù°ôµ°¸â12¸ö");
+        List<MiddleVo> middleVos = service.queryName("å†°æ£’è›‹ç³•12ä¸ª");
         log.debug("middleVos = {}", middleVos);
     }
 
@@ -45,9 +45,9 @@ class MiddleServiceTest {
 
     @Test
     void update() {
-        MiddleVo middleVo = service.queryName("±ù°ôµ°¸â12¸ö").get(0);
+        MiddleVo middleVo = service.queryName("å†°æ£’è›‹ç³•12ä¸ª").get(0);
         middleVo.setCapacity(12f);
-        middleVo.setUnit("ºÐ");
+        middleVo.setUnit("ç›’");
         middleVo.getFormulas().forEach(formulaVo -> formulaVo.setCount(formulaVo.getCount() + 1));
         service.update(middleVo);
     }

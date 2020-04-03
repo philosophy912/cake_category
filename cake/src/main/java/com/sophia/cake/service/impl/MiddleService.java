@@ -30,12 +30,12 @@ public class MiddleService extends BaseService implements IMiddleService {
         Set<FormulaVo> formulaVos = vo.getFormulas();
         for (FormulaVo formulaVo : formulaVos) {
             float formulaPrice;
-            // ‘≠≤ƒ¡œ
+            // ÂéüÊùêÊñô
             if (formulaVo.getType().equalsIgnoreCase(FormulaType.MATERIAL.getValue())) {
                 Material material = materialMapper.findMaterialById(formulaVo.getId());
                 formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
             }else{
-                //ª˘¥°≤˙∆∑
+                //Âü∫Á°Ä‰∫ßÂìÅ
                 BasicVo basicVo = basicMapper.findBasicVoById(formulaVo.getId());
                 formulaPrice = formulaVo.getCount() * basicVo.getPrice();
             }
