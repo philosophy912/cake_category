@@ -1,15 +1,8 @@
 <template>
   <div class="basic">
-    <ProductTable :data="middle" @del="del" @add="addNewMiddle" @modify="modify" @search="search"></ProductTable>
+    <ProductTable :data="middle" @del="del" @add="add" @modify="modify" @search="search"></ProductTable>
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="materialOptions" :productOptions="basicOptions" @add="addNewRow">
     </ProductDialog>
-    <div v-if="show">
-      <ProductForm :row="row" :leave="true" :materialOptions="materialOptions" :productOptions="basicOptions"></ProductForm>
-      <div class="buttons">
-        <el-button type="primary" @click="add()">新增</el-button>
-      </div>
-
-    </div>
   </div>
 </template>
 <script>
@@ -54,9 +47,11 @@ export default {
       row: this.$tools.createBothRow(true)
     };
   },
-  computed: {
-    show() {
-      return this.middle.length == 0;
+  watch: {
+    middle(newVal, oldVal) {
+      if (newVal.length == 0) {
+        this.add();
+      }
     }
   },
   methods: {
@@ -85,6 +80,7 @@ export default {
           delMiddle(data)
             .then(() => {
               this.$message.success('成功删除中级产品[' + row.name + ']');
+              this.getData();
             })
             .catch(() => {
               this.$message.error('删除中级产品[' + row.name + ']失败');
@@ -93,13 +89,8 @@ export default {
         .catch(() => {
           log.debug('已取消删除[' + row.name + ']')
         });
-      this.getData();
     },
     add() {
-      log.debug('add');
-      this.middle.push(this.$tools.createProductRow(true));
-    },
-    addNewMiddle() {
       log.debug('add new in table');
       this.dialog.show = true;
       this.dialog.title = '新增中级产品';

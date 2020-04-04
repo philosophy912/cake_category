@@ -2,10 +2,6 @@
   <div class="basic">
     <ProductTable :data="basic" @del="del" @add="add" @modify="modify" @search="search" />
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow" />
-    <div v-if="show">
-      <ProductForm :row="row" :materialOptions="options" :leave="true"></ProductForm>
-      <el-button type="primary" @click="add()">新增</el-button>
-    </div>
   </div>
 </template>
 <script>
@@ -48,9 +44,11 @@ export default {
       row: this.$tools.createMaterialRow(false)
     };
   },
-  computed: {
-    show() {
-      return this.basic.length == 0;
+  watch: {
+    basic(newVal, oldVal) {
+      if (newVal.length == 0) {
+        this.add();
+      }
     }
   },
   methods: {
@@ -76,6 +74,7 @@ export default {
           delBasic(data)
             .then(() => {
               this.$message.success('成功删除基础产品[' + row.name + ']');
+              this.getData();
             })
             .catch(() => {
               this.$message.error('删除基础产品[' + row.name + ']失败，请检查是否有中级产品使用了该基础产品');
@@ -84,7 +83,6 @@ export default {
         .catch(() => {
           log.debug('已取消删除[' + row.name + ']')
         });
-      this.getData();
     },
     add() {
       log.debug('add new in table');

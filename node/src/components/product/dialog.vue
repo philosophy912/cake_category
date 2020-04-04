@@ -40,31 +40,6 @@ export default {
       type: Object
     }
   },
-  computed: {
-    // show() {
-    //   // debugger;
-    //   if (this.$tools.isNotEmpty(this.dialog.row)) {
-    //     const type = this.dialog.type;
-    //     const materials = this.dialog.row.formulas.filter(formula => {
-    //       // log.info('formula is ' + JSON.stringify(formula));
-    //       return formula.type === this.$tools.MaterialName;
-    //     });
-    //     log.info('materials = ' + JSON.stringify(materials));
-    //     const products = this.dialog.row.formulas.filter(formula => {
-    //       return formula.type === this.$tools.BasicName;
-    //     });
-    //     log.info('products = ' + JSON.stringify(products));
-    //     if (type === this.$tools.BasicName && materials.length === 0) {
-    //       return true;
-    //     } else if (type === this.$tools.MiddleName) {
-    //       if (materials.length === 0 || products.length === 0) {
-    //         return true;
-    //       }
-    //     }
-    //   }
-    //   return false;
-    // }
-  },
   methods: {
     cancle() {
       log.info('cancle button on');
@@ -126,12 +101,14 @@ export default {
           const data = this.getUpdateData();
           updateBasic(data).then(() => {
             this.$message.success('更新中级材料[' + data.name + ']成功');
+            this.$parent.getData();
           });
         } else if (action === this.$tools.addButton) {
           // 新增
           const data = this.getAddData();
           addBasic(data).then(() => {
             this.$message.success('添加中级材料[' + data.name + ']成功');
+            this.$parent.getData();
           });
         }
       } else if (type === this.$tools.MiddleName) {
@@ -141,17 +118,18 @@ export default {
           const data = this.getUpdateData();
           updateMiddle(data).then(() => {
             this.$message.success('更新中级材料[' + data.name + ']成功');
+            this.$parent.getData();
           });
         } else if (action === this.$tools.addButton) {
           // 新增
           const data = this.getAddData();
           addMiddle(data).then(() => {
             this.$message.success('添加中级材料[' + data.name + ']成功');
+            this.$parent.getData();
           });
         }
       }
       this.closeDialog();
-      this.$parent.getData();
     },
     closeDialog() {
       log.info('material Dialog closeDialog');

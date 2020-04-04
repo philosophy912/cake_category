@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toast } from './toast';
+import { toast, showLoading, hideLoading } from './toast';
 import Tools from './tools';
 import Logger from 'chivy';
 
@@ -12,11 +12,14 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   log.debug('url is ' + JSON.stringify(config.url));
   log.debug('data is ' + JSON.stringify(config.data));
+  showLoading('拼命加载中......');
+  hideLoading();
   return config;
 });
 // 响应拦截器
 service.interceptors.response.use(
   response => {
+    hideLoading();
     if (response.status === 200) {
       const data = response.data;
       log.debug('response data is ' + JSON.stringify(data));
@@ -32,6 +35,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    hideLoading();
     toast('服务器访问超时，请联系管理员', 'fail');
     log.error('error be found ' + JSON.stringify(error));
     return Promise.reject(error);

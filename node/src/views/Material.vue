@@ -3,10 +3,6 @@
     <MaterialTable :data="materials" @del="del" @add="add" @modify="modify" @search="search">
     </MaterialTable>
     <MaterialDialog :dialog="dialog" @closeDialog="closeDialog"></MaterialDialog>
-    <div v-if="show">
-      <MaterialForm :row="row"></MaterialForm>
-      <el-button type="primary" @click="add()">新增</el-button>
-    </div>
   </div>
 </template>
 <script>
@@ -33,9 +29,11 @@ export default {
     MaterialForm,
     MaterialTable
   },
-  computed: {
-    show() {
-      return this.materials.length == 0;
+  watch: {
+    materials(newVal, oldVal) {
+      if (newVal.length == 0) {
+        this.add();
+      }
     }
   },
   data() {
@@ -52,7 +50,7 @@ export default {
       row: {
         name: '',
         capacity: '',
-        capacityType: '',
+        unit: '克',
         price: '',
         pricePerCapacity: ''
       }
@@ -78,15 +76,15 @@ export default {
           delMaterial(data)
             .then(() => {
               this.$message.success('成功删除原材料[' + row.name + ']');
+              this.getData();
             })
             .catch(() => {
               this.$message.error('删除原材料[' + row.name + ']失败，请检查是否有中级产品或者基础产品使用了该原材料');
             });
         })
         .catch(() => {
-          log.debug('已取消删除[' + row.name + ']')
+          log.debug('已取消删除[' + row.name + ']');
         });
-      this.getData();
     },
     add() {
       log.debug('add new in table');
