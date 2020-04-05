@@ -1,5 +1,10 @@
 package com.sophia.cake.service.api;
 
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.BasicVo;
+import com.sophia.cake.entity.FormulaType;
+import com.sophia.cake.entity.vo.FormulaVo;
+import com.sophia.cake.entity.vo.MiddleVo;
 import com.sophia.cake.mapper.BasicMapper;
 import com.sophia.cake.mapper.FormulaMapper;
 import com.sophia.cake.mapper.MaterialMapper;
@@ -9,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * @author lizhe
@@ -32,5 +38,40 @@ public abstract class BaseService {
         if (expect != actual) {
             throw new RuntimeException("operate sql failed");
         }
+    }
+
+    protected void updateBasicVo(BasicVo vo) {
+        float price = 0f;
+        Set<FormulaVo> formulaVos = vo.getFormulas();
+        for (FormulaVo formulaVo : formulaVos) {
+            // 只有原材料的ID，所以要获取原材料的价格
+            Material material = materialMapper.findMaterialById(formulaVo.getId());
+            // 计算出来总价
+            float formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
+            // 将总价设置到其中
+            formulaVo.setPrice(formulaPrice);
+            price += formulaPrice;
+        }
+        vo.setPrice(price);
+    }
+
+    protected void updateMiddleVo(MiddleVo vo) {
+        float price = 0f;
+        Set<FormulaVo> formulaVos = vo.getFormulas();
+        for (FormulaVo formulaVo : formulaVos) {
+            float formulaPrice;
+            // 原材料
+            if (formulaVo.getType().equalsIgnoreCase(FormulaType.MATERIAL.getValue())) {
+                Material material = materialMapper.findMaterialById(formulaVo.getId());
+                formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
+            }else{
+                //基础产品
+                BasicVo basicVo = basicMapper.findBasicVoById(formulaVo.getId());
+                formulaPrice = formulaVo.getCount() * basicVo.getPrice();
+            }
+            formulaVo.setPrice(formulaPrice);
+            price += formulaPrice;
+        }
+        vo.setPrice(price);
     }
 }

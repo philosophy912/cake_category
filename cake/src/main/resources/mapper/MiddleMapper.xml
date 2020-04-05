@@ -3,19 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.MiddleMapper">
 
-    <!-- Middle对象 -->
-    <resultMap id="middle" type="Middle">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="price" column="price"/>
-        <result property="unit" column="unit"/>
-        <result property="capacity" column="capacity"/>
-        <association property="materialFormulaSet" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.MaterialMapper.findMaterialFormulaById"/>
-        <association property="basicFormulaSet" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.BasicMapper.findBasicFormulaById"/>
-    </resultMap>
-
     <!-- 基于Middle的MiddleBo对象 -->
     <resultMap id="middleBo" type="MiddleBo">
         <id property="id" column="id"/>
@@ -29,25 +16,30 @@
                      select="com.sophia.cake.mapper.FormulaMapper.findFormulaByMiddleIdInBasicFormula"/>
     </resultMap>
 
-    <!-- 查找所有的中级产品 -->
-    <select id="findMiddles" resultMap="middle">
-        select *
-        from t_middle
-    </select>
+    <!-- 添加中级产品Vo -->
+    <insert id="addMiddleVo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
+        VALUES (#{name}, #{price}, #{capacity}, #{unit})
+    </insert>
 
-    <!-- 根据ID查找中级产品 -->
-    <select id="findMiddleById" resultMap="middle">
-        select *
+    <!-- 根据ID删除中级产品 -->
+    <delete id="deleteMiddleById">
+        delete
         from t_middle
         where id = #{id}
-    </select>
+    </delete>
 
-    <!-- 查找指定ID的中级产品VO -->
-    <select id="findMiddleBo" resultMap="middleBo">
-        select *
-        from t_middle
+    <!-- 更新中级产品Vo -->
+    <update id="updateMiddleVo">
+        update t_middle
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">NAME=#{name},</if>
+            <if test="unit!=null">UNIT=#{unit},</if>
+            <if test="capacity!=null">CAPACITY=#{capacity},</if>
+            <if test="price!=null">PRICE=#{price},</if>
+        </trim>
         where id = #{id}
-    </select>
+    </update>
 
     <!-- 查找所有的中级产品VO的集合 -->
     <select id="findMiddleBos" resultMap="middleBo">
@@ -62,47 +54,11 @@
         where NAME like #{name}
     </select>
 
-    <!-- 添加中级产品 -->
-    <insert id="addMiddle" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
-        VALUES (#{name}, #{price}, #{capacity}, #{unit})
-    </insert>
-
-    <!-- 添加中级产品Vo -->
-    <insert id="addMiddleVo" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into t_middle(NAME, PRICE, CAPACITY, UNIT)
-        VALUES (#{name}, #{price}, #{capacity}, #{unit})
-    </insert>
-
-    <!-- 更新中级产品 -->
-    <update id="updateMiddle">
-        update t_middle
-        <trim prefix="set" suffixOverrides=",">
-            <if test="name!=null">NAME=#{name},</if>
-            <if test="unit!=null">UNIT=#{unit},</if>
-            <if test="capacity!=null">CAPACITY=#{capacity},</if>
-            <if test="price!=null">PRICE=#{price},</if>
-        </trim>
-        where id = #{id}
-    </update>
-
-    <!-- 更新中级产品Vo -->
-    <update id="updateMiddleVo">
-        update t_middle
-        <trim prefix="set" suffixOverrides=",">
-            <if test="name!=null">NAME=#{name},</if>
-            <if test="unit!=null">UNIT=#{unit},</if>
-            <if test="capacity!=null">CAPACITY=#{capacity},</if>
-            <if test="price!=null">PRICE=#{price},</if>
-        </trim>
-        where id = #{id}
-    </update>
-
-    <!-- 根据ID删除中级产品 -->
-    <delete id="deleteMiddleById">
-        delete
+    <!-- 查找指定ID的中级产品VO -->
+    <select id="findMiddleBo" resultMap="middleBo">
+        select *
         from t_middle
         where id = #{id}
-    </delete>
+    </select>
 
 </mapper>

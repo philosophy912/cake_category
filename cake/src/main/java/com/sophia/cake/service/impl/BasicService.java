@@ -1,8 +1,5 @@
 package com.sophia.cake.service.impl;
 
-import com.sophia.cake.entity.po.Basic;
-import com.sophia.cake.entity.po.Material;
-import com.sophia.cake.entity.po.MaterialFormula;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
@@ -40,26 +37,10 @@ public class BasicService extends BaseService implements IBasicService {
     }
 
 
-    private void updateVo(BasicVo vo) {
-        float price = 0f;
-        Set<FormulaVo> formulaVos = vo.getFormulas();
-        for (FormulaVo formulaVo : formulaVos) {
-            // 只有原材料的ID，所以要获取原材料的价格
-            Material material = materialMapper.findMaterialById(formulaVo.getId());
-            // 计算出来总价
-            float formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
-            // 将总价设置到其中
-            formulaVo.setPrice(formulaPrice);
-            price += formulaPrice;
-        }
-        vo.setPrice(price);
-    }
-
-
     @Transactional
     @Override
     public void add(BasicVo basicVo) {
-        updateVo(basicVo);
+        updateBasicVo(basicVo);
         int count = 0;
         count += basicMapper.addBasicVo(basicVo);
         int pid = basicVo.getId();
@@ -92,7 +73,7 @@ public class BasicService extends BaseService implements IBasicService {
     @Transactional
     @Override
     public void update(BasicVo basicVo) {
-        updateVo(basicVo);
+        updateBasicVo(basicVo);
         int count = 0;
         Set<FormulaVo> materials = basicVo.getFormulas();
         for (FormulaVo vo : materials) {

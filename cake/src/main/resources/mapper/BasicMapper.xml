@@ -3,17 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.BasicMapper">
 
-    <!-- Basic对象 -->
-    <resultMap id="basic" type="Basic">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="price" column="price"/>
-        <result property="unit" column="unit"/>
-        <result property="capacity" column="capacity"/>
-        <association property="materialFormulaSet" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findMaterialFormulaById"/>
-    </resultMap>
-
     <!-- 基于Basic的BasicVo对象 -->
     <resultMap id="basicVo" type="BasicVo">
         <id property="id" column="id"/>
@@ -31,75 +20,18 @@
         <result property="name" column="name"/>
     </resultMap>
 
-    <!-- 查找所有的基础产品 -->
-    <select id="findBasics" resultMap="basic">
-        select *
-        from t_basic
-    </select>
-
-    <!-- 根据ID查找基础产品 -->
-    <select id="findBasicById" resultMap="basic">
-        select *
-        from t_basic
-        where id = #{id}
-    </select>
-
-    <!-- 根据名字查找基础产品 -->
-    <select id="findBasicByName" resultMap="basic">
-        select *
-        from t_basic
-        where name = #{name}
-    </select>
-
-    <!-- 查找所有的基础产品Vo -->
-    <select id="findBasicVos" resultMap="basicVo">
-        select *
-        from t_basic
-    </select>
-
-    <!-- 根据基础产品的ID查找基础产品Vo -->
-    <select id="findBasicVoById" resultMap="basicVo">
-        select *
-        from t_basic
-        where id = #{id}
-    </select>
-
-    <!-- 查找所有的基础产品Vo -->
-    <select id="findBasicVosByName" resultMap="basicVo">
-        select *
-        from t_basic
-        where NAME like #{name}
-    </select>
-
-    <!-- 查找所有的基础产品的BVo -->
-    <select id="findBVos" resultMap="bvo">
-        select id, name
-        from t_basic
-    </select>
-
-    <!-- 添加基础产品 -->
-    <insert id="addBasic" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
-        insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
-        VALUES (#{name}, #{price}, #{capacity}, #{unit})
-    </insert>
-
     <!-- 添加基础产品Vo -->
     <insert id="addBasicVo" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
         insert into t_basic(NAME, PRICE, CAPACITY, UNIT)
         VALUES (#{name}, #{price}, #{capacity}, #{unit})
     </insert>
 
-    <!--  更新基础产品 -->
-    <update id="updateBasic">
-        update t_basic
-        <trim prefix="set" suffixOverrides=",">
-            <if test="name!=null">NAME=#{name},</if>
-            <if test="unit!=null">UNIT=#{unit},</if>
-            <if test="capacity!=null">CAPACITY=#{capacity},</if>
-            <if test="price!=null">PRICE=#{price},</if>
-        </trim>
+    <!-- 根据ID删除基础产品 -->
+    <delete id="deleteBasicById">
+        delete
+        from t_basic
         where id = #{id}
-    </update>
+    </delete>
 
     <!--  更新基础产品Vo -->
     <update id="updateBasicVo">
@@ -113,11 +45,30 @@
         where id = #{id}
     </update>
 
-    <!-- 根据ID删除基础产品 -->
-    <delete id="deleteBasicById">
-        delete
+    <!-- 根据基础产品的ID查找基础产品Vo -->
+    <select id="findBasicVoById" resultMap="basicVo">
+        select *
         from t_basic
         where id = #{id}
-    </delete>
+    </select>
+
+    <!-- 查找所有的基础产品的BVo -->
+    <select id="findBVos" resultMap="bvo">
+        select id, name
+        from t_basic
+    </select>
+
+    <!-- 查找所有的基础产品Vo -->
+    <select id="findBasicVos" resultMap="basicVo">
+        select *
+        from t_basic
+    </select>
+
+    <!-- 查找所有的基础产品Vo -->
+    <select id="findBasicVosByName" resultMap="basicVo">
+        select *
+        from t_basic
+        where NAME like #{name}
+    </select>
 
 </mapper>

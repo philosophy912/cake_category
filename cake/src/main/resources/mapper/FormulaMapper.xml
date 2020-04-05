@@ -39,42 +39,70 @@
         <result property="pid" column="middle_id"/>
     </resultMap>
 
-    <!-- MaterialFormula对象 -->
-    <resultMap id="materialFormula" type="MaterialFormula">
-        <id property="id" column="id"/>
-        <result property="count" column="count"/>
-        <result property="price" column="price"/>
-        <result property="type" column="type"/>
-        <association property="material" column="material_id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.MaterialMapper.findMaterialById"/>
-    </resultMap>
+    <!-- 批量添加原材料配方到基础产品中 -->
+    <insert id="addMaterialFormulasInBasic" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
+        VALUES
+        <foreach collection="collection" item="formula" separator=",">
+            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
+        </foreach>
+    </insert>
 
-    <!-- BasicFormula对象 -->
-    <resultMap id="basicFormula" type="BasicFormula">
-        <id property="id" column="id"/>
-        <result property="count" column="count"/>
-        <result property="price" column="price"/>
-        <result property="type" column="type"/>
-        <association property="basic" column="basic_id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.BasicMapper.findBasicById"/>
-    </resultMap>
+    <!-- 添加原材料配方到中级产品中 -->
+    <insert id="addMaterialFormulaInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
 
-    <!-- 在原材料配方表中根据ID查找配方 -->
-    <select id="findBasicFormulaById" resultMap="materialFormula">
-        select *
+    <!-- 添加基础产品配方到中级产品中 -->
+    <insert id="addBasicFormulaInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <!-- 在原材料配方表中根据配方ID删除配方 -->
+    <delete id="deleteFormulaByIdInMaterialFormula">
+        delete
         from t_material_formula
         where id = #{id}
-    </select>
+    </delete>
 
-    <!-- 在基础产品配方表中根据ID查找配方 -->
-    <select id="findMaterialFormulaById" resultMap="basicFormula">
-        select *
+    <!-- 在基础产品配方表中根据配方ID删除配方 -->
+    <delete id="deleteFormulaByIdInBasicFormula">
+        delete
         from t_basic_formula
         where id = #{id}
-    </select>
+    </delete>
 
-    <!-- 在原材料配方表中根据配方ID查找配方-->
-    <select id="findFormulaByIdInMaterialFormula" resultMap="materialBasic">
+    <!-- 更新原材料配方 -->
+    <update id="updateMaterialFormula">
+        update t_material_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test="count!=null">COUNT=#{count},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="type!=null">TYPE=#{type},</if>
+            <if test="id!=null">MATERIAL_ID=#{id},</if>
+            <if test="pid!=null">BASIC_ID=#{pid},</if>
+        </trim>
+        where id = #{fid}
+    </update>
+
+
+    <!-- 更新基础产品配方 -->
+    <update id="updateBasicFormula">
+        update t_basic_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test="count!=null">COUNT=#{count},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="type!=null">TYPE=#{type},</if>
+            <if test="id!=null">BASIC_ID=#{id},</if>
+            <if test="pid!=null">MIDDLE_ID=#{pid},</if>
+        </trim>
+        where id = #{fid}
+    </update>
+
+    <!-- 在原材料配方表中根据基础产品的ID查找配方 -->
+    <select id="findFormulaByBasicIdInMaterialFormula" resultMap="materialBasic">
         select mf.id,
                mf.count,
                mf.price,
@@ -85,22 +113,7 @@
                m.price_per_unit
         from t_material_formula as mf
                  left join t_material as m on mf.material_id = m.id
-        where mf.id = #{id}
-    </select>
-
-    <!-- 在基础产品配方表中根据配方ID查找配方 -->
-    <select id="findFormulaByIdInBasicFormula" resultMap="basic">
-        SELECT bf.id,
-               bf.count,
-               bf.price,
-               bf.type,
-               bf.basic_id,
-               bf.middle_id,
-               b.name,
-               b.price
-        FROM t_basic_formula AS bf
-                 LEFT JOIN t_basic AS b ON bf.basic_id = b.id
-        WHERE bf.id = #{id};
+        where mf.basic_id = #{id}
     </select>
 
     <!-- 在原材料配方表中根据中级产品的ID查找配方 -->
@@ -118,21 +131,6 @@
         where mf.middle_id = #{id}
     </select>
 
-    <!-- 在原材料配方表中根据基础产品的ID查找配方 -->
-    <select id="findFormulaByBasicIdInMaterialFormula" resultMap="materialBasic">
-        select mf.id,
-               mf.count,
-               mf.price,
-               mf.type,
-               mf.material_id,
-               mf.basic_id,
-               m.name,
-               m.price_per_unit
-        from t_material_formula as mf
-                 left join t_material as m on mf.material_id = m.id
-        where mf.basic_id = #{id}
-    </select>
-
     <!-- 在基础产品配方表中根据中级产品的ID查找配方 -->
     <select id="findFormulaByMiddleIdInBasicFormula" resultMap="basic">
         SELECT bf.id,
@@ -147,111 +145,5 @@
                  LEFT JOIN t_basic AS b ON bf.basic_id = b.id
         WHERE bf.middle_id = #{id};
     </select>
-
-    <!-- 添加原材料配方到基础产品中 -->
-    <insert id="addMaterialFormulaInBasic" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
-        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
-        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
-    </insert>
-
-    <!-- 添加基础产品配方到中级产品中 -->
-    <insert id="addBasicFormulaInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
-        insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
-        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
-    </insert>
-
-    <!-- 添加原材料配方到中级产品中 -->
-    <insert id="addMaterialFormulaInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
-        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
-        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
-    </insert>
-
-    <!-- 批量添加原材料配方到基础产品中 -->
-    <insert id="addMaterialFormulasInBasic" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
-        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
-        VALUES
-        <foreach collection="collection" item="formula" separator=",">
-            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
-        </foreach>
-    </insert>
-
-    <!-- 批量添加基础产品配方到中级产品中 -->
-    <insert id="addBasicFormulasInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
-        insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
-        VALUES
-        <foreach collection="collection" item="formula" separator=",">
-            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
-        </foreach>
-    </insert>
-
-    <!-- 批量添加原材料配方到中级产品中 -->
-    <insert id="addMaterialFormulasInMiddle" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
-        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
-        VALUES
-        <foreach collection="collection" item="formula" separator=",">
-            (#{formula.count}, #{formula.price}, #{formula.type}, #{formula.id}, #{formula.pid})
-        </foreach>
-    </insert>
-
-    <!-- 更新原材料配方 -->
-    <update id="updateMaterialFormula">
-        update t_material_formula
-        <trim prefix="set" suffixOverrides=",">
-            <if test="count!=null">COUNT=#{count},</if>
-            <if test="price!=null">price=#{price},</if>
-            <if test="type!=null">TYPE=#{type},</if>
-            <if test="id!=null">MATERIAL_ID=#{id},</if>
-            <if test="pid!=null">BASIC_ID=#{pid},</if>
-        </trim>
-        where id = #{fid}
-    </update>
-
-    <!-- 更新基础产品配方 -->
-    <update id="updateBasicFormula">
-        update t_basic_formula
-        <trim prefix="set" suffixOverrides=",">
-            <if test="count!=null">COUNT=#{count},</if>
-            <if test="price!=null">price=#{price},</if>
-            <if test="type!=null">TYPE=#{type},</if>
-            <if test="id!=null">BASIC_ID=#{id},</if>
-            <if test="pid!=null">MIDDLE_ID=#{pid},</if>
-        </trim>
-        where id = #{fid}
-    </update>
-
-    <!-- 在原材料配方表中根据配方ID删除配方 -->
-    <delete id="deleteFormulaByIdInMaterialFormula">
-        delete
-        from t_material_formula
-        where id = #{id}
-    </delete>
-
-    <!-- 在基础产品配方表中根据配方ID删除配方 -->
-    <delete id="deleteFormulaByIdInBasicFormula">
-        delete
-        from t_basic_formula
-        where id = #{id}
-    </delete>
-
-    <!-- 在原材料配方表中根据基础产品ID删除配方 -->
-    <delete id="deleteFormulaByBasicIdInMaterialFormula">
-        delete
-        from t_material_formula
-        where basic_id = #{id}
-    </delete>
-
-    <!-- 在原材料配方表中根据中级产品ID删除配方 -->
-    <delete id="deleteFormulaByMiddleIdInMaterialFormula">
-        delete
-        from t_material_formula
-        where middle_id = #{id}
-    </delete>
-
-    <!-- 在基础产品配方表中根据中级产品ID删除配方-->
-    <delete id="deleteFormulaByMiddleIdInBasicFormula">
-        delete
-        from t_basic_formula
-        where middle_id = #{id}
-    </delete>
 
 </mapper>

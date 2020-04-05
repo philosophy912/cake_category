@@ -3,6 +3,7 @@ package com.sophia.cake.mapper;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,67 +14,85 @@ import javax.annotation.Resource;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lizhe
- * @date 2020/3/25 10:14
- **/
+ * @date 2020-04-05 22:45
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-class MaterialMapperTest {
+public class MaterialMapperTest {
     @Resource
     private MaterialMapper mapper;
 
     private Material material;
 
+    private Integer id = 12;
+    private String unit = "毫升";
+
     @BeforeEach
-    public void Before() {
+    void setUp() {
         material = new Material();
         material.setName("test");
-        material.setPrice(15f);
         material.setCapacity(1000);
+        material.setPrice(150f);
         material.setPricePerUnit(material.getPrice() / material.getCapacity());
         material.setUnit("升");
     }
 
-
-    @Test
-    void findMaterials() {
-        List<Material> materials = mapper.findMaterials();
-        materials.forEach(material -> log.info("material = {}", material));
+    @AfterEach
+    void tearDown() {
+        Material material = mapper.findMaterialById(id);
+        material.setUnit("克");
+        mapper.updateMaterial(material);
     }
 
     @Test
     void findMaterialById() {
-        Material material = mapper.findMaterialById(19);
-        log.info("material = {}", material);
-    }
-
-    @Test
-    void addMaterial() {
-        int result = mapper.addMaterial(material);
-        log.info("id = {}", material.getId());
-        log.info("result = {}", result);
-    }
-
-    @Test
-    void updateMaterial() {
-        material = mapper.findMaterialById(19);
-        material.setUnit("开尔文");
-        int result = mapper.updateMaterial(material);
-        log.info("result = {}", result);
-    }
-
-    @Test
-    void deleteMaterialByID() {
-        int result = mapper.deleteMaterialById(1);
-        log.info("result = {}", result);
+        Material material = mapper.findMaterialById(1);
+        assertNotNull(material);
     }
 
     @Test
     void findMVos() {
         List<MVo> mVos = mapper.findMVos();
-        mVos.forEach(mVo -> log.info("mVo ={}", mVo));
+        assertTrue(mVos.size() > 10);
+
+    }
+
+    @Test
+    void findMaterials() {
+        List<Material> materials = mapper.findMaterials();
+        assertTrue(materials.size() > 10);
+    }
+
+    @Test
+    void findMaterialsByName() {
+        List<Material> materials = mapper.findMaterialsByName("%糖%");
+        assertTrue(materials.size() > 3);
+    }
+
+    @Test
+    void addMaterial() {
+        int result = mapper.addMaterial(material);
+        assertEquals(1, result);
+    }
+
+    @Test
+    void deleteMaterialById() {
+        if (material.getId() != null) {
+            int result = mapper.deleteMaterialById(material.getId());
+            assertEquals(1, result);
+        }
+    }
+
+    @Test
+    void updateMaterial() {
+        Material material = mapper.findMaterialById(id);
+        material.setUnit(unit);
+        int result = mapper.updateMaterial(material);
+        assertEquals(1, result);
     }
 }

@@ -1,4 +1,4 @@
-package com.sophia.cake.entity.vo;
+package com.sophia.cake.entity;
 
 import lombok.Getter;
 

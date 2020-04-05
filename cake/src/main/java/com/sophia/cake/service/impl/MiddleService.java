@@ -1,9 +1,7 @@
 package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.bo.MiddleBo;
-import com.sophia.cake.entity.po.Material;
-import com.sophia.cake.entity.vo.BasicVo;
-import com.sophia.cake.entity.vo.FormulaType;
+import com.sophia.cake.entity.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
 import com.sophia.cake.service.api.BaseService;
@@ -25,25 +23,7 @@ import java.util.Set;
 public class MiddleService extends BaseService implements IMiddleService {
 
 
-    private void updateVo(MiddleVo vo) {
-        float price = 0f;
-        Set<FormulaVo> formulaVos = vo.getFormulas();
-        for (FormulaVo formulaVo : formulaVos) {
-            float formulaPrice;
-            // 原材料
-            if (formulaVo.getType().equalsIgnoreCase(FormulaType.MATERIAL.getValue())) {
-                Material material = materialMapper.findMaterialById(formulaVo.getId());
-                formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
-            }else{
-                //基础产品
-                BasicVo basicVo = basicMapper.findBasicVoById(formulaVo.getId());
-                formulaPrice = formulaVo.getCount() * basicVo.getPrice();
-            }
-            formulaVo.setPrice(formulaPrice);
-            price += formulaPrice;
-        }
-        vo.setPrice(price);
-    }
+
 
     @Override
     public List<MiddleVo> query() {
@@ -69,7 +49,7 @@ public class MiddleService extends BaseService implements IMiddleService {
     @Transactional
     @Override
     public void add(MiddleVo middleVo) {
-        updateVo(middleVo);
+        updateMiddleVo(middleVo);
         int count = 0;
         count += middleMapper.addMiddleVo(middleVo);
         Set<FormulaVo> formulas = middleVo.getFormulas();
@@ -113,7 +93,7 @@ public class MiddleService extends BaseService implements IMiddleService {
     }
 
     public void update(MiddleVo middleVo) {
-        updateVo(middleVo);
+        updateMiddleVo(middleVo);
         int count = 0;
         Set<FormulaVo> formulas = middleVo.getFormulas();
         for (FormulaVo vo : formulas) {
