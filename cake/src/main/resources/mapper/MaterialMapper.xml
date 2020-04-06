@@ -25,7 +25,7 @@
     </insert>
 
     <!-- 删除原材料 -->
-    <delete id="deleteMaterialByID">
+    <delete id="deleteMaterialById">
         delete
         from t_material
         where id = #{id}

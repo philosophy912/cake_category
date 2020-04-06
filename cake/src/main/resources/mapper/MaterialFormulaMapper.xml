@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sophia.cake.mapper.MaterialFormulaMapper">
+
+    <!-- 基于FormulaVo的Basic查询结果 -->
+    <resultMap id="basic" type="FormulaVo">
+        <id property="fid" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="id" column="material_id"/>
+        <result property="formulaPrice" column="perPrice"/>
+        <result property="pid" column="basic_id"/>
+    </resultMap>
+
+    <!-- 基于FormulaVo的Middle查询结果 -->
+    <resultMap id="middle" type="FormulaVo">
+        <id property="fid" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type"/>
+        <result property="name" column="name"/>
+        <result property="id" column="material_id"/>
+        <result property="formulaPrice" column="perPrice"/>
+        <result property="pid" column="middle_id"/>
+    </resultMap>
+
+    <!-- 添加基础产品的原材料配方 -->
+    <insert id="addBasicFormulaVo" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <!-- 添加中级产品的原材料配方 -->
+    <insert id="addMiddleFormulaVo" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
+        insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, MIDDLE_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <!-- 根据基础产品的ID删除原材料配方 -->
+    <delete id="deleteBasicFormulaVoById">
+        delete
+        from t_material_formula
+        where BASIC_ID = #{id}
+    </delete>
+
+    <!-- 根据中级产品的ID删除原材料配方 -->
+    <delete id="deleteMiddleFormulaVoById">
+        delete
+        from t_material_formula
+        where MIDDLE_ID = #{id}
+    </delete>
+
+    <!-- 更新配方 -->
+    <update id="updateFormulaVo">
+        update t_material_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test="count!=null">COUNT=#{count},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="id!=null">MATERIAL_ID=#{id},</if>
+        </trim>
+        where id = #{fid}
+    </update>
+
+    <!-- 根据基础产品的ID查询原材料配方 -->
+    <select id="findFormulaVoByBasicId" resultMap="basic">
+        select mf.id,
+               mf.count,
+               mf.price,
+               mf.type,
+               mf.material_id,
+               mf.basic_id,
+               m.name,
+               m.price_per_unit AS perPrice
+        from t_material_formula as mf
+                 left join t_material as m on mf.material_id = m.id
+        where mf.basic_id = #{id}
+    </select>
+
+    <!-- 根据中级产品的ID查询原材料配方 -->
+    <select id="findFormulaVoByMiddleId" resultMap="middle">
+        select mf.id,
+               mf.count,
+               mf.price,
+               mf.type,
+               mf.material_id,
+               mf.middle_id,
+               m.name,
+               m.price_per_unit AS perPrice
+        from t_material_formula as mf
+                 left join t_material as m on mf.material_id = m.id
+        where mf.middle_id = #{id}
+    </select>
+
+</mapper>

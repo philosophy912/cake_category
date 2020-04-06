@@ -49,63 +49,63 @@ public class MiddleService extends BaseService implements IMiddleService {
     @Transactional
     @Override
     public void add(MiddleVo middleVo) {
-        updateMiddleVo(middleVo);
-        int count = 0;
-        count += middleMapper.addMiddleVo(middleVo);
-        Set<FormulaVo> formulas = middleVo.getFormulas();
-        for (FormulaVo vo : formulas) {
-            FormulaType type = FormulaType.fromValue(vo.getType());
-            if (type == FormulaType.MATERIAL) {
-
-                count += formulaMapper.addMaterialFormulaInMiddle(vo);
-            } else if (type == FormulaType.BASIC) {
-                count += formulaMapper.addBasicFormulaInMiddle(vo);
-            }
-        }
-        checkResult(count, formulas.size() + 1);
+//        updateMiddleVo(middleVo);
+//        int count = 0;
+//        count += middleMapper.addMiddleVo(middleVo);
+//        Set<FormulaVo> formulas = middleVo.getFormulas();
+//        for (FormulaVo vo : formulas) {
+//            FormulaType type = FormulaType.fromValue(vo.getType());
+//            if (type == FormulaType.MATERIAL) {
+//
+//                count += formulaMapper.addMaterialFormulaInMiddle(vo);
+//            } else if (type == FormulaType.BASIC) {
+//                count += formulaMapper.addBasicFormulaInMiddle(vo);
+//            }
+//        }
+//        checkResult(count, formulas.size() + 1);
     }
 
     @Transactional
     @Override
     public void delete(MiddleVo middleVo) {
-        MiddleBo bo = middleMapper.findMiddleBo(middleVo.getId());
-        if (bo == null) {
-            throw new RuntimeException("not found Middle where id = " + middleVo.getId());
-        } else {
-            MiddleVo mvo = utils.convert(bo);
-            int middleId = mvo.getId();
-            log.debug("try to delete middle id = {}", middleId);
-            int count = 0;
-            Set<FormulaVo> formulas = mvo.getFormulas();
-            for (FormulaVo vo : formulas) {
-                log.debug("vo = {}", vo);
-                FormulaType type = FormulaType.fromValue(vo.getType());
-                if (type == FormulaType.MATERIAL) {
-                    count += formulaMapper.deleteFormulaByIdInMaterialFormula(vo.getFid());
-                } else if (type == FormulaType.BASIC) {
-                    count += formulaMapper.deleteFormulaByIdInBasicFormula(vo.getFid());
-                }
-            }
-            count += middleMapper.deleteMiddleById(middleId);
-            checkResult(count, formulas.size() + 1);
-        }
+//        MiddleBo bo = middleMapper.findMiddleBo(middleVo.getId());
+//        if (bo == null) {
+//            throw new RuntimeException("not found Middle where id = " + middleVo.getId());
+//        } else {
+//            MiddleVo mvo = utils.convert(bo);
+//            int middleId = mvo.getId();
+//            log.debug("try to delete middle id = {}", middleId);
+//            int count = 0;
+//            Set<FormulaVo> formulas = mvo.getFormulas();
+//            for (FormulaVo vo : formulas) {
+//                log.debug("vo = {}", vo);
+//                FormulaType type = FormulaType.fromValue(vo.getType());
+//                if (type == FormulaType.MATERIAL) {
+//                    count += formulaMapper.deleteFormulaByIdInMaterialFormula(vo.getFid());
+//                } else if (type == FormulaType.BASIC) {
+//                    count += formulaMapper.deleteFormulaByIdInBasicFormula(vo.getFid());
+//                }
+//            }
+//            count += middleMapper.deleteMiddleById(middleId);
+//            checkResult(count, formulas.size() + 1);
+//        }
 
     }
 
     public void update(MiddleVo middleVo) {
-        updateMiddleVo(middleVo);
-        int count = 0;
-        Set<FormulaVo> formulas = middleVo.getFormulas();
-        for (FormulaVo vo : formulas) {
-            FormulaType type = FormulaType.fromValue(vo.getType());
-            if (type == FormulaType.MATERIAL) {
-                count += formulaMapper.updateMaterialFormula(vo);
-            } else if (type == FormulaType.BASIC) {
-                count += formulaMapper.updateBasicFormula(vo);
-            }
-        }
-        count += middleMapper.updateMiddleVo(middleVo);
-        checkResult(count, formulas.size() + 1);
+//        updateMiddleVo(middleVo);
+//        int count = 0;
+//        Set<FormulaVo> formulas = middleVo.getFormulas();
+//        for (FormulaVo vo : formulas) {
+//            FormulaType type = FormulaType.fromValue(vo.getType());
+//            if (type == FormulaType.MATERIAL) {
+//                count += formulaMapper.updateMaterialFormula(vo);
+//            } else if (type == FormulaType.BASIC) {
+//                count += formulaMapper.updateBasicFormula(vo);
+//            }
+//        }
+//        count += middleMapper.updateMiddleVo(middleVo);
+//        checkResult(count, formulas.size() + 1);
     }
 
 }

@@ -11,9 +11,9 @@
         <result property="capacity" column="capacity"/>
         <result property="price" column="price"/>
         <association property="materials" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findFormulaByMiddleIdInMaterialFormula"/>
+                     select="com.sophia.cake.mapper.MaterialFormulaMapper.findFormulaVoByMiddleId"/>
         <association property="basics" column="id" fetchType="lazy"
-                     select="com.sophia.cake.mapper.FormulaMapper.findFormulaByMiddleIdInBasicFormula"/>
+                     select="com.sophia.cake.mapper.BasicFormulaMapper.findFormulaVoById"/>
     </resultMap>
 
     <!-- 添加中级产品Vo -->

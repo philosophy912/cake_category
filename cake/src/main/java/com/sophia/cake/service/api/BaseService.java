@@ -5,8 +5,9 @@ import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.FormulaType;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
+import com.sophia.cake.mapper.BasicFormulaMapper;
 import com.sophia.cake.mapper.BasicMapper;
-import com.sophia.cake.mapper.FormulaMapper;
+import com.sophia.cake.mapper.MaterialFormulaMapper;
 import com.sophia.cake.mapper.MaterialMapper;
 import com.sophia.cake.mapper.MiddleMapper;
 import com.sophia.cake.utils.EntityUtils;
@@ -22,14 +23,17 @@ import java.util.Set;
  */
 @Slf4j
 public abstract class BaseService {
-    @Resource
-    protected FormulaMapper formulaMapper;
+
     @Resource
     protected BasicMapper basicMapper;
     @Resource
     protected MaterialMapper materialMapper;
     @Resource
     protected MiddleMapper middleMapper;
+    @Resource
+    protected BasicFormulaMapper basicFormulaMapper;
+    @Resource
+    protected MaterialFormulaMapper materialFormulaMapper;
     @Autowired
     protected EntityUtils utils;
 

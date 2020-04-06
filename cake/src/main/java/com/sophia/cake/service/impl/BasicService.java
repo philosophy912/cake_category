@@ -40,47 +40,47 @@ public class BasicService extends BaseService implements IBasicService {
     @Transactional
     @Override
     public void add(BasicVo basicVo) {
-        updateBasicVo(basicVo);
-        int count = 0;
-        count += basicMapper.addBasicVo(basicVo);
-        int pid = basicVo.getId();
-        Set<FormulaVo> formulas = basicVo.getFormulas().stream()
-                .peek(formulaVo -> formulaVo.setPid(pid))
-                .collect(Collectors.toSet());
-        count += formulaMapper.addMaterialFormulasInBasic(formulas);
-        checkResult(count, formulas.size() + 1);
+//        updateBasicVo(basicVo);
+//        int count = 0;
+//        count += basicMapper.addBasicVo(basicVo);
+//        int pid = basicVo.getId();
+//        Set<FormulaVo> formulas = basicVo.getFormulas().stream()
+//                .peek(formulaVo -> formulaVo.setPid(pid))
+//                .collect(Collectors.toSet());
+//        count += formulaMapper.addMaterialFormulasInBasic(formulas);
+//        checkResult(count, formulas.size() + 1);
     }
 
     @Transactional
     @Override
     public void delete(BasicVo basicVo) {
-        int count = 0;
-        BasicVo basic = basicMapper.findBasicVoById(basicVo.getId());
-        if (basic == null) {
-            throw new RuntimeException("not found Basic where id = " + basicVo.getId());
-        } else {
-            int basicId = basic.getId();
-            Set<FormulaVo> formulas = basic.getFormulas();
-            for (FormulaVo formula : formulas) {
-                count += formulaMapper.deleteFormulaByIdInMaterialFormula(formula.getFid());
-            }
-            count += basicMapper.deleteBasicById(basicId);
-            checkResult(count, formulas.size() + 1);
-        }
+//        int count = 0;
+//        BasicVo basic = basicMapper.findBasicVoById(basicVo.getId());
+//        if (basic == null) {
+//            throw new RuntimeException("not found Basic where id = " + basicVo.getId());
+//        } else {
+//            int basicId = basic.getId();
+//            Set<FormulaVo> formulas = basic.getFormulas();
+//            for (FormulaVo formula : formulas) {
+//                count += formulaMapper.deleteFormulaByIdInMaterialFormula(formula.getFid());
+//            }
+//            count += basicMapper.deleteBasicById(basicId);
+//            checkResult(count, formulas.size() + 1);
+//        }
 
     }
 
     @Transactional
     @Override
     public void update(BasicVo basicVo) {
-        updateBasicVo(basicVo);
-        int count = 0;
-        Set<FormulaVo> materials = basicVo.getFormulas();
-        for (FormulaVo vo : materials) {
-            count += formulaMapper.updateMaterialFormula(vo);
-        }
-        count += basicMapper.updateBasicVo(basicVo);
-        checkResult(count, materials.size() + 1);
+//        updateBasicVo(basicVo);
+//        int count = 0;
+//        Set<FormulaVo> materials = basicVo.getFormulas();
+//        for (FormulaVo vo : materials) {
+//            count += formulaMapper.updateMaterialFormula(vo);
+//        }
+//        count += basicMapper.updateBasicVo(basicVo);
+//        checkResult(count, materials.size() + 1);
     }
 
 

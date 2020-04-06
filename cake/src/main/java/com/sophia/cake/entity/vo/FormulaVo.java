@@ -60,4 +60,5 @@ public class FormulaVo implements Serializable {
      */
     @ApiModelProperty(value = "(基础产品/中级产品)ID")
     private Integer pid;
+
 }

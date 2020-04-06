@@ -3,7 +3,6 @@ package com.sophia.cake.mapper;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -29,9 +28,6 @@ public class MaterialMapperTest {
 
     private Material material;
 
-    private Integer id = 12;
-    private String unit = "毫升";
-
     @BeforeEach
     void setUp() {
         material = new Material();
@@ -42,12 +38,6 @@ public class MaterialMapperTest {
         material.setUnit("升");
     }
 
-    @AfterEach
-    void tearDown() {
-        Material material = mapper.findMaterialById(id);
-        material.setUnit("克");
-        mapper.updateMaterial(material);
-    }
 
     @Test
     void findMaterialById() {
@@ -82,16 +72,18 @@ public class MaterialMapperTest {
 
     @Test
     void deleteMaterialById() {
-        if (material.getId() != null) {
-            int result = mapper.deleteMaterialById(material.getId());
-            assertEquals(1, result);
-        }
+        int result = mapper.deleteMaterialById(120);
+        assertEquals(0, result);
     }
 
     @Test
     void updateMaterial() {
-        Material material = mapper.findMaterialById(id);
-        material.setUnit(unit);
+        Material material = mapper.findMaterialById(1);
+        if(material.getUnit().equalsIgnoreCase("克")){
+            material.setUnit("毫升");
+        }else{
+            material.setUnit("克");
+        }
         int result = mapper.updateMaterial(material);
         assertEquals(1, result);
     }

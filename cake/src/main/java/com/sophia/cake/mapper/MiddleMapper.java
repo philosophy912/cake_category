@@ -10,16 +10,16 @@ import java.util.List;
  * @date 2020-04-05 22:10
  */
 public interface MiddleMapper {
-    // 查找所有的中级产品VO的集合
-    List<MiddleBo> findMiddleBos();
-    // 根据名字查找所有的中级产品VO
-    List<MiddleBo> findMiddleBosByName(String s);
     // 添加中级产品Vo
     int addMiddleVo(MiddleVo middleVo);
-    // 查找指定ID的中级产品VO
-    MiddleBo findMiddleBo(Integer id);
     // 根据ID删除中级产品
     int deleteMiddleById(int middleId);
     // 更新中级产品Vo
     int updateMiddleVo(MiddleVo middleVo);
+    // 查找所有的中级产品VO的集合
+    List<MiddleBo> findMiddleBos();
+    // 根据名字查找所有的中级产品VO
+    List<MiddleBo> findMiddleBosByName(String name);
+    // 查找指定ID的中级产品VO
+    MiddleBo findMiddleBo(Integer id);
 }

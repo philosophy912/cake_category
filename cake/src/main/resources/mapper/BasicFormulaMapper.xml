@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sophia.cake.mapper.BasicFormulaMapper">
+
+    <resultMap id="formulaVo" type="FormulaVo">
+        <id property="fid" column="id"/>
+        <result property="count" column="count"/>
+        <result property="price" column="price"/>
+        <result property="type" column="type" />
+        <result property="name" column="name"/>
+        <result property="id" column="basic_id"/>
+        <result property="formulaPrice" column="perPrice"/>
+        <result property="pid" column="middle_id"/>
+    </resultMap>
+
+    <!-- 添加中级产品的基础产品配方 -->
+    <insert id="addFormulaVo" useGeneratedKeys="true" keyProperty="fid" keyColumn="id">
+        insert into t_basic_formula(COUNT, PRICE, TYPE, BASIC_ID, MIDDLE_ID)
+        VALUES (#{count}, #{price}, #{type}, #{id}, #{pid})
+    </insert>
+
+    <!-- 根据中级产品的ID删除基础产品配方 -->
+    <delete id="deleteFormulaVoById">
+        delete
+        from t_basic_formula
+        where middle_id = #{id}
+    </delete>
+
+    <!-- 更新中级产品的基础产品配方 -->
+    <update id="updateFormulaVo">
+        update t_basic_formula
+        <trim prefix="set" suffixOverrides=",">
+            <if test="count!=null">COUNT=#{count},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="id!=null">BASIC_ID=#{id},</if>
+        </trim>
+        where middle_id = #{fid}
+    </update>
+
+    <!-- 根据中级产品的ID查询基础产品配方 -->
+    <select id="findFormulaVoById" resultMap="formulaVo">
+        select bf.id, bf.count, bf.price, bf.type, bf.basic_id, bf.middle_id, b.name, b.price as perPrice
+        from t_basic_formula as bf
+                 left join t_basic as b ON bf.basic_id = b.id
+        where bf.middle_id = #{id}
+    </select>
+</mapper>
