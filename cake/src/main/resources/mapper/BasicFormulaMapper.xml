@@ -3,15 +3,25 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sophia.cake.mapper.BasicFormulaMapper">
 
+    <!-- 基于FormulaVo的Basic查询结果 -->
     <resultMap id="formulaVo" type="FormulaVo">
         <id property="fid" column="id"/>
         <result property="count" column="count"/>
         <result property="price" column="price"/>
-        <result property="type" column="type" />
+        <result property="type" column="type"/>
         <result property="name" column="name"/>
         <result property="id" column="basic_id"/>
         <result property="formulaPrice" column="perPrice"/>
         <result property="pid" column="middle_id"/>
+    </resultMap>
+
+    <!-- 基于FormulaBo的Basic查询结果 -->
+    <resultMap id="formulaBo" type="FormulaBo">
+        <id property="id" column="id"/>
+        <result property="count" column="count"/>
+        <result property="material_id" column="material_id"/>
+        <result property="middle_id" column="middle_id"/>
+        <result property="basic_id" column="basic_id"/>
     </resultMap>
 
     <!-- 添加中级产品的基础产品配方 -->
@@ -32,17 +42,39 @@
         update t_basic_formula
         <trim prefix="set" suffixOverrides=",">
             <if test="count!=null">COUNT=#{count},</if>
-            <if test="price!=null">price=#{price},</if>
+            <if test="price!=null">PRICE=#{price},</if>
             <if test="id!=null">BASIC_ID=#{id},</if>
         </trim>
         where middle_id = #{fid}
     </update>
 
+    <!-- 更新配方价格 -->
+    <update id="updateFormulaPrice">
+        update t_basic_formula
+        set PRICE = #{price}
+        where id = #{id}
+    </update>
+
     <!-- 根据中级产品的ID查询基础产品配方 -->
     <select id="findFormulaVoById" resultMap="formulaVo">
-        select bf.id, bf.count, bf.price, bf.type, bf.basic_id, bf.middle_id, b.name, b.price as perPrice
+        select bf.id,
+               bf.count,
+               bf.price,
+               bf.type,
+               bf.basic_id,
+               bf.middle_id,
+               b.name,
+               b.price as perPrice
         from t_basic_formula as bf
                  left join t_basic as b ON bf.basic_id = b.id
         where bf.middle_id = #{id}
     </select>
+
+    <!-- 根据中级产品的ID查找FormulaBo对象 -->
+    <select id="findFormulaBoByBasicId" resultMap="formulaBo">
+        select id, basic_id, middle_id, count
+        from t_basic_formula
+        where basic_id = #{id}
+    </select>
+
 </mapper>

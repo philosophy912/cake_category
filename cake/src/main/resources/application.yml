@@ -4,7 +4,8 @@ server:
 spring:
   datasource:
     #配置h2数据库的连接地址， 当前配置的是以文件方式连接
-    url: jdbc:mysql://192.168.50.30:3307/caketest?setUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://10.100.193.59:3306/cake?setUnicode=true&characterEncoding=utf8
+    # url: jdbc:mysql://192.168.50.30:3307/caketest?setUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root

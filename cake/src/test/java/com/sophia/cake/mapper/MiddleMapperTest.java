@@ -1,5 +1,6 @@
 package com.sophia.cake.mapper;
 
+import com.philosophy.base.util.NumericUtils;
 import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.po.Middle;
 import com.sophia.cake.entity.vo.BasicVo;
@@ -91,5 +92,12 @@ class MiddleMapperTest {
         }
         int result = mapper.updateMiddleVo(utils.convert(middleBo));
         assertEquals(result, 1);
+    }
+
+    @Test
+    void updateMiddlePrice() {
+        float price = NumericUtils.randomFloat(10, 1000);
+        int result = mapper.updateMiddlePrice(3, price);
+        assertEquals(1, result);
     }
 }

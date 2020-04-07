@@ -27,6 +27,15 @@
         <result property="pid" column="middle_id"/>
     </resultMap>
 
+    <!-- 基于FormulaBo的Basic查询结果 -->
+    <resultMap id="formulaBo" type="FormulaBo">
+        <id property="id" column="id"/>
+        <result property="count" column="count"/>
+        <result property="material_id" column="material_id"/>
+        <result property="middle_id" column="middle_id"/>
+        <result property="basic_id" column="basic_id"/>
+    </resultMap>
+
     <!-- 添加基础产品的原材料配方 -->
     <insert id="addBasicFormulaVo" keyProperty="fid" useGeneratedKeys="true" keyColumn="id">
         insert into t_material_formula(COUNT, PRICE, TYPE, MATERIAL_ID, BASIC_ID)
@@ -64,6 +73,13 @@
         where id = #{fid}
     </update>
 
+    <!-- 更新配方价格 -->
+    <update id="updateFormulaPrice">
+        update t_material_formula
+        set PRICE = #{price}
+        where id = #{id}
+    </update>
+
     <!-- 根据基础产品的ID查询原材料配方 -->
     <select id="findFormulaVoByBasicId" resultMap="basic">
         select mf.id,
@@ -92,6 +108,13 @@
         from t_material_formula as mf
                  left join t_material as m on mf.material_id = m.id
         where mf.middle_id = #{id}
+    </select>
+
+    <!-- 根据原材料的ID查找FormulaBo对象 -->
+    <select id="findFormulaBoByMaterialId" resultMap="formulaBo">
+        select id, material_id, middle_id, basic_id, count
+        from t_material_formula
+        where material_id = #{id}
     </select>
 
 </mapper>

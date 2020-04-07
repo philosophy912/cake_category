@@ -1,5 +1,6 @@
 package com.sophia.cake.mapper;
 
+import com.philosophy.base.util.NumericUtils;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import lombok.extern.slf4j.Slf4j;
@@ -95,5 +96,12 @@ class BasicMapperTest {
         }
         int result = mapper.updateBasicVo(basicVo);
         assertEquals(result, 1);
+    }
+
+    @Test
+    void updateBasicPrice() {
+        float price = NumericUtils.randomFloat(10, 1000);
+        int result = mapper.updateBasicPrice(3, price);
+        assertEquals(1, result);
     }
 }

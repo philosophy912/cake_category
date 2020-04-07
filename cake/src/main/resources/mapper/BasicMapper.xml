@@ -45,6 +45,13 @@
         where id = #{id}
     </update>
 
+    <!-- 更新基础产品的价格 -->
+    <update id="updateBasicPrice">
+        update t_basic
+        set PRICE=#{price}
+        where id = #{id}
+    </update>
+
     <!-- 根据基础产品的ID查找基础产品Vo -->
     <select id="findBasicVoById" resultMap="basicVo">
         select *

@@ -2,6 +2,7 @@ package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface BasicMapper {
 
     // 更新基础产品Vo
     int updateBasicVo(BasicVo basicVo);
+
+    // 更新基础产品的价格
+    int updateBasicPrice(@Param("id") Integer id, @Param("price") Float price);
 
     // 根据基础产品的ID查找基础产品Vo
     BasicVo findBasicVoById(Integer id);

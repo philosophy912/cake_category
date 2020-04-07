@@ -1,6 +1,8 @@
 package com.sophia.cake.mapper;
 
+import com.philosophy.base.util.NumericUtils;
 import com.sophia.cake.entity.FormulaType;
+import com.sophia.cake.entity.bo.FormulaBo;
 import com.sophia.cake.entity.vo.FormulaVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,5 +91,19 @@ class MaterialFormulaMapperTest {
     void findFormulaVoByMiddleId() {
         List<FormulaVo> formulaVos = mapper.findFormulaVoByMiddleId(2);
         assertTrue(formulaVos.size() > 0);
+    }
+
+    @Test
+    void findFormulaBoByMaterialId() {
+        List<FormulaBo> formulaBos = mapper.findFormulaBoByMaterialId(1);
+        log.debug("formulaBos = {}", formulaBos);
+        assertTrue(formulaBos.size() > 0);
+    }
+
+    @Test
+    void updateFormulaPrice() {
+        float price = NumericUtils.randomFloat(10, 1000);
+        int result = mapper.updateFormulaPrice(3, price);
+        assertEquals(1, result);
     }
 }

@@ -41,6 +41,13 @@
         where id = #{id}
     </update>
 
+    <!-- 更新中级产品的价格 -->
+    <update id="updateMiddlePrice">
+        update t_middle
+        set PRICE=#{price}
+        where id = #{id}
+    </update>
+    
     <!-- 查找所有的中级产品VO的集合 -->
     <select id="findMiddleBos" resultMap="middleBo">
         select *

@@ -1,5 +1,7 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.common.Pair;
+import com.sophia.cake.entity.bo.FormulaBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MVo;
@@ -9,7 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.*;
+import java.text.Normalizer;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lizhe
@@ -49,11 +56,13 @@ public class MaterialService extends BaseService implements IMaterialService {
     @Override
     @Transactional
     public void update(Material material) {
-        checkResult(materialMapper.updateMaterial(material), 1);
-        /**
-         * 更新t_material_formula表中的价格
-         */
-        int materialId = material.getId();
-
+        // 更新原材料价格
+        Float pricePerUnit = updateMaterial(material);
+        // 更新原材料配方价格
+        Pair<Set<Integer>, Set<Integer>> pair = updateMaterialFormula(material.getId(), pricePerUnit);
+        // 更新基础材料价格
+        Set<Integer> middleIds = updateBasic(pair);
+        // 更新中级材料价格
+        updateMiddle(middleIds);
     }
 }
