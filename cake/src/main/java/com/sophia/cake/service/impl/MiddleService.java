@@ -2,6 +2,8 @@ package com.sophia.cake.service.impl;
 
 import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.FormulaType;
+import com.sophia.cake.entity.po.Material;
+import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
 import com.sophia.cake.service.api.BaseService;
@@ -21,8 +23,6 @@ import java.util.Set;
 @Slf4j
 @Service
 public class MiddleService extends BaseService implements IMiddleService {
-
-
 
 
     @Override
@@ -49,63 +49,78 @@ public class MiddleService extends BaseService implements IMiddleService {
     @Transactional
     @Override
     public void add(MiddleVo middleVo) {
-//        updateMiddleVo(middleVo);
-//        int count = 0;
-//        count += middleMapper.addMiddleVo(middleVo);
-//        Set<FormulaVo> formulas = middleVo.getFormulas();
-//        for (FormulaVo vo : formulas) {
-//            FormulaType type = FormulaType.fromValue(vo.getType());
-//            if (type == FormulaType.MATERIAL) {
-//
-//                count += formulaMapper.addMaterialFormulaInMiddle(vo);
-//            } else if (type == FormulaType.BASIC) {
-//                count += formulaMapper.addBasicFormulaInMiddle(vo);
-//            }
-//        }
-//        checkResult(count, formulas.size() + 1);
+        updateMiddleVo(middleVo);
+        checkResult(1, middleMapper.addMiddleVo(middleVo));
+        Set<FormulaVo> formulas = middleVo.getFormulas();
+        for (FormulaVo vo : formulas) {
+            FormulaType type = FormulaType.fromValue(vo.getType());
+            if (type == FormulaType.MATERIAL) {
+                checkResult(1, materialFormulaMapper.addMiddleFormulaVo(vo));
+            } else if (type == FormulaType.BASIC) {
+                checkResult(1, basicFormulaMapper.addFormulaVo(vo));
+            }
+        }
     }
 
     @Transactional
     @Override
     public void delete(MiddleVo middleVo) {
-//        MiddleBo bo = middleMapper.findMiddleBo(middleVo.getId());
-//        if (bo == null) {
-//            throw new RuntimeException("not found Middle where id = " + middleVo.getId());
-//        } else {
-//            MiddleVo mvo = utils.convert(bo);
-//            int middleId = mvo.getId();
-//            log.debug("try to delete middle id = {}", middleId);
-//            int count = 0;
-//            Set<FormulaVo> formulas = mvo.getFormulas();
-//            for (FormulaVo vo : formulas) {
-//                log.debug("vo = {}", vo);
-//                FormulaType type = FormulaType.fromValue(vo.getType());
-//                if (type == FormulaType.MATERIAL) {
-//                    count += formulaMapper.deleteFormulaByIdInMaterialFormula(vo.getFid());
-//                } else if (type == FormulaType.BASIC) {
-//                    count += formulaMapper.deleteFormulaByIdInBasicFormula(vo.getFid());
-//                }
-//            }
-//            count += middleMapper.deleteMiddleById(middleId);
-//            checkResult(count, formulas.size() + 1);
-//        }
+        MiddleBo bo = middleMapper.findMiddleBoById(middleVo.getId());
+        if (bo == null) {
+            throw new RuntimeException("not found Middle where id = " + middleVo.getId());
+        } else {
+            MiddleVo mvo = utils.convert(bo);
+            int middleId = mvo.getId();
+            log.debug("try to delete middle id = {}", middleId);
+            Set<FormulaVo> formulas = mvo.getFormulas();
+            for (FormulaVo vo : formulas) {
+                log.debug("vo = {}", vo);
+                FormulaType type = FormulaType.fromValue(vo.getType());
+                int id = vo.getFid();
+                if (type == FormulaType.MATERIAL) {
+                    checkResult(1, materialFormulaMapper.deleteMiddleFormulaVoById(id));
+                } else if (type == FormulaType.BASIC) {
+                    checkResult(1, basicFormulaMapper.deleteFormulaVoById(id));
+                }
+            }
+            checkResult(1, middleMapper.deleteMiddleById(middleId));
+        }
 
     }
 
+    @Transactional
+    @Override
     public void update(MiddleVo middleVo) {
-//        updateMiddleVo(middleVo);
-//        int count = 0;
-//        Set<FormulaVo> formulas = middleVo.getFormulas();
-//        for (FormulaVo vo : formulas) {
-//            FormulaType type = FormulaType.fromValue(vo.getType());
-//            if (type == FormulaType.MATERIAL) {
-//                count += formulaMapper.updateMaterialFormula(vo);
-//            } else if (type == FormulaType.BASIC) {
-//                count += formulaMapper.updateBasicFormula(vo);
-//            }
-//        }
-//        count += middleMapper.updateMiddleVo(middleVo);
-//        checkResult(count, formulas.size() + 1);
+        float totalPrice = 0f;
+        int id = middleVo.getId();
+        log.debug("middleId = {}", id);
+        MiddleBo middleBo = middleMapper.findMiddleBoById(id);
+        if (middleBo != null) {
+            MiddleVo vo = utils.convert(middleBo);
+            Set<FormulaVo> formulaVos = vo.getFormulas();
+            for (FormulaVo formulaVo : formulaVos) {
+                FormulaType type = FormulaType.fromValue(formulaVo.getType());
+                int fid = formulaVo.getId();
+                log.debug("fid = {}", fid);
+                if (type == FormulaType.MATERIAL) {
+                    Material material = materialMapper.findMaterialById(fid);
+                    float price = formulaVo.getCount() * material.getPricePerUnit();
+                    formulaVo.setPrice(price);
+                    totalPrice += price;
+                    checkResult(1, materialFormulaMapper.updateFormulaVo(formulaVo));
+                } else if (type == FormulaType.BASIC) {
+                    BasicVo basicVo = basicMapper.findBasicVoById(fid);
+                    float price = formulaVo.getCount() * basicVo.getPrice();
+                    formulaVo.setPrice(price);
+                    totalPrice += price;
+                    checkResult(1, basicFormulaMapper.updateFormulaVo(formulaVo));
+                }
+            }
+            vo.setPrice(totalPrice);
+            checkResult(1, middleMapper.updateMiddleVo(vo));
+        } else {
+            throw new RuntimeException("middle[" + id + "] not found ");
+        }
     }
 
 }

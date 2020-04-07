@@ -47,7 +47,7 @@
         set PRICE=#{price}
         where id = #{id}
     </update>
-    
+
     <!-- 查找所有的中级产品VO的集合 -->
     <select id="findMiddleBos" resultMap="middleBo">
         select *
@@ -62,7 +62,7 @@
     </select>
 
     <!-- 查找指定ID的中级产品VO -->
-    <select id="findMiddleBo" resultMap="middleBo">
+    <select id="findMiddleBoById" resultMap="middleBo">
         select *
         from t_middle
         where id = #{id}

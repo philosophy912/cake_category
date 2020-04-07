@@ -30,5 +30,5 @@ public interface MiddleMapper {
     List<MiddleBo> findMiddleBosByName(String name);
 
     // 查找指定ID的中级产品VO
-    MiddleBo findMiddleBo(Integer id);
+    MiddleBo findMiddleBoById(Integer id);
 }

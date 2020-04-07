@@ -66,8 +66,8 @@ class MiddleMapperTest {
     }
 
     @Test
-    void findMiddleBo() {
-        MiddleBo middleBo = mapper.findMiddleBo(1);
+    void findMiddleBoById() {
+        MiddleBo middleBo = mapper.findMiddleBoById(1);
         log.debug("middleBo = {}", middleBo);
         assertNotNull(middleBo);
     }
@@ -84,7 +84,7 @@ class MiddleMapperTest {
 
     @Test
     void updateMiddleVo() {
-        MiddleBo middleBo = mapper.findMiddleBo(3);
+        MiddleBo middleBo = mapper.findMiddleBoById(3);
         if (middleBo.getUnit().equalsIgnoreCase("毫升")) {
             middleBo.setUnit("克");
         } else {

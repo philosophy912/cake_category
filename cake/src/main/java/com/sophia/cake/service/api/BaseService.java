@@ -85,9 +85,8 @@ public abstract class BaseService {
             int id = formulaBo.getId();
             float formulaCount = formulaBo.getCount();
             float price = materialPrice * formulaCount;
-            count += materialFormulaMapper.updateFormulaPrice(id, price);
+            checkResult(1, materialFormulaMapper.updateFormulaPrice(id, price));
         }
-        checkResult(formulaBos.size(), count);
         return new Pair<>(basicIds, middleIds);
     }
 
@@ -98,8 +97,6 @@ public abstract class BaseService {
      * @return 受到影响的MiddleId
      */
     protected Set<Integer> updateBasic(Pair<Set<Integer>, Set<Integer>> pair) {
-        int count = 0;
-        int expect = 0;
         Set<Integer> basicIds = pair.getFirst();
         Set<Integer> middleIds = pair.getSecond();
         for (Integer id : basicIds) {
@@ -108,7 +105,7 @@ public abstract class BaseService {
             for (FormulaVo vo : formulaVos) {
                 price += vo.getPrice();
             }
-            count += basicMapper.updateBasicPrice(id, price);
+            checkResult(1, basicMapper.updateBasicPrice(id, price));
             updateBasicFormula(id, price);
             // 根据中级产品查询到影响的Middle产品
             List<FormulaBo> bos = basicFormulaMapper.findFormulaBoByBasicId(id);
@@ -116,7 +113,6 @@ public abstract class BaseService {
                 middleIds.add(bo.getMiddle_id());
             }
         }
-        checkResult(expect, count);
         return middleIds;
     }
 
@@ -127,31 +123,66 @@ public abstract class BaseService {
      * @param basicPrice 变更的价格
      */
     protected void updateBasicFormula(Integer basicId, Float basicPrice) {
-        int count = 0;
         // 更新基础产品配方表的
-        List<FormulaBo> formulaBos = basicFormulaMapper.findFormulaBoByBasicId(basicId);
-        for (FormulaBo bo : formulaBos) {
-            float countPrice = bo.getCount() * basicPrice;
-            count += basicFormulaMapper.updateFormulaPrice(bo.getId(), countPrice);
-        }
-        checkResult(count, formulaBos.size());
+        basicFormulaMapper.findFormulaBoByBasicId(basicId).forEach(formulaBo -> {
+            float countPrice = formulaBo.getCount() * basicPrice;
+            int id = formulaBo.getId();
+            checkResult(1, basicFormulaMapper.updateFormulaPrice(id, countPrice));
+        });
     }
 
     /**
      * 更新中级产品价格
-     * @param middleIds
+     *
+     * @param middleIds 中级产品
      */
     protected void updateMiddle(Set<Integer> middleIds) {
-        int count = 0;
         for (Integer id : middleIds) {
             float price = 0f;
             List<FormulaVo> formulaVos = materialFormulaMapper.findFormulaVoByMiddleId(id);
             for (FormulaVo vo : formulaVos) {
                 price += vo.getPrice();
             }
-            count += middleMapper.updateMiddlePrice(id, price);
+            checkResult(1, middleMapper.updateMiddlePrice(id, price));
         }
-        checkResult(count, middleIds.size());
+    }
+
+    protected void updateBasicVo(BasicVo vo) {
+        float price = 0f;
+        Set<FormulaVo> formulaVos = vo.getFormulas();
+        for (FormulaVo formulaVo : formulaVos) {
+            int id = formulaVo.getId();
+            log.debug("material id = {}", id);
+            // 只有原材料的ID，所以要获取原材料的价格
+            Material material = materialMapper.findMaterialById(id);
+            // 计算出来总价
+            float formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
+            // 将总价设置到其中
+            formulaVo.setPrice(formulaPrice);
+            price += formulaPrice;
+        }
+        vo.setPrice(price);
+    }
+
+    protected void updateMiddleVo(MiddleVo vo) {
+        float price = 0f;
+        Set<FormulaVo> formulaVos = vo.getFormulas();
+        for (FormulaVo formulaVo : formulaVos) {
+            float formulaPrice;
+            int id = formulaVo.getId();
+            // 原材料
+            if (formulaVo.getType().equalsIgnoreCase(FormulaType.MATERIAL.getValue())) {
+                Material material = materialMapper.findMaterialById(id);
+                formulaPrice = formulaVo.getCount() * material.getPricePerUnit();
+            } else {
+                //基础产品
+                BasicVo basicVo = basicMapper.findBasicVoById(id);
+                formulaPrice = formulaVo.getCount() * basicVo.getPrice();
+            }
+            formulaVo.setPrice(formulaPrice);
+            price += formulaPrice;
+        }
+        vo.setPrice(price);
     }
 
 }

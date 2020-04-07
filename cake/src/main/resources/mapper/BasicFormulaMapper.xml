@@ -45,7 +45,7 @@
             <if test="price!=null">PRICE=#{price},</if>
             <if test="id!=null">BASIC_ID=#{id},</if>
         </trim>
-        where middle_id = #{fid}
+        where id = #{fid}
     </update>
 
     <!-- 更新配方价格 -->
