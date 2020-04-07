@@ -1,5 +1,6 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.util.NumericUtils;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import com.sophia.cake.mapper.MaterialMapper;
@@ -31,7 +32,10 @@ class MaterialServiceTest {
     @Test
     void update() {
         Material material = service.query().get(0);
-        material.setPricePerUnit(10f);
+        log.debug("material is {}", material);
+        float price = NumericUtils.randomFloat(10, 100);
+        log.debug("price is {}", price);
+        material.setPrice(price);
         assertDoesNotThrow(() -> service.update(material));
     }
 

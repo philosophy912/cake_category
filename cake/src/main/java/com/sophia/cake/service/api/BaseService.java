@@ -75,6 +75,7 @@ public abstract class BaseService {
         Set<Integer> middleIds = new HashSet<>();
         List<FormulaBo> formulaBos = materialFormulaMapper.findFormulaBoByMaterialId(materialId);
         for (FormulaBo formulaBo : formulaBos) {
+            log.debug("formulaBo = {}", formulaBo);
             if (formulaBo.getBasic_id() != null) {
                 basicIds.add(formulaBo.getBasic_id());
             }
@@ -85,6 +86,7 @@ public abstract class BaseService {
             int id = formulaBo.getId();
             float formulaCount = formulaBo.getCount();
             float price = materialPrice * formulaCount;
+            log.debug("id = [{}] and price = [{}]", id, price);
             checkResult(1, materialFormulaMapper.updateFormulaPrice(id, price));
         }
         return new Pair<>(basicIds, middleIds);
@@ -100,16 +102,20 @@ public abstract class BaseService {
         Set<Integer> basicIds = pair.getFirst();
         Set<Integer> middleIds = pair.getSecond();
         for (Integer id : basicIds) {
+            log.debug("basic Id = {}", id);
             float price = 0f;
             List<FormulaVo> formulaVos = materialFormulaMapper.findFormulaVoByBasicId(id);
             for (FormulaVo vo : formulaVos) {
+                log.debug("FormulaVo is {}", vo);
                 price += vo.getPrice();
             }
+            log.debug("id is [{}] and price is [{}]", id, price);
             checkResult(1, basicMapper.updateBasicPrice(id, price));
             updateBasicFormula(id, price);
             // 根据中级产品查询到影响的Middle产品
             List<FormulaBo> bos = basicFormulaMapper.findFormulaBoByBasicId(id);
             for (FormulaBo bo : bos) {
+                log.debug("FormulaBo is {}", bo);
                 middleIds.add(bo.getMiddle_id());
             }
         }
@@ -125,6 +131,7 @@ public abstract class BaseService {
     protected void updateBasicFormula(Integer basicId, Float basicPrice) {
         // 更新基础产品配方表的
         basicFormulaMapper.findFormulaBoByBasicId(basicId).forEach(formulaBo -> {
+            log.debug("formulaBo = {}", formulaBo);
             float countPrice = formulaBo.getCount() * basicPrice;
             int id = formulaBo.getId();
             checkResult(1, basicFormulaMapper.updateFormulaPrice(id, countPrice));
@@ -138,11 +145,15 @@ public abstract class BaseService {
      */
     protected void updateMiddle(Set<Integer> middleIds) {
         for (Integer id : middleIds) {
+            log.debug("middleId = {}", id);
             float price = 0f;
             List<FormulaVo> formulaVos = materialFormulaMapper.findFormulaVoByMiddleId(id);
+            formulaVos.addAll(basicFormulaMapper.findFormulaVoById(id));
             for (FormulaVo vo : formulaVos) {
+                log.debug("FormulaVo is {}", vo);
                 price += vo.getPrice();
             }
+            log.debug("id = [{}] and price is [{}]", id, price);
             checkResult(1, middleMapper.updateMiddlePrice(id, price));
         }
     }
