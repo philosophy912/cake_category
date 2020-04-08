@@ -1,6 +1,7 @@
 package com.sophia.cake.service.impl;
 
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.entity.EnvData;
 import com.sophia.cake.entity.bo.FormulaBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.FormulaVo;
@@ -33,6 +34,11 @@ public class MaterialService extends BaseService implements IMaterialService {
     @Override
     public List<Material> query() {
         return materialMapper.findMaterials();
+    }
+
+    @Override
+    public List<Material> pageQuery(EnvData data) {
+        return null;
     }
 
     @Override

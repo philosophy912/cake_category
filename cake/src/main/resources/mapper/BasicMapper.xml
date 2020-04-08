@@ -78,4 +78,10 @@
         where NAME like #{name}
     </select>
 
+    <!-- 查找原材料的数量 -->
+    <select id="findBasicCount" resultType="Integer">
+        select count(*)
+        from t_basic
+    </select>
+
 </mapper>

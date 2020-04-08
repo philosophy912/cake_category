@@ -37,4 +37,6 @@ public interface BasicMapper {
     // 查找所有的基础产品Vo
     List<BasicVo> findBasicVosByName(String name);
 
+    // 查找基础产品的数量
+    int findBasicCount();
 }

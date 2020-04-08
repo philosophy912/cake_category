@@ -70,5 +70,9 @@
         where name like #{name}
     </select>
 
+    <!-- 查找原材料的数量 -->
+    <select id="findMaterialCount" resultType="Integer">
+        select count(*) from t_material
+    </select>
 
 </mapper>

@@ -68,4 +68,10 @@
         where id = #{id}
     </select>
 
+    <!-- 查找中级产品的数量 -->
+    <select id="findMiddleCount" resultType="Integer">
+        select count(*)
+        from t_middle
+    </select>
+
 </mapper>

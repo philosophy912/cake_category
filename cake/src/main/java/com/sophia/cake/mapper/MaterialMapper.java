@@ -31,4 +31,7 @@ public interface MaterialMapper {
     // 根据名字找原材料集合
     List<Material> findMaterialsByName(String name);
 
+    // 查找原材料的数量
+    int findMaterialCount();
+
 }

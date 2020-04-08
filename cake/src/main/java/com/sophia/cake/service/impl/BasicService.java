@@ -1,5 +1,6 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.entity.EnvData;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
@@ -29,6 +30,11 @@ public class BasicService extends BaseService implements IBasicService {
     @Override
     public List<BasicVo> query() {
         return basicMapper.findBasicVos();
+    }
+
+    @Override
+    public List<BasicVo> pageQuery(EnvData data) {
+        return null;
     }
 
     @Override

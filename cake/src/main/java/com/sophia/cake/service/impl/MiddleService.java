@@ -1,5 +1,6 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.entity.EnvData;
 import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.FormulaType;
 import com.sophia.cake.entity.po.Material;
@@ -33,6 +34,11 @@ public class MiddleService extends BaseService implements IMiddleService {
             middleVos.add(vo);
         });
         return middleVos;
+    }
+
+    @Override
+    public List<MiddleVo> pageQuery(EnvData data) {
+        return null;
     }
 
     @Override

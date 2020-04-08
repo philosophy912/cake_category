@@ -3,7 +3,6 @@ package com.sophia.cake.service.impl;
 import com.philosophy.base.util.NumericUtils;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
-import com.sophia.cake.mapper.MaterialMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
 
 import java.util.List;
 

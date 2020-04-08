@@ -74,7 +74,7 @@ class MiddleMapperTest {
 
     @Test
     void deleteMiddleById() {
-        if(middleVo.getId()!=null){
+        if (middleVo.getId() != null) {
             int id = middleVo.getId();
             log.debug("it will delete id = {}", id);
             int result = mapper.deleteMiddleById(id);
@@ -99,5 +99,12 @@ class MiddleMapperTest {
         float price = NumericUtils.randomFloat(10, 1000);
         int result = mapper.updateMiddlePrice(3, price);
         assertEquals(1, result);
+    }
+
+    @Test
+    void findMiddleCount() {
+        int count = mapper.findMiddleCount();
+        log.debug("count = {}", count);
+        assertTrue(count > 2);
     }
 }

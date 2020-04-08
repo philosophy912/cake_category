@@ -1,14 +1,12 @@
 package com.sophia.cake.controller;
 
+import com.philosophy.base.entity.EnvData;
 import com.philosophy.base.entity.ResultResponse;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,9 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,6 +49,18 @@ public class MaterialController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/pageQuery", method = RequestMethod.POST)
+    @ApiOperation("分页查询所有原材料接口")
+    public ResultResponse<Material> query(EnvData data){
+        ResultResponse<Material> response = new ResultResponse<>();
+        List<Material> materials = materialService.pageQuery(data);
+        response.setData(materials);
+        return response;
+    }
+
+
+
+    @ResponseBody
     @RequestMapping(value = "/queryName", method = RequestMethod.GET)
     @ApiOperation("根据名字查询基础产品")
     public ResultResponse<Material> queryByName(@RequestParam("name") String name) {
@@ -62,6 +69,8 @@ public class MaterialController extends BaseController {
         response.setData(materials);
         return response;
     }
+
+
 
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)

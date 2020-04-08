@@ -31,4 +31,7 @@ public interface MiddleMapper {
 
     // 查找指定ID的中级产品VO
     MiddleBo findMiddleBoById(Integer id);
+
+    // 查找中级产品的数量
+    int findMiddleCount();
 }

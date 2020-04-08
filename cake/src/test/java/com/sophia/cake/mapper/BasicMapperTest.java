@@ -104,4 +104,11 @@ class BasicMapperTest {
         int result = mapper.updateBasicPrice(3, price);
         assertEquals(1, result);
     }
+
+    @Test
+    void findBasicCount() {
+        int count = mapper.findBasicCount();
+        log.debug("count = {}", count);
+        assertTrue(count > 2);
+    }
 }

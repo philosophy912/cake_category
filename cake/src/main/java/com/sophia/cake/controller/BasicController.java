@@ -48,6 +48,7 @@ public class BasicController extends BaseController {
         return response;
     }
 
+
     @ResponseBody
     @RequestMapping(value = "/queryName", method = RequestMethod.GET)
     @ApiOperation("根据名字查询基础产品")

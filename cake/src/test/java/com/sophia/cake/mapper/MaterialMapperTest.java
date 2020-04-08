@@ -87,4 +87,11 @@ public class MaterialMapperTest {
         int result = mapper.updateMaterial(material);
         assertEquals(1, result);
     }
+
+    @Test
+    void findMaterialCount() {
+        int count = mapper.findMaterialCount();
+        log.debug("count = {}", count);
+        assertTrue(count > 2);
+    }
 }
