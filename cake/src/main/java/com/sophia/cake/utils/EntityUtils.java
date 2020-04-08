@@ -35,4 +35,8 @@ public class EntityUtils {
         vo.setFormulas(formulas);
         return vo;
     }
+
+    public Integer getTotalPages(int totalRows, int pageSize) {
+        return totalRows / pageSize + (totalRows % pageSize == 0 ? 0 : 1);
+    }
 }

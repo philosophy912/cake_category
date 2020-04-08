@@ -1,20 +1,19 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.common.Pair;
+import com.philosophy.base.entity.EnvData;
 import com.sophia.cake.entity.FormulaType;
-import com.sophia.cake.entity.po.Middle;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.vo.FormulaVo;
 import com.sophia.cake.entity.vo.MiddleVo;
-import com.sophia.cake.mapper.MiddleMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.util.diff.Delta;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.annotation.Resource;
-import javax.swing.text.html.FormView;
 
 import java.util.HashSet;
 import java.util.List;
@@ -39,14 +38,17 @@ class MiddleServiceTest {
 
     @Test
     void query() {
-        List<MiddleVo> query = service.query();
-        assertTrue(query.size() > 3);
+        EntityBo entityBo = new EntityBo();
+        Pair<List<MiddleVo>, EnvData> query = service.query(entityBo);
+        assertTrue(query.getFirst().size() > 3);
     }
 
     @Test
     void queryName() {
-        List<MiddleVo> middleVos = service.queryName("蛋糕");
-        assertTrue(middleVos.size() > 2);
+        NameBo nameBo = new NameBo();
+        nameBo.setName("蛋糕");
+        Pair<List<MiddleVo>, EnvData> query = service.queryName(nameBo);
+        assertTrue(query.getFirst().size() > 2);
     }
 
     @Test
@@ -97,7 +99,8 @@ class MiddleServiceTest {
 
     @Test
     void update() {
-        MiddleVo middleVo = service.query().get(3);
+        EntityBo entityBo = new EntityBo();
+        MiddleVo middleVo = service.query(entityBo).getFirst().get(3);
         log.debug("middleVo = {}", middleVo);
         middleVo.getFormulas().forEach(formulaVo -> formulaVo.setCount(formulaVo.getCount() + 3));
         assertDoesNotThrow(() -> service.update(middleVo));

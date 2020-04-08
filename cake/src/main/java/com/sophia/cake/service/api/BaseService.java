@@ -1,6 +1,8 @@
 package com.sophia.cake.service.api;
 
 import com.philosophy.base.common.Pair;
+import com.philosophy.base.entity.EnvData;
+import com.sophia.cake.entity.bo.EntityBo;
 import com.sophia.cake.entity.bo.FormulaBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.BasicVo;
@@ -196,4 +198,17 @@ public abstract class BaseService {
         vo.setPrice(price);
     }
 
+
+    protected EnvData getEnvData(int index, int pageSize, int totalRows, int totalPages) {
+        EnvData envData = new EnvData();
+        envData.setPageNo(index);
+        envData.setPageNo(pageSize);
+        envData.setTotalRows(totalRows);
+        envData.setTotalPages(totalPages);
+        return envData;
+    }
+
+    protected Pair<Integer, Integer> getPage(EntityBo entityBo) {
+        return new Pair<>(entityBo.getEnvData().getPageNo() - 1, entityBo.getEnvData().getPageSize());
+    }
 }

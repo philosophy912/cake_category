@@ -34,9 +34,19 @@ public interface BasicMapper {
     // 查找所有的基础产品Vo
     List<BasicVo> findBasicVos();
 
-    // 查找所有的基础产品Vo
+    // 根据名字查找所有的基础产品Vo
     List<BasicVo> findBasicVosByName(String name);
 
     // 查找基础产品的数量
     int findBasicCount();
+
+    // 根据名字查找基础产品的数量
+    int findBasicByNameCount(@Param("name") String name);
+
+    // 分页查找所有的基础产品Vo
+    List<BasicVo> findPageBasicVos(@Param("index") Integer index, @Param("pageSize") Integer pageSize);
+
+    // 根据名字分页查找所有的基础产品Vo
+    List<BasicVo> findPageBasicVosByName(@Param("name") String name, @Param("index") Integer index,
+                                         @Param("pageSize") Integer pageSize);
 }

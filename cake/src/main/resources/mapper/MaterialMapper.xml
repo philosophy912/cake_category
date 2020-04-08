@@ -72,7 +72,32 @@
 
     <!-- 查找原材料的数量 -->
     <select id="findMaterialCount" resultType="Integer">
-        select count(*) from t_material
+        select count(*)
+        from t_material
+    </select>
+
+    <!-- 根据名字查找原材料的数量 -->
+    <select id="findMaterialByNameCount" resultType="Integer">
+        select count(*)
+        from t_material
+        where name like #{name}
+    </select>
+    
+    <!-- 分页查询原材料 -->
+    <select id="findPageMaterials" resultMap="material">
+        select *
+        from t_material
+        order by id
+        limit #{index}, #{pageSize}
+    </select>
+
+    <!-- 根据名字分页查询原材料集合 -->
+    <select id="findPageMaterialsByName" resultMap="material">
+        select *
+        from t_material
+        where name like #{name}
+        order by id
+        limit #{index}, #{pageSize}
     </select>
 
 </mapper>

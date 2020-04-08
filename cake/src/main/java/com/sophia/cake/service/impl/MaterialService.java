@@ -2,9 +2,10 @@ package com.sophia.cake.service.impl;
 
 import com.philosophy.base.common.Pair;
 import com.philosophy.base.entity.EnvData;
-import com.sophia.cake.entity.bo.FormulaBo;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.po.Material;
-import com.sophia.cake.entity.vo.FormulaVo;
+import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.MVo;
 import com.sophia.cake.service.api.BaseService;
 import com.sophia.cake.service.api.IMaterialService;
@@ -12,10 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.*;
-import java.text.Normalizer;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,18 +29,29 @@ public class MaterialService extends BaseService implements IMaterialService {
     }
 
     @Override
-    public List<Material> query() {
-        return materialMapper.findMaterials();
+    public Pair<List<Material>, EnvData> query(EntityBo entityBo) {
+        int index = entityBo.getEnvData().getPageNo() - 1;
+        int pageSize = entityBo.getEnvData().getPageSize();
+        log.debug("index = [{}], pageSize = [{}]", index, pageSize);
+        int totalRows = materialMapper.findMaterialCount();
+        int totalPages = utils.getTotalPages(totalRows, pageSize);
+        log.debug("totalRows = [{}], totalPages = [{}]", totalRows, totalPages);
+        List<Material> materials = materialMapper.findPageMaterials(index, pageSize);
+        return new Pair<>(materials, getEnvData(index, pageSize, totalRows, totalPages));
     }
 
-    @Override
-    public List<Material> pageQuery(EnvData data) {
-        return null;
-    }
 
     @Override
-    public List<Material> queryName(String name) {
-        return materialMapper.findMaterialsByName("%" + name + "%");
+    public Pair<List<Material>, EnvData> queryName(NameBo nameBo) {
+        String name = "%" + nameBo.getName() + "%";
+        int index = nameBo.getEnvData().getPageNo() - 1;
+        int pageSize = nameBo.getEnvData().getPageSize();
+        log.debug("index = [{}], pageSize = [{}]", index, pageSize);
+        int totalRows = materialMapper.findMaterialByNameCount(name);
+        int totalPages = utils.getTotalPages(totalRows, pageSize);
+        log.debug("totalRows = [{}], totalPages = [{}]", totalRows, totalPages);
+        List<Material> materials = materialMapper.findPageMaterialsByName(name, index, pageSize);
+        return new Pair<>(materials, getEnvData(index, pageSize, totalRows, totalPages));
     }
 
     @Override

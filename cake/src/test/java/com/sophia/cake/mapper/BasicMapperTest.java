@@ -111,4 +111,23 @@ class BasicMapperTest {
         log.debug("count = {}", count);
         assertTrue(count > 2);
     }
+
+    @Test
+    void findPageBasicVos() {
+        List<BasicVo> basicVos = mapper.findPageBasicVos(1, 5);
+        assertEquals(5, basicVos.size());
+    }
+
+    @Test
+    void findPageBasicVosByName() {
+        List<BasicVo> basicVos = mapper.findPageBasicVosByName("%糖%", 0, 1);
+        assertEquals(1, basicVos.size());
+
+    }
+
+    @Test
+    void findBasicByNameCount() {
+        int count = mapper.findBasicByNameCount("%糖%");
+        assertTrue(count > 1);
+    }
 }

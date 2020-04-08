@@ -1,7 +1,10 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.common.Pair;
+import com.philosophy.base.entity.EnvData;
 import com.sophia.cake.entity.FormulaType;
-import com.sophia.cake.entity.po.Basic;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
@@ -13,8 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,14 +44,17 @@ class BasicServiceTest {
 
     @Test
     void query() {
-        List<BasicVo> query = service.query();
-        assertTrue(query.size() > 5);
+        EntityBo entityBo = new EntityBo();
+        Pair<List<BasicVo>, EnvData> query = service.query(entityBo);
+        assertTrue(query.getFirst().size() > 5);
     }
 
     @Test
     void queryName() {
-        List<BasicVo> basicVos = service.queryName("蛋糕");
-        assertTrue(basicVos.size() > 2);
+        NameBo nameBo = new NameBo();
+        nameBo.setName("蛋糕");
+        Pair<List<BasicVo>, EnvData> query = service.queryName(nameBo);
+        assertTrue(query.getFirst().size() > 2);
     }
 
     @Test
@@ -88,10 +92,9 @@ class BasicServiceTest {
 
     @Test
     void update() {
-        BasicVo basicVo = service.query().get(0);
-        basicVo.getFormulas().forEach(formulaVo -> {
-            formulaVo.setCount(formulaVo.getCount() + 2);
-        });
+        EntityBo entityBo = new EntityBo();
+        BasicVo basicVo = service.query(entityBo).getFirst().get(0);
+        basicVo.getFormulas().forEach(formulaVo -> formulaVo.setCount(formulaVo.getCount() + 2));
         basicVo.setName(basicVo.getName() + "修改");
         assertDoesNotThrow(() -> service.update(basicVo));
     }

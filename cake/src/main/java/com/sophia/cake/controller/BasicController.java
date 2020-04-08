@@ -1,6 +1,10 @@
 package com.sophia.cake.controller;
 
+import com.philosophy.base.common.Pair;
+import com.philosophy.base.entity.EnvData;
 import com.philosophy.base.entity.ResultResponse;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
 import io.swagger.annotations.Api;
@@ -10,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,25 +43,29 @@ public class BasicController extends BaseController {
 
     @ApiOperation("查询所有基础产品的接口")
     @ResponseBody
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
-    public ResultResponse<BasicVo> query() {
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
+    @ApiImplicitParam(name = "entityBo", value = "分页信息", required = true)
+    public ResultResponse<BasicVo> query(EntityBo entityBo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
-        List<BasicVo> basicVos = basicService.query();
-        response.setData(basicVos);
+        Pair<List<BasicVo>, EnvData> query = basicService.query(entityBo);
+        response.setData(query.getFirst());
+        response.setEnvData(query.getSecond());
         return response;
     }
 
 
     @ResponseBody
-    @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryName", method = RequestMethod.POST)
     @ApiOperation("根据名字查询基础产品")
-    @ApiImplicitParam(name = "name", value = "中级产品名字", required = true)
-    public ResultResponse<BasicVo> queryByName(@RequestParam("name") String name) {
+    @ApiImplicitParam(name = "nameBo", value = "中级产品名字", required = true)
+    public ResultResponse<BasicVo> queryByName(NameBo nameBo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
-        List<BasicVo> basicVos = basicService.queryName(name);
-        response.setData(basicVos);
+        Pair<List<BasicVo>, EnvData> query = basicService.queryName(nameBo);
+        response.setData(query.getFirst());
+        response.setEnvData(query.getSecond());
         return response;
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)

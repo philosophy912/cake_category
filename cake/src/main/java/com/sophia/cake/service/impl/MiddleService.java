@@ -1,8 +1,11 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.common.Pair;
 import com.philosophy.base.entity.EnvData;
+import com.sophia.cake.entity.bo.EntityBo;
 import com.sophia.cake.entity.bo.MiddleBo;
 import com.sophia.cake.entity.FormulaType;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.FormulaVo;
@@ -27,28 +30,33 @@ public class MiddleService extends BaseService implements IMiddleService {
 
 
     @Override
-    public List<MiddleVo> query() {
+    public Pair<List<MiddleVo>, EnvData> query(EntityBo entityBo) {
+        int index = entityBo.getEnvData().getPageNo() - 1;
+        int pageSize = entityBo.getEnvData().getPageSize();
+        int totalRows = middleMapper.findMiddleCount();
+        int totalPages = utils.getTotalPages(totalRows, pageSize);
         List<MiddleVo> middleVos = new ArrayList<>();
-        middleMapper.findMiddleBos().forEach(middleBo -> {
+        middleMapper.findPageMiddleBos(index, pageSize).forEach(middleBo -> {
             MiddleVo vo = utils.convert(middleBo);
             middleVos.add(vo);
         });
-        return middleVos;
+        return new Pair<>(middleVos, getEnvData(index, pageSize, totalRows, totalPages));
     }
 
-    @Override
-    public List<MiddleVo> pageQuery(EnvData data) {
-        return null;
-    }
 
     @Override
-    public List<MiddleVo> queryName(String name) {
+    public Pair<List<MiddleVo>, EnvData> queryName(NameBo nameBo) {
+        String name = "%" + nameBo.getName() + "%";
+        int index = nameBo.getEnvData().getPageNo() - 1;
+        int pageSize = nameBo.getEnvData().getPageSize();
+        int totalRows = middleMapper.findBasicByNameCount(name);
+        int totalPages = utils.getTotalPages(totalRows, pageSize);
         List<MiddleVo> middleVos = new ArrayList<>();
-        middleMapper.findMiddleBosByName("%" + name + "%").forEach(middleBo -> {
+        middleMapper.findPageMiddleBosByName(name, index, pageSize).forEach(middleBo -> {
             MiddleVo vo = utils.convert(middleBo);
             middleVos.add(vo);
         });
-        return middleVos;
+        return new Pair<>(middleVos, getEnvData(index, pageSize, totalRows, totalPages));
     }
 
 

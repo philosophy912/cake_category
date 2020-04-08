@@ -1,16 +1,19 @@
 package com.sophia.cake.controller;
 
+import com.philosophy.base.common.Pair;
 import com.philosophy.base.entity.EnvData;
 import com.philosophy.base.entity.ResultResponse;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,37 +42,29 @@ public class MaterialController extends BaseController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/query", method = RequestMethod.GET)
+    @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ApiOperation("查询所有原材料的接口")
-    public ResultResponse<Material> query() {
+    @ApiImplicitParam(name = "entity", value = "分页信息", required = true)
+    public ResultResponse<Material> query(EntityBo bo) {
         ResultResponse<Material> response = new ResultResponse<>();
-        List<Material> materials = materialService.query();
-        response.setData(materials);
-        return response;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/pageQuery", method = RequestMethod.POST)
-    @ApiOperation("分页查询所有原材料接口")
-    public ResultResponse<Material> query(EnvData data){
-        ResultResponse<Material> response = new ResultResponse<>();
-        List<Material> materials = materialService.pageQuery(data);
-        response.setData(materials);
+        Pair<List<Material>, EnvData> query = materialService.query(bo);
+        response.setData(query.getFirst());
+        response.setEnvData(query.getSecond());
         return response;
     }
 
 
-
     @ResponseBody
-    @RequestMapping(value = "/queryName", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryName", method = RequestMethod.POST)
     @ApiOperation("根据名字查询基础产品")
-    public ResultResponse<Material> queryByName(@RequestParam("name") String name) {
+    @ApiImplicitParam(name = "nameBo", value = "原材料名字", required = true)
+    public ResultResponse<Material> queryByName(NameBo nameBo) {
         ResultResponse<Material> response = new ResultResponse<>();
-        List<Material> materials = materialService.queryName(name);
-        response.setData(materials);
+        Pair<List<Material>, EnvData> query = materialService.queryName(nameBo);
+        response.setData(query.getFirst());
+        response.setEnvData(query.getSecond());
         return response;
     }
-
 
 
     @ResponseBody

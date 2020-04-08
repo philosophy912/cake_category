@@ -107,4 +107,22 @@ class MiddleMapperTest {
         log.debug("count = {}", count);
         assertTrue(count > 2);
     }
+
+    @Test
+    void findPageMiddleBos() {
+        List<MiddleBo> middleBos = mapper.findPageMiddleBos(0, 5);
+        assertEquals(5, middleBos.size());
+    }
+
+    @Test
+    void findPageMiddleBosByName() {
+        List<MiddleBo> middleBos = mapper.findPageMiddleBosByName("%蛋糕%", 0, 1);
+        assertEquals(1, middleBos.size());
+    }
+
+    @Test
+    void findBasicByNameCount() {
+        int count = mapper.findBasicByNameCount("%蛋糕%");
+        assertTrue(count > 1);
+    }
 }

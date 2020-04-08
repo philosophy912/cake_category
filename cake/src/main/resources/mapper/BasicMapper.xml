@@ -71,7 +71,7 @@
         from t_basic
     </select>
 
-    <!-- 查找所有的基础产品Vo -->
+    <!-- 根据名字查找所有的基础产品Vo -->
     <select id="findBasicVosByName" resultMap="basicVo">
         select *
         from t_basic
@@ -82,6 +82,30 @@
     <select id="findBasicCount" resultType="Integer">
         select count(*)
         from t_basic
+    </select>
+    
+    <!-- 根据名字查找基础产品的数量 -->
+    <select id="findBasicByNameCount" resultType="Integer">
+        select count(*)
+        from t_basic
+        where NAME like #{name}
+    </select>
+
+    <!-- 分页查找所有的基础产品Vo -->
+    <select id="findPageBasicVos" resultMap="basicVo">
+        select *
+        from t_basic
+        order by id
+        limit #{index}, #{pageSize}
+    </select>
+    
+    <!-- 根据名字分页查找所有的基础产品Vo -->
+    <select id="findPageBasicVosByName" resultMap="basicVo">
+        select *
+        from t_basic
+        where NAME like #{name}
+        order by id
+        limit #{index}, #{pageSize}
     </select>
 
 </mapper>

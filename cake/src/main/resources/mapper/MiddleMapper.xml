@@ -74,4 +74,28 @@
         from t_middle
     </select>
 
+    <!-- 根据名字查找中级产品的数量 -->
+    <select id="findBasicByNameCount" resultType="Integer">
+        select count(*)
+        from t_middle
+        where name like #{name}
+    </select>
+
+    <!-- 分页查找所有的中级产品VO的集合 -->
+    <select id="findPageMiddleBos" resultMap="middleBo">
+        select *
+        from t_middle
+        order by id
+        limit #{index}, #{pageSize}
+    </select>
+
+    <!-- 根据名字分页查找所有的中级产品VO -->
+    <select id="findPageMiddleBosByName" resultMap="middleBo">
+        select *
+        from t_middle
+        where NAME like #{name}
+        order by id
+        limit #{index}, #{pageSize}
+    </select>
+
 </mapper>

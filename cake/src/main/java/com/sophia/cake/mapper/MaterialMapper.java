@@ -2,6 +2,7 @@ package com.sophia.cake.mapper;
 
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,5 +34,15 @@ public interface MaterialMapper {
 
     // 查找原材料的数量
     int findMaterialCount();
+
+    // 根据名字查找原材料的数量
+    int findMaterialByNameCount(@Param("name") String name);
+
+    // 分页查询原材料
+    List<Material> findPageMaterials(@Param("index") Integer index, @Param("pageSize") Integer pageSize);
+
+    // 根据名字分页查询原材料集合
+    List<Material> findPageMaterialsByName(@Param("name") String name, @Param("index") Integer index,
+                                           @Param("pageSize") Integer pageSize);
 
 }

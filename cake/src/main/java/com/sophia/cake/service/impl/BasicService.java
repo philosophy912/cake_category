@@ -1,6 +1,9 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.common.Pair;
 import com.philosophy.base.entity.EnvData;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.BVo;
 import com.sophia.cake.entity.vo.BasicVo;
@@ -28,18 +31,25 @@ public class BasicService extends BaseService implements IBasicService {
     }
 
     @Override
-    public List<BasicVo> query() {
-        return basicMapper.findBasicVos();
+    public Pair<List<BasicVo>, EnvData> query(EntityBo entityBo) {
+        int index = entityBo.getEnvData().getPageNo() - 1;
+        int pageSize = entityBo.getEnvData().getPageSize();
+        int totalRows = basicMapper.findBasicCount();
+        int totalPages = utils.getTotalPages(totalRows, pageSize);
+        List<BasicVo> basicVos = basicMapper.findPageBasicVos(index, pageSize);
+        return new Pair<>(basicVos, getEnvData(index, pageSize, totalRows, totalPages));
     }
 
-    @Override
-    public List<BasicVo> pageQuery(EnvData data) {
-        return null;
-    }
 
     @Override
-    public List<BasicVo> queryName(String name) {
-        return basicMapper.findBasicVosByName("%" + name + "%");
+    public Pair<List<BasicVo>, EnvData> queryName(NameBo nameBo) {
+        String name = "%" + nameBo.getName() + "%";
+        int index = nameBo.getEnvData().getPageNo() - 1;
+        int pageSize = nameBo.getEnvData().getPageSize();
+        int totalRows = basicMapper.findBasicByNameCount(name);
+        int totalPages = utils.getTotalPages(totalRows, pageSize);
+        List<BasicVo> basicVos = basicMapper.findPageBasicVosByName(name, index, pageSize);
+        return new Pair<>(basicVos, getEnvData(index, pageSize, totalRows, totalPages));
     }
 
 
@@ -50,9 +60,9 @@ public class BasicService extends BaseService implements IBasicService {
         checkResult(1, basicMapper.addBasicVo(basicVo));
         int pid = basicVo.getId();
         basicVo.getFormulas().stream()
-                .peek(formulaVo -> formulaVo.setPid(pid)).forEach(formulaVo -> {
-            checkResult(1, materialFormulaMapper.addBasicFormulaVo(formulaVo));
-        });
+                .peek(formulaVo -> formulaVo.setPid(pid))
+                .forEach(formulaVo ->
+                        checkResult(1, materialFormulaMapper.addBasicFormulaVo(formulaVo)));
     }
 
     @Transactional

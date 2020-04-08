@@ -34,4 +34,14 @@ public interface MiddleMapper {
 
     // 查找中级产品的数量
     int findMiddleCount();
+
+    // 根据名字查找中级产品的数量
+    int findBasicByNameCount(@Param("name") String name);
+
+    // 查找所有的中级产品VO的集合
+    List<MiddleBo> findPageMiddleBos(@Param("index") Integer index, @Param("pageSize") Integer pageSize);
+
+    // 根据名字查找所有的中级产品VO
+    List<MiddleBo> findPageMiddleBosByName(@Param("name") String name, @Param("index") Integer index,
+                                           @Param("pageSize") Integer pageSize);
 }

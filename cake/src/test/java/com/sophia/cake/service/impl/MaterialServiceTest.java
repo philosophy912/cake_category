@@ -1,6 +1,10 @@
 package com.sophia.cake.service.impl;
 
+import com.philosophy.base.common.Pair;
+import com.philosophy.base.entity.EnvData;
 import com.philosophy.base.util.NumericUtils;
+import com.sophia.cake.entity.bo.EntityBo;
+import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.po.Material;
 import com.sophia.cake.entity.vo.MVo;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +33,8 @@ class MaterialServiceTest {
 
     @Test
     void update() {
-        Material material = service.query().get(0);
+        EntityBo entityBo = new EntityBo();
+        Material material = service.query(entityBo).getFirst().get(0);
         log.debug("material is {}", material);
         float price = NumericUtils.randomFloat(10, 100);
         log.debug("price is {}", price);
@@ -45,14 +50,17 @@ class MaterialServiceTest {
 
     @Test
     void query() {
-        List<Material> materials = service.query();
-        assertTrue(materials.size() > 10);
+        EntityBo entityBo = new EntityBo();
+        Pair<List<Material>, EnvData> query = service.query(entityBo);
+        assertTrue(query.getFirst().size() > 10);
     }
 
     @Test
     void queryName() {
-        List<Material> materials = service.queryName("糖");
-        assertTrue(materials.size() > 2);
+        NameBo nameBo = new NameBo();
+        nameBo.setName("糖");
+        Pair<List<Material>, EnvData> query = service.queryName(nameBo);
+        assertTrue(query.getFirst().size() > 2);
     }
 
     @Test

@@ -79,9 +79,9 @@ public class MaterialMapperTest {
     @Test
     void updateMaterial() {
         Material material = mapper.findMaterialById(1);
-        if(material.getUnit().equalsIgnoreCase("克")){
+        if (material.getUnit().equalsIgnoreCase("克")) {
             material.setUnit("毫升");
-        }else{
+        } else {
             material.setUnit("克");
         }
         int result = mapper.updateMaterial(material);
@@ -93,5 +93,24 @@ public class MaterialMapperTest {
         int count = mapper.findMaterialCount();
         log.debug("count = {}", count);
         assertTrue(count > 2);
+    }
+
+    @Test
+    void findPageMaterials() {
+        List<Material> materials = mapper.findPageMaterials(0, 5);
+        assertEquals(5, materials.size());
+    }
+
+    @Test
+    void findPageMaterialsByName() {
+        List<Material> materials = mapper.findPageMaterialsByName("%糖%", 0, 1);
+        assertEquals(1, materials.size());
+    }
+
+
+    @Test
+    void findMaterialByNameCount() {
+        int count = mapper.findMaterialByNameCount("%糖%");
+        assertTrue(count > 1);
     }
 }
