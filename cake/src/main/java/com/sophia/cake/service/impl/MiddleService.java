@@ -31,8 +31,9 @@ public class MiddleService extends BaseService implements IMiddleService {
 
     @Override
     public Pair<List<MiddleVo>, EnvData> query(EntityBo entityBo) {
-        int index = entityBo.getEnvData().getPageNo() - 1;
+        int pageNo = entityBo.getEnvData().getPageNo() - 1;
         int pageSize = entityBo.getEnvData().getPageSize();
+        int index = pageNo * pageSize;
         int totalRows = middleMapper.findMiddleCount();
         int totalPages = utils.getTotalPages(totalRows, pageSize);
         List<MiddleVo> middleVos = new ArrayList<>();
@@ -40,15 +41,16 @@ public class MiddleService extends BaseService implements IMiddleService {
             MiddleVo vo = utils.convert(middleBo);
             middleVos.add(vo);
         });
-        return new Pair<>(middleVos, getEnvData(index, pageSize, totalRows, totalPages));
+        return new Pair<>(middleVos, getEnvData(pageNo, pageSize, totalRows, totalPages));
     }
 
 
     @Override
     public Pair<List<MiddleVo>, EnvData> queryName(NameBo nameBo) {
         String name = "%" + nameBo.getName() + "%";
-        int index = nameBo.getEnvData().getPageNo() - 1;
+        int pageNo = nameBo.getEnvData().getPageNo() - 1;
         int pageSize = nameBo.getEnvData().getPageSize();
+        int index = pageNo * pageSize;
         int totalRows = middleMapper.findBasicByNameCount(name);
         int totalPages = utils.getTotalPages(totalRows, pageSize);
         List<MiddleVo> middleVos = new ArrayList<>();
@@ -56,7 +58,7 @@ public class MiddleService extends BaseService implements IMiddleService {
             MiddleVo vo = utils.convert(middleBo);
             middleVos.add(vo);
         });
-        return new Pair<>(middleVos, getEnvData(index, pageSize, totalRows, totalPages));
+        return new Pair<>(middleVos, getEnvData(pageNo, pageSize, totalRows, totalPages));
     }
 
 

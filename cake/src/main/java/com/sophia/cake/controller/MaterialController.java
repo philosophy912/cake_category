@@ -31,7 +31,7 @@ import java.util.List;
 public class MaterialController extends BaseController {
 
     @ResponseBody
-    @RequestMapping(value = "/queryMaterial", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryMaterial", method = RequestMethod.POST)
     @ApiOperation("查询所有原材料(仅包含id和name)的接口")
     public ResultResponse<MVo> queryBasic() {
         ResultResponse<MVo> response = new ResultResponse<>();
@@ -44,10 +44,10 @@ public class MaterialController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ApiOperation("查询所有原材料的接口")
-    @ApiImplicitParam(name = "entity", value = "分页信息", required = true)
-    public ResultResponse<Material> query(EntityBo bo) {
+    @ApiImplicitParam(name = "entityBo", value = "分页信息", required = true)
+    public ResultResponse<Material> query(@RequestBody  EntityBo entityBo) {
         ResultResponse<Material> response = new ResultResponse<>();
-        Pair<List<Material>, EnvData> query = materialService.query(bo);
+        Pair<List<Material>, EnvData> query = materialService.query(entityBo);
         response.setData(query.getFirst());
         response.setEnvData(query.getSecond());
         return response;
@@ -58,7 +58,7 @@ public class MaterialController extends BaseController {
     @RequestMapping(value = "/queryName", method = RequestMethod.POST)
     @ApiOperation("根据名字查询基础产品")
     @ApiImplicitParam(name = "nameBo", value = "原材料名字", required = true)
-    public ResultResponse<Material> queryByName(NameBo nameBo) {
+    public ResultResponse<Material> queryByName(@RequestBody NameBo nameBo) {
         ResultResponse<Material> response = new ResultResponse<>();
         Pair<List<Material>, EnvData> query = materialService.queryName(nameBo);
         response.setData(query.getFirst());

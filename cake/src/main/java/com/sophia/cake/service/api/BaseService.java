@@ -199,10 +199,11 @@ public abstract class BaseService {
     }
 
 
-    protected EnvData getEnvData(int index, int pageSize, int totalRows, int totalPages) {
+    protected EnvData getEnvData(int pageNo, int pageSize, int totalRows, int totalPages) {
+        log.debug("pageNo[{}], pageSize[{}], totalRows[{}], totalPages[{}]", pageNo, pageSize, totalRows, totalPages);
         EnvData envData = new EnvData();
-        envData.setPageNo(index);
-        envData.setPageNo(pageSize);
+        envData.setPageNo(pageNo + 1);
+        envData.setPageSize(pageSize);
         envData.setTotalRows(totalRows);
         envData.setTotalPages(totalPages);
         return envData;

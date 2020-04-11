@@ -31,7 +31,7 @@ import java.util.List;
 public class BasicController extends BaseController {
 
     @ResponseBody
-    @RequestMapping(value = "/queryBasic", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryBasic", method = RequestMethod.POST)
     @ApiOperation("查询所有基础产品(仅包含id和name)的接口")
     public ResultResponse<BVo> queryBasic() {
         ResultResponse<BVo> response = new ResultResponse<>();
@@ -45,7 +45,7 @@ public class BasicController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ApiImplicitParam(name = "entityBo", value = "分页信息", required = true)
-    public ResultResponse<BasicVo> query(EntityBo entityBo) {
+    public ResultResponse<BasicVo> query(@RequestBody EntityBo entityBo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         Pair<List<BasicVo>, EnvData> query = basicService.query(entityBo);
         response.setData(query.getFirst());
@@ -58,7 +58,7 @@ public class BasicController extends BaseController {
     @RequestMapping(value = "/queryName", method = RequestMethod.POST)
     @ApiOperation("根据名字查询基础产品")
     @ApiImplicitParam(name = "nameBo", value = "中级产品名字", required = true)
-    public ResultResponse<BasicVo> queryByName(NameBo nameBo) {
+    public ResultResponse<BasicVo> queryByName(@RequestBody NameBo nameBo) {
         ResultResponse<BasicVo> response = new ResultResponse<>();
         Pair<List<BasicVo>, EnvData> query = basicService.queryName(nameBo);
         response.setData(query.getFirst());

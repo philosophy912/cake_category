@@ -32,24 +32,26 @@ public class BasicService extends BaseService implements IBasicService {
 
     @Override
     public Pair<List<BasicVo>, EnvData> query(EntityBo entityBo) {
-        int index = entityBo.getEnvData().getPageNo() - 1;
+        int pageNo = entityBo.getEnvData().getPageNo() - 1;
         int pageSize = entityBo.getEnvData().getPageSize();
+        int index = pageNo * pageSize;
         int totalRows = basicMapper.findBasicCount();
         int totalPages = utils.getTotalPages(totalRows, pageSize);
         List<BasicVo> basicVos = basicMapper.findPageBasicVos(index, pageSize);
-        return new Pair<>(basicVos, getEnvData(index, pageSize, totalRows, totalPages));
+        return new Pair<>(basicVos, getEnvData(pageNo, pageSize, totalRows, totalPages));
     }
 
 
     @Override
     public Pair<List<BasicVo>, EnvData> queryName(NameBo nameBo) {
         String name = "%" + nameBo.getName() + "%";
-        int index = nameBo.getEnvData().getPageNo() - 1;
+        int pageNo = nameBo.getEnvData().getPageNo() - 1;
         int pageSize = nameBo.getEnvData().getPageSize();
+        int index = pageNo * pageSize;
         int totalRows = basicMapper.findBasicByNameCount(name);
         int totalPages = utils.getTotalPages(totalRows, pageSize);
         List<BasicVo> basicVos = basicMapper.findPageBasicVosByName(name, index, pageSize);
-        return new Pair<>(basicVos, getEnvData(index, pageSize, totalRows, totalPages));
+        return new Pair<>(basicVos, getEnvData(pageNo, pageSize, totalRows, totalPages));
     }
 
 

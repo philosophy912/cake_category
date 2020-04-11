@@ -8,10 +8,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-  jpa:
-    show-sql: false
-    hibernate:
-      ddl-auto: update
+#  jpa:
+#    show-sql: false
+#    hibernate:
+#      ddl-auto: update
 
 mybatis:
   # 配置mapper xml文件所在的路径
@@ -25,5 +25,6 @@ logging:
   level:
     com.sophia.cake.mapper: debug
     com.sophia.cake.controller: info
-    com.sophia.cake.service: debug
+    com.sophia.cake.service.api: debug
+    com.sophia.cake.service.impl: debug
     root: info
