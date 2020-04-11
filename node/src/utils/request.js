@@ -25,7 +25,7 @@ service.interceptors.response.use(
       log.debug('response data is ' + JSON.stringify(data));
       const status = data.success;
       if (status) {
-        return data.data;
+        return data;
       } else {
         return Promise.reject(JSON.stringify({ type: status }));
       }

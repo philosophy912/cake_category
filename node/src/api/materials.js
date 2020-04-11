@@ -5,7 +5,7 @@ const log = new Logger('api/material');
 
 const baseUrl = '/material/';
 const query = baseUrl + 'query';
-const queryName = baseUrl + 'queryName?name=';
+const queryName = baseUrl + 'queryName';
 const add = baseUrl + 'add';
 const update = baseUrl + 'update';
 const del = baseUrl + 'delete';
@@ -16,24 +16,33 @@ const material = baseUrl + 'queryMaterial';
 export const queryMaterialName = () => {
   return service({
     url: material,
-    method: 'get'
+    method: 'post'
   });
 };
 
 // 获取单个原材料的名称
-export const queryMaterialByName = name => {
+export const queryMaterialByName = param => {
+  const data = {
+    name: param.name,
+    envData: param.envData
+  };
   return service({
     url: queryName + name,
-    method: 'get'
+    method: 'post',
+    data
   });
 };
 
 
 // 获取所有的原材料数据
-export const queryMaterials = () => {
+export const queryMaterials = param => {
+  const data = {
+    envData: param.envData
+  };
   return service({
     url: query,
-    method: 'get'
+    method: 'post',
+    data
   });
 };
 

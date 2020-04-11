@@ -1,6 +1,6 @@
 <template>
   <div class="basic">
-    <ProductTable :data="basic" @del="del" @add="add" @modify="modify" @search="search" />
+    <ProductTable :data="basic" :envData="envData" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" @del="del" @add="add" @modify="modify" @search="search" />
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="options" :productOptions="options" @add="addNewRow" />
   </div>
 </template>
@@ -41,7 +41,13 @@ export default {
         left: '取消',
         right: ''
       },
-      row: this.$tools.createMaterialRow(false)
+      row: this.$tools.createMaterialRow(false),
+      envData: {
+        pageNo: 1,
+        pageSize: 10,
+        totalRows: 0,
+        totalPages: 0
+      }
     };
   },
   watch: {
@@ -52,12 +58,24 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(val) {
+      this.envData.pageSize = val;
+      this.getData();
+    },
+    handleCurrentChange(val) {
+      this.envData.pageNo = val;
+      this.getData();
+    },
     getData() {
-      queryBasics().then(resp => {
-        this.basic = resp;
+      const data = {
+        envData: this.envData
+      };
+      queryBasics(data).then(resp => {
+        this.basic = resp.data;
+        this.envData = resp.envData;
       });
       queryMaterialName().then(resp => {
-        this.options = resp;
+        this.options = resp.data;
       });
     },
     del(row) {
@@ -81,7 +99,7 @@ export default {
             });
         })
         .catch(() => {
-          log.debug('已取消删除[' + row.name + ']')
+          log.debug('已取消删除[' + row.name + ']');
         });
     },
     add() {
@@ -113,17 +131,26 @@ export default {
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
       if (!this.$tools.isEmpty(content)) {
-        queryBasicByName(content).then(resp => {
-          if (resp.length !== 0) {
-            this.basic = resp;
+        const data = {
+          name: content,
+          envData: this.envData
+        };
+        queryBasicByName(data).then(resp => {
+          const respData = resp.data;
+          if (respData.length !== 0) {
+            this.basic = respData;
+            this.envData = resp.envData
           } else {
             this.$message.error('没有找到基础产品[' + content + ']');
           }
         });
       } else {
-        queryBasics().then(resp => {
-          log.debug('resp = ' + JSON.stringify(resp));
-          this.basic = resp;
+        const data = {
+          envData: this.envData
+        };
+        queryBasics(data).then(resp => {
+          this.basic = resp.data;
+          this.envData = resp.envData;
         });
       }
     }
