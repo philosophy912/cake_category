@@ -7,4 +7,5 @@ import com.sophia.cake.entity.vo.MiddleVo;
  * @date 2020/4/1 10:07
  **/
 public interface IMiddleService extends IBaseService<MiddleVo> {
+
 }

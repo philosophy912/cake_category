@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -57,14 +58,14 @@ public class Middle implements Serializable {
     /**
      * 对应的原材料集合
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "middle_id")
     private Set<MaterialFormula> materialFormulaSet = new HashSet<>();
 
     /**
      * 对应的初级产品集合
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "middle_id")
     private Set<BasicFormula> basicFormulaSet = new HashSet<>();
 
