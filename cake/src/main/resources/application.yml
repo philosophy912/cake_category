@@ -9,7 +9,7 @@ spring:
     username: root
     password: root
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
 
@@ -25,5 +25,6 @@ logging:
   level:
     com.sophia.cake.mapper: debug
     com.sophia.cake.controller: info
-    com.sophia.cake.service: debug
+    com.sophia.cake.service.api: debug
+    com.sophia.cake.service.impl: debug
     root: info

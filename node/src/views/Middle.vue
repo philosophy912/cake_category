@@ -1,6 +1,6 @@
 <template>
   <div class="basic">
-    <ProductTable :data="middle" @del="del" @add="add" @modify="modify" @search="search"></ProductTable>
+    <ProductTable :data="middle" :envData="envData" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" @del="del" @add="add" @modify="modify" @search="search"></ProductTable>
     <ProductDialog :dialog="dialog" @closeDialog="closeDialog" :materialOptions="materialOptions" :productOptions="basicOptions" @add="addNewRow">
     </ProductDialog>
   </div>
@@ -44,7 +44,13 @@ export default {
         left: '取消',
         right: ''
       },
-      row: this.$tools.createBothRow(true)
+      row: this.$tools.createBothRow(true),
+      envData: {
+        pageNo: 1,
+        pageSize: 10,
+        totalRows: 0,
+        totalPages: 0
+      }
     };
   },
   watch: {
@@ -55,15 +61,27 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(val) {
+      this.envData.pageSize = val;
+      this.getData();
+    },
+    handleCurrentChange(val) {
+      this.envData.pageNo = val;
+      this.getData();
+    },
     getData() {
+      const data = {
+        envData: this.envData
+      };
       queryMaterialName().then(resp => {
-        this.materialOptions = resp;
+        this.materialOptions = resp.data;
       });
       queryBasicName().then(resp => {
-        this.basicOptions = resp;
+        this.basicOptions = resp.data;
       });
-      queryMiddles().then(resp => {
-        this.middle = resp;
+      queryMiddles(data).then(resp => {
+        this.middle = resp.data;
+        this.envData = resp.envData;
       });
     },
     del(row) {
@@ -87,7 +105,7 @@ export default {
             });
         })
         .catch(() => {
-          log.debug('已取消删除[' + row.name + ']')
+          log.debug('已取消删除[' + row.name + ']');
         });
     },
     add() {
@@ -95,25 +113,21 @@ export default {
       this.dialog.show = true;
       this.dialog.title = '新增中级产品';
       this.dialog.right = '新增';
-      // if (this.row.formulas.length == 0) {
-      //   this.row.formulas.push(this.$tools.createMaterial());
-      //   this.row.formulas.push(this.$tools.createProduct());
-      // }
       this.dialog.row = this.row;
     },
     addNewRow() {
       log.debug('add new row in dialog');
       this.$confirm('此选择要添加的类型', '提示', {
-          confirmButtonText: '原材料',
-          cancelButtonText: '基础产品',
-          type: 'info'
-        }).then(() => {
+        confirmButtonText: '原材料',
+        cancelButtonText: '基础产品',
+        type: 'info'
+      })
+        .then(() => {
           this.row.formulas.push(this.$tools.createMaterial());
-        }).catch(() => {
-          this.row.formulas.push(this.$tools.createProduct());         
+        })
+        .catch(() => {
+          this.row.formulas.push(this.$tools.createProduct());
         });
-      // this.dialog.row.formulas.push(this.$tools.createMaterial());
-      // this.dialog.row.formulas.push(this.$tools.createProduct());
     },
     closeDialog() {
       this.dialog.show = false;
@@ -133,18 +147,27 @@ export default {
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
       if (!this.$tools.isEmpty(content)) {
+        const data = {
+          name: content,
+          envData: this.envData
+        };
         queryMiddleByName(content).then(resp => {
-          log.debug('resp = ' + JSON.stringify(resp));
-          if (resp.length !== 0) {
-            this.middle = resp;
+          const respData = resp.data;
+          log.debug('respData = ' + JSON.stringify(respData));
+          if (respData.length !== 0) {
+            this.middle = respData;
+            this.envData = resp.envData
           } else {
             this.$message.error('没有找到原材料[' + content + ']');
           }
         });
       } else {
-        queryMiddles().then(resp => {
-          log.debug('resp = ' + JSON.stringify(resp));
-          this.middle = resp;
+        const data = {
+          envData: this.envData
+        };
+        queryMiddles(data).then(resp => {
+          this.middle = resp.data;
+          this.envData = resp.envData;
         });
       }
     }

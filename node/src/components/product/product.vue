@@ -3,12 +3,12 @@
     <el-form-item v-for="(formula, index) in formulas" :key="index"
                   :label="formula.type" label-width="100px">
       <el-col :span="6">
-        <el-select v-model="formula.id" placeholder="请选择"
+        <el-select v-model="formula.id" placeholder="请选择" filterable 
                    v-if="show(formula)">
           <el-option v-for="item in materialOptions" :key="item.id"
                      :label="item.name" :value="item.id"></el-option>
         </el-select>
-        <el-select v-model="formula.id" placeholder="请选择" v-else>
+        <el-select v-model="formula.id" placeholder="请选择" filterable  v-else>
           <el-option v-for="item in productOptions" :key="item.id"
                      :label="item.name" :value="item.id"></el-option>
         </el-select>

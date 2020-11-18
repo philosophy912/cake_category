@@ -5,25 +5,34 @@ const log = new Logger('api/middle');
 
 const baseUrl = '/middle/';
 const query = baseUrl + 'query';
-const queryName = baseUrl + 'queryName?name=';
+const queryName = baseUrl + 'queryName';
 const add = baseUrl + 'add';
 const update = baseUrl + 'update';
 const del = baseUrl + 'delete';
 
 
 // 获取所有的中级产品数据
-export const queryMiddles = () => {
+export const queryMiddles = param => {
+  const data = {
+    envData: param.envData
+  };
   return service({
     url: query,
-    method: 'get'
+    method: 'post',
+    data
   });
 };
 
 // 获取单个原材料的名称
-export const queryMiddleByName = name => {
+export const queryMiddleByName = param => {
+  const data = {
+    name: param.name,
+    envData: param.envData
+  };
   return service({
     url: queryName + name,
-    method: 'get'
+    method: 'post',
+    data
   });
 };
 

@@ -33,7 +33,7 @@ public class MiddleController extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/query", method = RequestMethod.POST)
     @ApiImplicitParam(name = "entityBo", value = "分页信息", required = true)
-    public ResultResponse<MiddleVo> query(EntityBo entityBo) {
+    public ResultResponse<MiddleVo> query(@RequestBody EntityBo entityBo) {
         ResultResponse<MiddleVo> response = new ResultResponse<>();
         Pair<List<MiddleVo>, EnvData> query = middleService.query(entityBo);
         response.setData(query.getFirst());
@@ -45,7 +45,7 @@ public class MiddleController extends BaseController {
     @ApiImplicitParam(name = "nameBo", value = "中级产品名字", required = true)
     @ResponseBody
     @RequestMapping(value = "/queryName", method = RequestMethod.POST)
-    public ResultResponse<MiddleVo> queryByName(NameBo nameBo) {
+    public ResultResponse<MiddleVo> queryByName(@RequestBody NameBo nameBo) {
         ResultResponse<MiddleVo> response = new ResultResponse<>();
         Pair<List<MiddleVo>, EnvData> query = middleService.queryName(nameBo);
         response.setData(query.getFirst());

@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * @author lizhe
  * @date 2020-04-08 21:46
@@ -15,7 +17,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @ApiModel
-public class EntityBo {
+public class EntityBo implements Serializable {
     @ApiModelProperty(value = "分页相关")
     private EnvData envData = new EnvData();
 }

@@ -5,7 +5,6 @@ import com.philosophy.base.entity.EnvData;
 import com.sophia.cake.entity.bo.EntityBo;
 import com.sophia.cake.entity.bo.NameBo;
 import com.sophia.cake.entity.po.Material;
-import com.sophia.cake.entity.vo.BasicVo;
 import com.sophia.cake.entity.vo.MVo;
 import com.sophia.cake.service.api.BaseService;
 import com.sophia.cake.service.api.IMaterialService;
@@ -30,28 +29,30 @@ public class MaterialService extends BaseService implements IMaterialService {
 
     @Override
     public Pair<List<Material>, EnvData> query(EntityBo entityBo) {
-        int index = entityBo.getEnvData().getPageNo() - 1;
+        int pageNo = entityBo.getEnvData().getPageNo() - 1;
         int pageSize = entityBo.getEnvData().getPageSize();
+        int index = pageNo * pageSize;
         log.debug("index = [{}], pageSize = [{}]", index, pageSize);
         int totalRows = materialMapper.findMaterialCount();
         int totalPages = utils.getTotalPages(totalRows, pageSize);
         log.debug("totalRows = [{}], totalPages = [{}]", totalRows, totalPages);
         List<Material> materials = materialMapper.findPageMaterials(index, pageSize);
-        return new Pair<>(materials, getEnvData(index, pageSize, totalRows, totalPages));
+        return new Pair<>(materials, getEnvData(pageNo, pageSize, totalRows, totalPages));
     }
 
 
     @Override
     public Pair<List<Material>, EnvData> queryName(NameBo nameBo) {
         String name = "%" + nameBo.getName() + "%";
-        int index = nameBo.getEnvData().getPageNo() - 1;
+        int pageNo = nameBo.getEnvData().getPageNo() - 1;
         int pageSize = nameBo.getEnvData().getPageSize();
+        int index = pageNo * pageSize;
         log.debug("index = [{}], pageSize = [{}]", index, pageSize);
         int totalRows = materialMapper.findMaterialByNameCount(name);
         int totalPages = utils.getTotalPages(totalRows, pageSize);
         log.debug("totalRows = [{}], totalPages = [{}]", totalRows, totalPages);
         List<Material> materials = materialMapper.findPageMaterialsByName(name, index, pageSize);
-        return new Pair<>(materials, getEnvData(index, pageSize, totalRows, totalPages));
+        return new Pair<>(materials, getEnvData(pageNo, pageSize, totalRows, totalPages));
     }
 
     @Override

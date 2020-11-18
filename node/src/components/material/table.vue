@@ -7,7 +7,7 @@
       <el-table-column prop="price" label="单价"></el-table-column>
       <el-table-column prop="pricePerUnit" label="每单位价格(元)"></el-table-column>
       <el-table-column fixed="right" label="操作" width="300">
-        <template slot="header">
+        <template slot="header" slot-scope="scope">
           <el-input v-model="content" size="mini" placeholder="输入关键字搜索" @change="search()">
             <el-button slot="append" icon="el-icon-search" @click="search()" />
           </el-input>
@@ -22,6 +22,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="envData.pageNo" :page-sizes="[5, 10, 20, 50]" :page-size="envData.pageSize"
+      layout="total, sizes, prev, pager, next, jumper" :total="envData.totalRows">
+    </el-pagination>
   </div>
 </template>
 <script>
@@ -38,6 +41,9 @@ export default {
   props: {
     data: {
       type: Array
+    },
+    envData: {
+      type: Object
     }
   },
   computed: {
@@ -46,6 +52,14 @@ export default {
     }
   },
   methods: {
+    handleSizeChange(val) {
+      log.debug(`每页${val}条`);
+      this.$emit('handleSizeChange', val)
+    },
+    handleCurrentChange(val) {
+      log.debug(`当前页: ${val}`);
+      this.$emit('handleCurrentChange', val)
+    },
     modify(row) {
       log.debug('execute modify action in row');
       this.$emit('modify', row);

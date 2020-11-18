@@ -1,6 +1,6 @@
 <template>
   <div class="material">
-    <MaterialTable :data="materials" @del="del" @add="add" @modify="modify" @search="search">
+    <MaterialTable :data="materials" :envData="envData" @handleSizeChange="handleSizeChange" @handleCurrentChange="handleCurrentChange" @del="del" @add="add" @modify="modify" @search="search">
     </MaterialTable>
     <MaterialDialog :dialog="dialog" @closeDialog="closeDialog"></MaterialDialog>
   </div>
@@ -53,13 +53,31 @@ export default {
         unit: '克',
         price: '',
         pricePerCapacity: ''
+      },
+      envData: {
+        pageNo: 1,
+        pageSize: 10,
+        totalRows: 0,
+        totalPages: 0
       }
     };
   },
   methods: {
+    handleSizeChange(val) {
+      this.envData.pageSize = val;
+      this.getData();
+    },
+    handleCurrentChange(val) {
+      this.envData.pageNo = val;
+      this.getData();
+    },
     getData() {
-      queryMaterials().then(resp => {
-        this.materials = resp;
+      const data = {
+        envData: this.envData
+      };
+      queryMaterials(data).then(resp => {
+        this.materials = resp.data;
+        this.envData = resp.envData;
       });
     },
     del(row) {
@@ -108,17 +126,26 @@ export default {
       log.debug('it will search ' + content);
       // 直接过滤数据，如果content为空的时候，表示查询所有数据，需要从数据库再次获取数据，然后显示
       if (!this.$tools.isEmpty(content)) {
-        queryMaterialByName(content).then(resp => {
-          if (resp.length !== 0) {
-            this.materials = resp;
+        const data = {
+          name: content,
+          envData: this.envData
+        };
+        queryMaterialByName(data).then(resp => {
+          const respData = resp.data
+          if (respData.length !== 0) {
+            this.materials = respData;
+            this.envData = resp.envData
           } else {
             this.$message.error('没有找到原材料[' + content + ']');
           }
         });
       } else {
-        queryMaterials().then(resp => {
-          log.debug('resp = ' + JSON.stringify(resp));
-          this.materials = resp;
+        const data = {
+          envData: this.envData
+        };
+        queryMaterials(data).then(resp => {
+          this.materials = resp.data;
+          this.envData = resp.envData;
         });
       }
     }
